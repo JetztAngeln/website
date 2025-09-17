@@ -24,7 +24,7 @@
     "billing": "Billing"
   },
   "AppHeader": {
-    "searchPlaceholder": "Search member or waters..."
+    "selectClubPlaceholder": "Select your club to manage..."
   },
   "NotFound": {
     "message": "The page you are looking for does not exist or has been moved.",

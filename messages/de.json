@@ -24,7 +24,7 @@
     "billing": "Abrechnung"
   },
   "AppHeader": {
-    "searchPlaceholder": "Mitglied oder Gewässer suchen..."
+    "selectClubPlaceholder": "Wähle deinen Verein..."
   },
   "NotFound": {
     "message": "Die Seite, die du suchst, existiert nicht oder wurde verschoben.",

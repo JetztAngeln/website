@@ -5,14 +5,10 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { useState } from "react";
-import useSWR from "swr";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-export default function UserDropdown() {
-  const { data: user, error, isLoading } = useSWR<User>('/api/user', fetcher);
+export default function UserDropdown({ isLoading, error, user }: { isLoading: boolean; error: any; user: User | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("UserDropdown");
 

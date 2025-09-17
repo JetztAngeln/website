@@ -28,7 +28,9 @@ export default async function RootLayout({ children, params }: Props) {
         <NextIntlClientProvider>
           <ThemeProvider>
             <AuthProvider>
-              <SidebarProvider>{children}</SidebarProvider>
+              <SidebarProvider>
+                {children}
+              </SidebarProvider>
             </AuthProvider>
           </ThemeProvider>
         </NextIntlClientProvider>

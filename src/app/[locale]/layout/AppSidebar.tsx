@@ -28,7 +28,7 @@ type NavItem = {
 };
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered, } = useSidebar();
   const pathname = usePathname().replace(/^\/(en|de)\//, "/");
   const t = useTranslations("Sidebar");
 

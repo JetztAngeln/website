@@ -1,6 +1,7 @@
 "use client";
 import type React from "react";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { ClubInfo } from "@/app/lib/nhost/server/data/clubs";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -8,11 +9,13 @@ type SidebarContextType = {
   isHovered: boolean;
   activeItem: string | null;
   openSubmenu: string | null;
+  selectedClub: ClubInfo | null;
   toggleSidebar: () => void;
   toggleMobileSidebar: () => void;
   setIsHovered: (isHovered: boolean) => void;
   setActiveItem: (item: string | null) => void;
   toggleSubmenu: (item: string) => void;
+  setSelectedClub: (club: ClubInfo | null) => void;
 };
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
@@ -34,6 +37,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [selectedClub, setSelectedClub] = useState<ClubInfo | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,11 +76,13 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
         isHovered,
         activeItem,
         openSubmenu,
+        selectedClub,
         toggleSidebar,
         toggleMobileSidebar,
         setIsHovered,
         setActiveItem,
         toggleSubmenu,
+        setSelectedClub,
       }}
     >
       {children}

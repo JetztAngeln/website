@@ -22,7 +22,7 @@ export async function getClubsForCurrentUser(): Promise<ClubInfo[] | null> {
 
   const userId = session.user?.id;
 
-  const GET_CLUB_QUERY = `
+  const GET_CLUBS_QUERY = `
     query GetClubByUserId($userId: uuid!) {
       user_club_relation(
         where: { user_id: { _eq: $userId } }, 
@@ -36,10 +36,10 @@ export async function getClubsForCurrentUser(): Promise<ClubInfo[] | null> {
   `;
 
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>(
-      GET_CLUB_QUERY,
-      { userId },
-    );
+    const { body } = await nhost.graphql.request<GraphQLResponse>({
+      query: GET_CLUBS_QUERY,
+      variables: { userId },
+    });
 
     if (body.errors) {
       console.error("GraphQL Error:", body.errors[0].message);
