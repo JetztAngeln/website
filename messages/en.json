@@ -1,0 +1,45 @@
+{
+  "SignIn": {
+    "title": "Club Dashboard",
+    "subtitle": "Sign in as an admin to your club.",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithApple": "Sign in with Apple",
+    "signInWithEmail": "Get sign-in link",
+    "signingIn": "Signing in...",
+    "sendingLink": "Link was sent...",
+    "or": "Or",
+    "tos_text_pre": "By signing in, you agree to our",
+    "tos": "Terms of Service and Privacy Policy",
+    "tos_text_post": "",
+    "layoutDescription": "Manage your club's activities, members, and billing all in one place."
+  },
+  "Sidebar": {
+    "overview": "Overview",
+    "members": "Members",
+    "waters": "Waters",
+    "allWaters": "All Waters",
+    "addWaterbody": "Add Waterbody",
+    "club": "Club Management",
+    "catches": "Catches",
+    "billing": "Billing"
+  },
+  "AppHeader": {
+    "searchPlaceholder": "Search member or waters..."
+  },
+  "NotFound": {
+    "message": "The page you are looking for does not exist or has been moved.",
+    "backToHome": "Go Back to Dashboard"
+  },
+  "Redirect": {
+    "message": "You are not allowed to access this page.",
+    "backToHome": "Go Back to Homepage"
+  },
+  "UserDropdown": {
+    "editProfile": "Edit profile",
+    "signOut": "Sign out"
+  },
+  "MembersPage": {
+    "title": "Members",
+    "tableTitle": "Members List"
+  }
+}

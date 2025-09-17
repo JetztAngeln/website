@@ -1,0 +1,45 @@
+{
+  "SignIn": {
+    "title": "Vereins Dashboard",
+    "subtitle": "Melde dich als Admin bei deinem Verein an.",
+    "signInWithGoogle": "Mit Google anmelden",
+    "signInWithApple": "Mit Apple anmelden",
+    "signInWithEmail": "Anmelde-Link erhalten",
+    "signingIn": "Anmelden...",
+    "sendingLink": "Link wurde gesendet...",
+    "or": "Oder",
+    "tos_text_pre": "Durch die Anmeldung stimmst du unseren",
+    "tos": "Nutzungsbedingungen und unserer Datenschutzerklärung",
+    "tos_text_post": "zu.",
+    "layoutDescription": "Verwalte die Aktivitäten, Mitglieder und Abrechnung deines Vereins an einem Ort."
+  },
+  "Sidebar": {
+    "overview": "Übersicht",
+    "members": "Mitglieder",
+    "waters": "Gewässer",
+    "allWaters": "Alle Gewässer",
+    "addWaterbody": "Gewässer hinzufügen",
+    "club": "Vereinsverwaltung",
+    "catches": "Fänge",
+    "billing": "Abrechnung"
+  },
+  "AppHeader": {
+    "searchPlaceholder": "Mitglied oder Gewässer suchen..."
+  },
+  "NotFound": {
+    "message": "Die Seite, die du suchst, existiert nicht oder wurde verschoben.",
+    "backToHome": "Zurück zum Dashboard"
+  },
+  "Redirect": {
+    "message": "Du bist nicht berechtigt, auf diese Seite zuzugreifen.",
+    "backToHome": "Zurück zur Startseite"
+  },
+  "UserDropdown": {
+    "editProfile": "Profil bearbeiten",
+    "signOut": "Abmelden"
+  },
+  "MembersPage": {
+    "title": "Mitglieder",
+    "tableTitle": "Mitgliederliste"
+  }
+}
