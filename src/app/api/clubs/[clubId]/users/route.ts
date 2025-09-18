@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
 import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
-import {
-  getUsersByClubId,
-  type UserInfo,
-} from "@/app/lib/nhost/server/data/users";
+import { getUsersByClubId } from "@/app/lib/nhost/server/data/users";
 
 export async function GET(
   req: Request,
-  { params }: { params: { clubId: string } },
+  { params }: { params: Promise<{ clubId: string }> },
 ) {
   try {
-    const { clubId } = params;
+    const { clubId } = await params;
 
     if (!clubId) {
       return NextResponse.json(
@@ -25,26 +22,6 @@ export async function GET(
     const search = url.searchParams.get("search") ?? "";
     const sortParam = MemberSortEnum.DISPLAY_NAME_ASC;
 
-    const validKeys: Array<keyof UserInfo> = [
-      "id",
-      "avatarUrl",
-      "displayName",
-      "email",
-      "role",
-      "lastSeen",
-    ];
-
-    // let sortBy: { id: keyof UserInfo; desc: boolean } | null = null;
-
-    // if (sortParam) {
-    //   const [id, direction] = sortParam.split(":");
-    //   if (validKeys.includes(id as keyof UserInfo)) {
-    //     sortBy = { id: id as keyof UserInfo, desc: direction === "desc" };
-    //   } else {
-    //     console.warn(`Invalid sort key: ${id}, ignoring sort`);
-    //   }
-    // }
-
     const result = await getUsersByClubId(
       clubId,
       page,
@@ -53,10 +30,17 @@ export async function GET(
       sortParam,
     );
 
-    if (!result || result.users.length === 0) {
+    if (!result) {
       return NextResponse.json(
-        { error: "No users found", data: [], total: 0 },
-        { status: 404 },
+        { error: "Failed to fetch users", data: [], total: 0 },
+        { status: 500 }, // Use a 500 error for failed operations
+      );
+    }
+
+    if (result.users.length === 0) {
+      return NextResponse.json(
+        { data: [], total: 0 }, // No error message needed, just empty data
+        { status: 200 }, // A 200 OK is appropriate here
       );
     }
 

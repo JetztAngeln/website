@@ -36,14 +36,6 @@ export async function getUsersByClubId(
 
   const offset = (page - 1) * pageSize;
 
-  console.log("Fetching users for club:", {
-    clubId,
-    page,
-    pageSize,
-    search,
-    sortBy,
-  });
-
   // GraphQL query
   const GET_USERS_QUERY = `
     query GetClubUsers(
@@ -74,11 +66,9 @@ export async function getUsersByClubId(
         limit: pageSize,
         offset,
         search: search ? `%${search}%` : "%%",
-        orderBy: sortBy,
+        orderBy: [sortBy],
       },
     });
-
-    console.log("GraphQL response body:", body.data);
 
     if (body.errors) {
       console.error("GraphQL Error:", body.errors[0].message);

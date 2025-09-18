@@ -1,16 +1,14 @@
 "use server";
 
-import { createNhostClient } from "../../lib/nhost/server";
 import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
+import { createNhostClient } from "../../lib/nhost/server";
 
 /**
  * Sends a magic link to the provided email
  */
 export async function sendMagicLink(formData: FormData) {
   const email = formData.get("email") as string;
-
-  console.log("Email:", email);
 
   // Validate inputs
   if (!email) {
@@ -30,6 +28,7 @@ export async function sendMagicLink(formData: FormData) {
       email,
       options: {
         redirectTo: origin + "/verify",
+        displayName: "-",
       },
     });
 
@@ -63,6 +62,7 @@ export async function getProviderSignInUrl(provider: "google" | "apple") {
     // Get provider URL
     const url = nhost.auth.signInProviderURL(provider, {
       redirectTo,
+      displayName: "-",
     });
 
     return { url };
