@@ -59,16 +59,23 @@ export async function getUsersByClubId(
   `;
 
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>({
-      query: GET_USERS_QUERY,
-      variables: {
-        clubId,
-        limit: pageSize,
-        offset,
-        search: search ? `%${search}%` : "%%",
-        orderBy: [sortBy],
+    const { body } = await nhost.graphql.request<GraphQLResponse>(
+      {
+        query: GET_USERS_QUERY,
+        variables: {
+          clubId,
+          limit: pageSize,
+          offset,
+          search: search ? `%${search}%` : "%%",
+          orderBy: [sortBy],
+        },
       },
-    });
+      {
+        headers: {
+          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
+        },
+      },
+    );
 
     if (body.errors) {
       console.error("GraphQL Error:", body.errors[0].message);

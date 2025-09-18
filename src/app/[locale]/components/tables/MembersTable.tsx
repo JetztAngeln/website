@@ -32,7 +32,7 @@ const MembersTable: React.FC = () => {
     // Build the API URL with query params
     const url = useMemo(() => {
         if (!clubId) return null;
-        let q = `/api/clubs/${clubId}/users?page=${page + 1}&pageSize=${pageSize}&search=${search}`;
+        const q = `/api/clubs/${clubId}/users?page=${page + 1}&pageSize=${pageSize}&search=${search}`;
         return q;
     }, [clubId, page, pageSize, search]);
 
@@ -101,7 +101,7 @@ const MembersTable: React.FC = () => {
                 header: "Action",
                 cell: ({ row }) => (
                     <div className="relative">
-                        <button className="rounded p-2 hover:bg-gray-100">
+                        <button type="button" className="rounded p-2 hover:bg-gray-100">
                             <EllipsisVertical className="h-5 w-5 text-gray-600" />
                         </button>
                     </div>
@@ -132,129 +132,127 @@ const MembersTable: React.FC = () => {
     });
 
     return (
-        <div className="rounded-lg bg-white shadow-md">
-            <div className="p-4">
-                {/* Search bar */}
-                <div className="mb-4 flex justify-between">
-                    <input
-                        type="text"
-                        placeholder="Search by name or email..."
-                        value={search}
-                        onChange={(e) => {
-                            setPage(0);
-                            setSearch(e.target.value);
-                        }}
-                        className="w-64 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                    />
-                </div>
+        <div className="rounded-lg">
+            {/* Search bar */}
+            <div className="mb-4 flex justify-between">
+                <input
+                    type="text"
+                    placeholder="Search by name or email..."
+                    value={search}
+                    onChange={(e) => {
+                        setPage(0);
+                        setSearch(e.target.value);
+                    }}
+                    className="w-64 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                />
+            </div>
 
-                {/* Table */}
-                <div className="overflow-x-auto">
-                    <table className="min-w-full border-collapse text-left text-sm">
-                        <thead className="bg-gray-50 text-xs uppercase text-gray-500">
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <tr key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => (
-                                        <th
-                                            key={header.id}
-                                            className="cursor-pointer px-4 py-2 font-medium"
-                                            onClick={header.column.getToggleSortingHandler()}
-                                        >
-                                            {flexRender(header.column.columnDef.header, header.getContext())}
-                                            {{
-                                                asc: " 🔼",
-                                                desc: " 🔽",
-                                            }[header.column.getIsSorted() as string] ?? null}
-                                        </th>
+            {/* Table */}
+            <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+                <table className="min-w-full border-collapse text-left text-sm">
+                    <thead className="bg-gray-50 text-xs uppercase text-gray-500">
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <tr key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                    <th
+                                        key={header.id}
+                                        className="cursor-pointer px-4 py-2 font-medium"
+                                        onClick={header.column.getToggleSortingHandler()}
+                                    >
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
+                                        {{
+                                            asc: " 🔼",
+                                            desc: " 🔽",
+                                        }[header.column.getIsSorted() as string] ?? null}
+                                    </th>
+                                ))}
+                            </tr>
+                        ))}
+                    </thead>
+                    <tbody>
+                        {isLoading
+                            ? Array.from({ length: pageSize }).map((_, i) => (
+                                <tr key={i} className="border-b">
+                                    <td className="px-4 py-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200" />
+                                            <div>
+                                                <div className="mb-1 h-4 w-32 animate-pulse rounded bg-gray-200" />
+                                                <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <div className="h-5 w-16 animate-pulse rounded bg-gray-200" />
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <div className="h-6 w-6 animate-pulse rounded-full bg-gray-200" />
+                                    </td>
+                                </tr>
+                            ))
+                            : table.getRowModel().rows.map((row) => (
+                                <tr key={row.id} className="border-b hover:bg-gray-50 transition-colors">
+                                    {row.getVisibleCells().map((cell) => (
+                                        <td key={cell.id} className="px-4 py-3">
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </td>
                                     ))}
                                 </tr>
                             ))}
-                        </thead>
-                        <tbody>
-                            {isLoading
-                                ? Array.from({ length: pageSize }).map((_, i) => (
-                                    <tr key={i} className="border-b">
-                                        <td className="px-4 py-3">
-                                            <div className="flex items-center gap-3">
-                                                <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200" />
-                                                <div>
-                                                    <div className="mb-1 h-4 w-32 animate-pulse rounded bg-gray-200" />
-                                                    <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-3">
-                                            <div className="h-5 w-16 animate-pulse rounded bg-gray-200" />
-                                        </td>
-                                        <td className="px-4 py-3">
-                                            <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
-                                        </td>
-                                        <td className="px-4 py-3">
-                                            <div className="h-6 w-6 animate-pulse rounded-full bg-gray-200" />
-                                        </td>
-                                    </tr>
-                                ))
-                                : table.getRowModel().rows.map((row) => (
-                                    <tr key={row.id} className="border-b hover:bg-gray-50 transition-colors">
-                                        {row.getVisibleCells().map((cell) => (
-                                            <td key={cell.id} className="px-4 py-3">
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                    {!isLoading && data?.data.length === 0 && (
-                        <div className="p-4 text-center text-gray-500">No users found.</div>
-                    )}
-                </div>
+                {!isLoading && data?.data.length === 0 && (
+                    <div className="p-4 text-center text-gray-500">No users found.</div>
+                )}
+            </div>
 
-                {/* Pagination controls */}
-                <div className="mt-4 flex items-center justify-between">
-                    <span className="text-sm text-gray-600">
-                        Page {page + 1} of {data ? Math.ceil(data.total / pageSize) : 1}
-                    </span>
+            {/* Pagination controls */}
+            <div className="mt-4 flex items-center justify-between">
+                <span className="text-sm text-gray-600">
+                    Page {page + 1} of {data ? Math.ceil(data.total / pageSize) : 1}
+                </span>
 
-                    <div className="flex items-center gap-4">
-                        {/* Page size selector */}
-                        <select
-                            value={pageSize}
-                            onChange={(e) => {
-                                setPage(0);
-                                setPageSize(Number(e.target.value));
-                            }}
-                            className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                <div className="flex items-center gap-4">
+                    {/* Page size selector */}
+                    <select
+                        value={pageSize}
+                        onChange={(e) => {
+                            setPage(0);
+                            setPageSize(Number(e.target.value));
+                        }}
+                        className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                    >
+                        {[10, 20, 50].map((size) => (
+                            <option key={size} value={size}>
+                                {size} / page
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Page buttons */}
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setPage((old) => Math.max(0, old - 1))}
+                            disabled={page === 0 || isLoading}
+                            className="rounded-md border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
                         >
-                            {[10, 20, 50].map((size) => (
-                                <option key={size} value={size}>
-                                    {size} / page
-                                </option>
-                            ))}
-                        </select>
-
-                        {/* Page buttons */}
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => setPage((old) => Math.max(0, old - 1))}
-                                disabled={page === 0 || isLoading}
-                                className="rounded-md border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={() =>
-                                    setPage((old) =>
-                                        !data ? old : Math.min(old + 1, Math.ceil(data.total / pageSize) - 1)
-                                    )
-                                }
-                                disabled={!data || page >= Math.ceil(data.total / pageSize) - 1 || isLoading}
-                                className="rounded-md border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                Next
-                            </button>
-                        </div>
+                            Previous
+                        </button>
+                        <button
+                            onClick={() =>
+                                setPage((old) =>
+                                    !data ? old : Math.min(old + 1, Math.ceil(data.total / pageSize) - 1)
+                                )
+                            }
+                            disabled={!data || page >= Math.ceil(data.total / pageSize) - 1 || isLoading}
+                            className="rounded-md border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
+                        >
+                            Next
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { createNhostClient } from "..";
 
 export interface UserInfo {
@@ -32,10 +33,17 @@ export async function getUserInfo(): Promise<UserInfo | null> {
   `;
 
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>({
-      query: GET_USER_QUERY,
-      variables: { userId },
-    });
+    const { body } = await nhost.graphql.request<GraphQLResponse>(
+      {
+        query: GET_USER_QUERY,
+        variables: { userId },
+      },
+      {
+        headers: {
+          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
+        },
+      },
+    );
 
     if (body.errors) {
       console.error("GraphQL Error:", body.errors[0].message);

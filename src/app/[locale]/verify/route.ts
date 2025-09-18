@@ -55,10 +55,17 @@ query GetAdminRole($userId: uuid = "") {
   }
 }
     `;
-      const { body } = await nhost.graphql.request<UserClubRelationResponse>({
-        query: GET_ADMIN_ROLE_QUERY,
-        variables: { userId },
-      });
+      const { body } = await nhost.graphql.request<UserClubRelationResponse>(
+        {
+          query: GET_ADMIN_ROLE_QUERY,
+          variables: { userId },
+        },
+        {
+          headers: {
+            "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
+          },
+        },
+      );
 
       const { data, errors } = body;
       if (errors) {
