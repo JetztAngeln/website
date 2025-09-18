@@ -1,7 +1,6 @@
 import { createNhostClient } from "../../lib/nhost/server";
 
 export default async function Profile() {
-  // Create the client with async cookie access
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
 
