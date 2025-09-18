@@ -1,6 +1,5 @@
 import { createServerClient, type NhostClient } from "@nhost/nhost-js";
-import { DEFAULT_SESSION_KEY } from "@nhost/nhost-js/session";
-import { type Session } from "@nhost/nhost-js/session";
+import { DEFAULT_SESSION_KEY, type Session } from "@nhost/nhost-js/session";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -23,6 +22,10 @@ export async function createNhostClient(): Promise<NhostClient> {
   const nhost = createServerClient({
     region: process.env["NHOST_REGION"] || "local",
     subdomain: process.env["NHOST_SUBDOMAIN"] || "local",
+    authUrl: process.env["NHOST_AUTH_URL"] || undefined,
+    functionsUrl: process.env["NHOST_FUNCTIONS_URL"] || undefined,
+    graphqlUrl: process.env["NHOST_GRAPHQL_URL"] || undefined,
+    storageUrl: process.env["NHOST_STORAGE_URL"] || undefined,
     storage: {
       // storage compatible with Next.js server components
       get: (): Session | null => {
