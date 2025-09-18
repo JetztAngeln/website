@@ -28,8 +28,7 @@ export default function SignInForm() {
             setIsLoading(false);
         } else if (result.url) {
             // Redirect to the provider's sign-in page
-            // window.location.href = result.url;
-            console.log(result.url);
+            window.location.href = result.url;
         }
     };
 
