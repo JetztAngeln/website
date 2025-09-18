@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getClubsForCurrentUser } from "@/app/lib/nhost/server/data/clubs";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const clubs = await getClubsForCurrentUser();
 
@@ -11,8 +11,6 @@ export async function GET(request: Request) {
         { status: 404 },
       );
     }
-
-    console.log("Fetched user clubs:", clubs);
 
     return NextResponse.json(clubs);
   } catch (error) {

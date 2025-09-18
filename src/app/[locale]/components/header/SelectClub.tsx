@@ -7,6 +7,8 @@ interface ClubSelectProps {
   selectedClub: ClubInfo | null;
   setSelectedClub: (club: ClubInfo) => void;
   placeholder?: string;
+  error?: any;
+  isLoading?: boolean;
 }
 
 const ClubSelect: React.FC<ClubSelectProps> = ({
@@ -14,6 +16,7 @@ const ClubSelect: React.FC<ClubSelectProps> = ({
   selectedClub,
   setSelectedClub,
   placeholder = "Loading clubs...",
+  error, isLoading
 }) => {
   // Default to the first club when clubs are available
   useEffect(() => {
@@ -24,6 +27,11 @@ const ClubSelect: React.FC<ClubSelectProps> = ({
 
   // Hide component if no clubs available
   if (!clubs || clubs.length === 0) return null;
+
+  if (error) return <p className="text-red-500">Failed to load clubs</p>;
+  if (isLoading) return <ClubSelect placeholder="Loading clubs..." clubs={[]} selectedClub={null} setSelectedClub={(_: ClubInfo): void => {
+    throw new Error("Function not implemented.");
+  }} />;
 
   return (
     <div className="w-full max-w-sm relative">

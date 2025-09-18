@@ -9,8 +9,6 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    console.log("Fetched user info:", user);
-
     return NextResponse.json(user);
   } catch (error) {
     console.error("API Error:", error);

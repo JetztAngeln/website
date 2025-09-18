@@ -8,7 +8,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import type { ClubInfo } from "@/app/lib/nhost/server/data/clubs";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
-import SelectClub from "../components/form/input/SelectClub";
+import SelectClub from "../components/header/SelectClub";
 import UserDropdown from "../components/header/UserDropdown";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -122,7 +122,7 @@ const AppHeader: React.FC = () => {
             </button></div>
 
           <div className="hidden lg:block">
-            {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} />}
+            {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
           </div>
         </div>
         <div
@@ -133,7 +133,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             <div className="hidden lg:block"><ThemeToggleButton /></div>
             <div className="lg:hidden">
-              {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} />}
+              {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
             </div>
             {/* <!-- Dark Mode Toggler --> */}
           </div>
