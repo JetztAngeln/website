@@ -1,13 +1,13 @@
 "use client";
-import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 import Input from "./../components/form/input/InputField";
 import Label from "./../components/form/Label";
-import Link from "next/link";
 import Button from "../components/ui/button/Button";
-import { useTranslations } from "next-intl";
 // Import both server actions
-import { sendMagicLink, getProviderSignInUrl } from "./actions";
+import { getProviderSignInUrl, sendMagicLink } from "./actions";
 
 export default function SignInForm() {
     const t = useTranslations("SignIn");
@@ -28,7 +28,8 @@ export default function SignInForm() {
             setIsLoading(false);
         } else if (result.url) {
             // Redirect to the provider's sign-in page
-            window.location.href = result.url;
+            // window.location.href = result.url;
+            console.log(result.url);
         }
     };
 
