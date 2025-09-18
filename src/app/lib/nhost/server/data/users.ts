@@ -28,7 +28,7 @@ export async function getUsersByClubId(
   page: number = 1,
   pageSize: number = 10,
   search: string = "",
-  sortBy: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC,
+  sort: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC,
 ): Promise<{ users: UserInfo[]; total: number } | null> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
@@ -67,12 +67,12 @@ export async function getUsersByClubId(
           limit: pageSize,
           offset,
           search: search ? `%${search}%` : "%%",
-          orderBy: [sortBy],
+          orderBy: [sort],
         },
       },
       {
         headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
+          Authorization: process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
       },
     );

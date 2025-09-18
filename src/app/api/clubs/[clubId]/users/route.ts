@@ -20,7 +20,9 @@ export async function GET(
     const page = parseInt(url.searchParams.get("page") ?? "1", 10);
     const pageSize = parseInt(url.searchParams.get("pageSize") ?? "10", 10);
     const search = url.searchParams.get("search") ?? "";
-    const sortParam = MemberSortEnum.DISPLAY_NAME_ASC;
+    const sortParam =
+      (url.searchParams.get("sort") as MemberSortEnum) ??
+      MemberSortEnum.DISPLAY_NAME_ASC;
 
     const result = await getUsersByClubId(
       clubId,

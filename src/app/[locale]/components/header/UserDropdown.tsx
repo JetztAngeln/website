@@ -22,7 +22,7 @@ export default function UserDropdown({ isLoading, error, user }: { isLoading: bo
     setIsOpen(false);
   }
 
-  if (isLoading || error || !user) return <div>Loading...</div>;
+  if (isLoading || error || !user || !user.avatarUrl) return <div>Loading...</div>;
   return (
     <div className="relative">
       <button
@@ -36,6 +36,8 @@ export default function UserDropdown({ isLoading, error, user }: { isLoading: bo
             height={44}
             src={user.avatarUrl}
             alt="User"
+            loading="lazy"
+            placeholder="empty"
           />
         </span>
 

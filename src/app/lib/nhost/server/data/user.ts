@@ -40,7 +40,7 @@ export async function getUserInfo(): Promise<UserInfo | null> {
       },
       {
         headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
+          Authorization: process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
       },
     );
