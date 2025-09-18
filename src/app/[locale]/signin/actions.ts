@@ -20,6 +20,8 @@ export async function sendMagicLink(formData: FormData) {
     const origin =
       process.env["NEXT_PUBLIC_APP_URL"] || "http://localhost:3000";
 
+    console.log(origin);
+
     // Get the server Nhost client
     const nhost = await createNhostClient();
 
@@ -27,7 +29,7 @@ export async function sendMagicLink(formData: FormData) {
     const response = await nhost.auth.signInPasswordlessEmail({
       email,
       options: {
-        redirectTo: origin + "/verify",
+        redirectTo: `${origin}/verify`,
         displayName: "-",
       },
     });
@@ -54,6 +56,9 @@ export async function getProviderSignInUrl(provider: "google" | "apple") {
     // Get origin for redirect URL
     const origin =
       process.env["NEXT_PUBLIC_APP_URL"] || "http://localhost:3000";
+
+    console.log(origin);
+
     const redirectTo = `${origin}/verify`;
 
     // Get the server Nhost client
