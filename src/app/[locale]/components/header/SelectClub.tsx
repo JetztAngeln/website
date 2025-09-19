@@ -53,13 +53,13 @@ const ClubSelect: React.FC<ClubSelectProps> = ({
           </option>
         )}
 
-        {clubs != null ? clubs.map((club) => (
+        {Array.isArray(clubs) ? clubs.map((club) => (
           <option key={club.id} value={club.id} className="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
             {club.name}
           </option>
-        )) : <option className="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-          {placeholder}
-        </option>}
+        )) : (
+          <option>{placeholder}</option>
+        )}
 
       </select>
       <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">

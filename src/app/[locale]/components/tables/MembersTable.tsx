@@ -1,49 +1,80 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
 import {
     type ColumnDef,
     flexRender,
     getCoreRowModel,
+    type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { EllipsisVertical } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, EllipsisVerticalIcon } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type React from "react";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
+import { useDebounce } from "use-debounce";
 import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
 import type { UserInfo } from "@/app/lib/nhost/server/data/users";
+import { fetcher } from "@/app/lib/swr/fetcher";
 import { useSidebar } from "../../context/SidebarContext";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useModal } from "../../hooks/useModal";
+import { Dropdown } from "../ui/dropdown/Dropdown";
+import { DropdownItem } from "../ui/dropdown/DropdownItem";
+import DeleteUserModal from "../ui/modal/DeleteUserModal";
+import EditUserRoleModal from "../ui/modal/EditUserRoleModal";
 
 const roleColors: Record<UserInfo["role"], string> = {
-    ADMIN: "bg-red-100 text-red-800",
-    SUPERVISOR: "bg-yellow-100 text-yellow-800",
-    USER: "bg-gray-100 text-gray-800",
+    ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
+    SUPERVISOR: "bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400",
+    USER: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
 };
+
+
+function mapSort(inputs: SortingState): MemberSortEnum[] {
+    return inputs.map((input) => {
+        switch (input.id) {
+            case "displayName":
+                return input.desc ? MemberSortEnum.DISPLAY_NAME_DESC : MemberSortEnum.DISPLAY_NAME_ASC;
+            case "role":
+                return input.desc ? MemberSortEnum.ROLE_DESC : MemberSortEnum.ROLE_ASC;
+            case "lastSeen":
+                return input.desc ? MemberSortEnum.LAST_SEEN_DESC : MemberSortEnum.LAST_SEEN_ASC;
+            default:
+                return MemberSortEnum.DISPLAY_NAME_ASC;
+        }
+    });
+}
 
 const MembersTable: React.FC = () => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
-    const [sort, setSort] = useState<MemberSortEnum>(MemberSortEnum.DISPLAY_NAME_ASC);
+    const [debouncedSearch] = useDebounce(search, 400);
+    const [sort, setSort] = useState<SortingState>([{ id: "displayName", desc: false }]);
+    const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
+    const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
+    const { isOpen: isDeleteOpen, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
     const { selectedClub } = useSidebar();
+    const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
-    // Build the API URL with query params
     const url = useMemo(() => {
         if (!clubId) return null;
-        const q = `/api/clubs/${clubId}/users?page=${page + 1}&pageSize=${pageSize}&search=${search}&sort=${sort}`;
+        const sortParams = mapSort(sort);
+        if (sortParams.length === 0) {
+            sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
+        }
+        const q = `/api/clubs/${clubId}/users?page=${page + 1}&pageSize=${pageSize}&search=${debouncedSearch}&sort=${sortParams}`;
         return q;
-    }, [clubId, page, pageSize, search, sort]);
+    }, [clubId, page, pageSize, debouncedSearch, sort, !isDeleteOpen]);
 
-    const { data, error, isLoading } = useSWR<{ data: UserInfo[]; total: number }>(
+    const { data, isLoading, mutate, isValidating } = useSWR<{ data: UserInfo[]; total: number }>(
         url,
         fetcher
     );
-
-    console.log(url);
 
     const columns = useMemo<ColumnDef<UserInfo>[]>(
         () => [
@@ -62,7 +93,7 @@ const MembersTable: React.FC = () => {
                                 className="h-10 w-10 rounded-full object-cover"
                             />
                             <div>
-                                <div className="font-medium">{user.displayName}</div>
+                                <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{user.displayName}</div>
                                 <div className="text-sm text-gray-500">{user.email}</div>
                             </div>
                         </div>
@@ -71,7 +102,7 @@ const MembersTable: React.FC = () => {
             },
             {
                 accessorKey: "role",
-                header: "Role",
+                header: t("role"),
                 cell: ({ row }) => {
                     const role = row.original.role;
                     return (
@@ -85,11 +116,11 @@ const MembersTable: React.FC = () => {
             },
             {
                 accessorKey: "lastSeen",
-                header: "Last Seen",
+                header: t("lastSeen"),
                 cell: ({ row }) => {
                     const lastSeen = row.original.lastSeen ? new Date(row.original.lastSeen) : null;
                     return lastSeen ? (
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-gray-600 dark:text-gray-500">
                             {lastSeen.toLocaleDateString()}{" "}
                             {lastSeen.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </span>
@@ -100,17 +131,53 @@ const MembersTable: React.FC = () => {
             },
             {
                 id: "actions",
-                header: "Action",
-                cell: ({ row }) => (
-                    <div className="relative">
-                        <button type="button" className="rounded p-2 hover:bg-gray-100">
-                            <EllipsisVertical className="h-5 w-5 text-gray-600" />
-                        </button>
-                    </div>
-                ),
+                header: t("action"),
+                cell: ({ row }) => {
+                    const handleEdit = () => {
+                        setSelectedUser(row.original);
+                        openEditModal();
+                        setOpenDropdownId(null);
+                    };
+
+                    const handleDelete = () => {
+                        setSelectedUser(row.original);
+                        openDeleteModal();
+                        setOpenDropdownId(null);
+                    };
+
+                    return (
+                        <div className="relative">
+                            <button
+                                type="button"
+                                className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={() => setOpenDropdownId(openDropdownId === row.id ? null : row.id)}
+                            >
+                                <EllipsisVerticalIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
+                            </button>
+                            <Dropdown
+                                isOpen={openDropdownId === row.id}
+                                onClose={() => setOpenDropdownId(null)}
+                                className="w-40 p-2"
+                            >
+                                <DropdownItem
+                                    onClick={handleEdit}
+                                    className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                                >
+                                    {t("viewProfile")}
+                                </DropdownItem>
+                                <DropdownItem
+                                    onClick={handleDelete}
+                                    className="flex w-full font-normal text-left text-error-600! rounded-lg hover:bg-error-50! hover:text-error-700! dark:text-error-500 dark:hover:bg-error-500/10 dark:hover:text-error-400"
+                                >
+                                    {t("delete")}
+                                </DropdownItem>
+                            </Dropdown>
+                        </div>
+                    );
+                },
             },
         ],
-        []
+        [t, openDropdownId]
     );
 
     const table = useReactTable({
@@ -119,8 +186,10 @@ const MembersTable: React.FC = () => {
         pageCount: data ? Math.ceil(data.total / pageSize) : -1,
         manualPagination: true,
         manualSorting: true,
+        onSortingChange: setSort,
         state: {
             pagination: { pageIndex: page, pageSize },
+            sorting: sort
         },
         getCoreRowModel: getCoreRowModel(),
         onPaginationChange: (updater) => {
@@ -163,26 +232,43 @@ const MembersTable: React.FC = () => {
                         setPage(0);
                         setSearch(e.target.value);
                     }}
-                    className="dark:bg-dark-900 h-11 w-fit rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 xl:w-[430px]"
+                    className="dark:bg-dark-900 h-11 w-fit rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 xl:w-[430px]"
                 />
             </div>
+
+            {/* Edit User Modal */}
+            <EditUserRoleModal
+                isOpen={isEditOpen}
+                closeModal={closeEditModal}
+                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                clubId={clubId || ""}
+                onSuccess={mutate}
+            />
+            {/* Delete User Modal */}
+            <DeleteUserModal
+                isOpen={isDeleteOpen}
+                closeModal={closeDeleteModal}
+                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                clubId={clubId || ""}
+                onSuccess={mutate}
+            />
 
             {/* Table */}
             <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
                 <table className="min-w-full border-collapse text-left text-sm">
-                    <thead className="bg-gray-50 text-xs uppercase text-gray-500">
+                    <thead className="border-b border-gray-100 dark:border-white/[0.05]">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <th
                                         key={header.id}
-                                        className="cursor-pointer px-4 py-2 font-medium"
+                                        className="cursor-pointer px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                         onClick={header.column.getToggleSortingHandler()}
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
                                         {{
-                                            asc: " 🔼",
-                                            desc: " 🔽",
+                                            asc: <ChevronUpIcon className="ml-1 inline-block h-4 w-4" aria-label="sorted ascending" />,
+                                            desc: <ChevronDownIcon className="ml-1 inline-block h-4 w-4" aria-label="sorted descending" />,
                                         }[header.column.getIsSorted() as string] ?? null}
                                     </th>
                                 ))}
@@ -192,29 +278,30 @@ const MembersTable: React.FC = () => {
                     <tbody>
                         {isLoading
                             ? Array.from({ length: pageSize }).map((_, i) => (
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <i> is fine here
                                 <tr key={i} className="border-b">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200" />
+                                            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
                                             <div>
-                                                <div className="mb-1 h-4 w-32 animate-pulse rounded bg-gray-200" />
-                                                <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
+                                                <div className="mb-1 h-4 w-32 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+                                                <div className="h-3 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="h-5 w-16 animate-pulse rounded bg-gray-200" />
+                                        <div className="h-5 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
+                                        <div className="h-4 w-28 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="h-6 w-6 animate-pulse rounded-full bg-gray-200" />
+                                        <div className="h-6 w-6 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
                                     </td>
                                 </tr>
                             ))
                             : table.getRowModel().rows.map((row) => (
-                                <tr key={row.id} className="border-b hover:bg-gray-50 transition-colors">
+                                <tr key={row.id} className="border-b border-gray-100 dark:border-white/[0.05] hover:bg-gray-50 dark:hover:bg-gray-50/5 transition-colors">
                                     {row.getVisibleCells().map((cell) => (
                                         <td key={cell.id} className="px-4 py-3">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -226,14 +313,14 @@ const MembersTable: React.FC = () => {
                 </table>
 
                 {!isLoading && data?.data.length === 0 && (
-                    <div className="p-4 text-center text-gray-500">No users found.</div>
+                    <div className="p-4 text-center text-gray-500">{t("noUsersFound")}</div>
                 )}
             </div>
 
             {/* Pagination controls */}
             <div className="mt-4 flex items-center justify-between">
                 <span className="text-sm text-gray-600">
-                    Page {page + 1} of {data ? Math.ceil(data.total / pageSize) : 1}
+                    {t("page")} {page + 1} {t("of")} {data ? Math.ceil(data.total / pageSize) : 1}
                 </span>
 
                 <div className="flex items-center gap-4">
@@ -244,11 +331,11 @@ const MembersTable: React.FC = () => {
                             setPage(0);
                             setPageSize(Number(e.target.value));
                         }}
-                        className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                        className="rounded-md border border-gray-200 text-gray-600 dark:text-gray-500 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] px-2 py-1 text-sm"
                     >
                         {[10, 20, 50].map((size) => (
                             <option key={size} value={size}>
-                                {size} / page
+                                {size} / {t("page")}
                             </option>
                         ))}
                     </select>
@@ -259,9 +346,9 @@ const MembersTable: React.FC = () => {
                             type="button"
                             onClick={() => setPage((old) => Math.max(0, old - 1))}
                             disabled={page === 0 || isLoading}
-                            className="rounded-md border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
+                            className="rounded-md border border-gray-200 text-gray-600 dark:text-gray-500 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] px-2 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-50/5 disabled:opacity-50"
                         >
-                            Previous
+                            {t("previous")}
                         </button>
                         <button
                             type="button"
@@ -271,9 +358,9 @@ const MembersTable: React.FC = () => {
                                 )
                             }
                             disabled={!data || page >= Math.ceil(data.total / pageSize) - 1 || isLoading}
-                            className="rounded-md border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
+                            className="rounded-md border border-gray-200 text-gray-600 dark:text-gray-500 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] px-2 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-50/5 disabled:opacity-50"
                         >
-                            Next
+                            {t("next")}
                         </button>
                     </div>
                 </div>

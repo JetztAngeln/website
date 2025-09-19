@@ -41,5 +41,31 @@
   "MembersPage": {
     "title": "Members",
     "tableTitle": "Members List"
+  },
+  "MembersTable": {
+    "lastSeen": "Last Seen",
+    "role": "Role",
+    "action": "Action",
+    "noUsersFound": "No members found.",
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next",
+    "viewProfile": "View Member",
+    "delete": "Delete Member"
+  },
+  "EditUserRoleModal": {
+    "title": "Edit Role",
+    "description": "Change the role of <b>{name}</b>:",
+    "user": "user",
+    "save": "Save Changes",
+    "cancel": "Cancel"
+  },
+  "DeleteUserModal": {
+    "title": "Delete Member",
+    "description": "Are you sure you want to delete the member <b>{name}</b>? This action <b>cannot</b> be undone.",
+    "user": "user",
+    "delete": "Delete Member",
+    "cancel": "Cancel"
   }
 }

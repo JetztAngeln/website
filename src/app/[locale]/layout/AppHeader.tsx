@@ -7,12 +7,11 @@ import type React from "react";
 import { useState } from "react";
 import useSWR from "swr";
 import type { ClubInfo } from "@/app/lib/nhost/server/data/clubs";
+import { fetcher } from "@/app/lib/swr/fetcher";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import SelectClub from "../components/header/SelectClub";
 import UserDropdown from "../components/header/UserDropdown";
 import { useSidebar } from "../context/SidebarContext";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);

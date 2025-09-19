@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { createNhostClient } from "..";
 
 export interface UserInfo {
@@ -7,7 +6,7 @@ export interface UserInfo {
   email: string;
 }
 
-interface GraphQLResponse {
+interface GetUserResponse {
   users: Array<UserInfo>;
 }
 
@@ -33,7 +32,7 @@ export async function getUserInfo(): Promise<UserInfo | null> {
   `;
 
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>(
+    const { body } = await nhost.graphql.request<GetUserResponse>(
       {
         query: GET_USER_QUERY,
         variables: { userId },

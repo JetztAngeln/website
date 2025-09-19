@@ -20,8 +20,6 @@ export async function sendMagicLink(formData: FormData) {
     const origin =
       process.env["NEXT_PUBLIC_APP_URL"] || "http://localhost:3000";
 
-    console.log(origin);
-
     // Get the server Nhost client
     const nhost = await createNhostClient();
 

@@ -41,5 +41,31 @@
   "MembersPage": {
     "title": "Mitglieder",
     "tableTitle": "Mitgliederliste"
+  },
+  "MembersTable": {
+    "lastSeen": "Zuletzt aktiv",
+    "role": "Rolle",
+    "action": "Aktion",
+    "noUsersFound": "Keine Mitglieder gefunden.",
+    "page": "Seite",
+    "of": "von",
+    "previous": "Vorherige",
+    "next": "Nächste",
+    "viewProfile": "Mitglied ansehen",
+    "delete": "Mitglied löschen"
+  },
+  "EditUserRoleModal": {
+    "title": "Rolle bearbeiten",
+    "description": "Ändere die Rolle von <b>{name}</b>:",
+    "user": "Mitglied",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "DeleteUserModal": {
+    "title": "Mitglied löschen",
+    "description": "Möchtest du das Mitglied <b>{name}</b> wirklich löschen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+    "user": "Mitglied",
+    "delete": "Löschen",
+    "cancel": "Abbrechen"
   }
 }
