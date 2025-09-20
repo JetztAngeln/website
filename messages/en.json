@@ -67,5 +67,12 @@
     "user": "user",
     "delete": "Delete Member",
     "cancel": "Cancel"
+  },
+  "WatersPage": {
+    "title": "Waters",
+    "tableTitle": "Waterbodies List"
+  },
+  "WatersAddPage": {
+    "title": "Add Waterbody"
   }
 }

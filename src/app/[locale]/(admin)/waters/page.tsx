@@ -1,9 +1,10 @@
-import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import type { Metadata } from "next";
+import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+
 
 export const metadata: Metadata = {
-  title: "Next.js Blank Page | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Blank Page TailAdmin Dashboard Template",
+  title: "Gewässerkarte - JetztAngeln",
+  description: "Bearbeite und verwalte die Gewässerkarte für deinen Verein.",
 };
 
 export default function BlankPage() {

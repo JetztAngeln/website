@@ -20,6 +20,7 @@
     "next-intl": "^4.3.9",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-map-gl": "^8.0.4",
     "swr": "^2.3.6",
     "tailwind-merge": "^3.3.1",
     "use-debounce": "^10.0.6"
@@ -30,6 +31,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@watergis/maplibre-gl-terradraw": "^1.7.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

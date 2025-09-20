@@ -67,5 +67,12 @@
     "user": "Mitglied",
     "delete": "Löschen",
     "cancel": "Abbrechen"
+  },
+  "WatersPage": {
+    "title": "Gewässer",
+    "tableTitle": "Gewässerliste"
+  },
+  "WatersAddPage": {
+    "title": "Gewässer hinzufügen"
   }
 }
