@@ -1,5 +1,4 @@
 "use client";
-import type { User } from "@nhost/nhost-js/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -15,8 +14,6 @@ import { useSidebar } from "../context/SidebarContext";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
-
-  const { data: user, error: errorUser, isLoading: isLoadingUser } = useSWR<User>('/api/user', fetcher);
   const { data: clubs, error: errorClubs, isLoading: isLoadingClubs } = useSWR<ClubInfo[]>('/api/clubs', fetcher);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar, selectedClub, setSelectedClub } = useSidebar();
@@ -137,7 +134,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown isLoading={isLoadingUser} error={errorUser} user={user ?? null} />
+          <UserDropdown />
 
         </div>
       </div>

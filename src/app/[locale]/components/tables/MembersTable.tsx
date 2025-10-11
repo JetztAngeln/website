@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
+import { User } from "@nhost/nhost-js/auth";
 import {
     type ColumnDef,
     flexRender,
@@ -19,6 +20,7 @@ import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
 import type { UserInfo } from "@/app/lib/nhost/server/data/users";
 import { fetcher } from "@/app/lib/swr/fetcher";
 import { useSidebar } from "../../context/SidebarContext";
+import { useUser } from "../../context/UserContext";
 import { useModal } from "../../hooks/useModal";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
@@ -58,6 +60,7 @@ const MembersTable: React.FC = () => {
     const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
     const { isOpen: isDeleteOpen, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
     const { selectedClub } = useSidebar();
+    const user = useUser();
     const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
@@ -71,7 +74,7 @@ const MembersTable: React.FC = () => {
         return q;
     }, [clubId, page, pageSize, debouncedSearch, sort, !isDeleteOpen]);
 
-    const { data, isLoading, mutate, isValidating } = useSWR<{ data: UserInfo[]; total: number }>(
+    const { data, isLoading, mutate } = useSWR<{ data: UserInfo[]; total: number }>(
         url,
         fetcher
     );
@@ -86,7 +89,7 @@ const MembersTable: React.FC = () => {
                     return (
                         <div className="flex items-center gap-3">
                             <Image
-                                src={user.avatarUrl || "/default-avatar.png"}
+                                src={user.avatarUrl || "https://gravatar.com/avatar/?d=identicon"}
                                 alt={user.displayName}
                                 width={40}
                                 height={40}
@@ -146,11 +149,12 @@ const MembersTable: React.FC = () => {
                     };
 
                     return (
-                        <div className="relative">
+                        <div className="relative" hidden={row.original.id === user?.id}>
                             <button
                                 type="button"
                                 className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                                 onClick={() => setOpenDropdownId(openDropdownId === row.id ? null : row.id)}
+                                disabled={row.original.id === user?.id}
                             >
                                 <EllipsisVerticalIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
                             </button>

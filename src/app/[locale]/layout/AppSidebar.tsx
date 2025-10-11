@@ -41,14 +41,17 @@ const AppSidebar: React.FC = () => {
     {
       icon: <UsersIcon />,
       name: t("members"),
-      path: "/members",
+      subItems: [{ name: t("membersOverview"), path: "/members" }, { name: t("membersJoin"), path: "/members/join" }],
     },
     {
       icon: <WavesIcon />,
       name: t("waters"),
       subItems: [
-        { name: t("allWaters"), path: "/waters" },
-        { name: t("addWaterbody"), path: "/waters/add" },
+        { name: t("watersOverview"), path: "/waters" },
+        { name: t("addRiver"), path: "/waters/add/river" },
+        { name: t("addLake"), path: "/waters/add/lake" },
+        { name: t("addZone"), path: "/waters/add/zone" },
+
       ],
     },
     {

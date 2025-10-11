@@ -16,9 +16,13 @@
   "Sidebar": {
     "overview": "Overview",
     "members": "Members",
+    "memberOverview": "All Members",
+    "membersJoin": "Join Requests",
     "waters": "Waters",
-    "allWaters": "All Waters",
-    "addWaterbody": "Add Waterbody",
+    "watersOverview": "All Waters",
+    "addRiver": "Add River",
+    "addLake": "Add Lake",
+    "addZone": "Add Zone",
     "club": "Club Management",
     "catches": "Catches",
     "billing": "Billing"
@@ -36,7 +40,8 @@
   },
   "UserDropdown": {
     "editProfile": "Edit profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "loading": "Loading..."
   },
   "MembersPage": {
     "title": "Members",
@@ -72,7 +77,27 @@
     "title": "Waters",
     "tableTitle": "Waterbodies List"
   },
-  "WatersAddPage": {
-    "title": "Add Waterbody"
+  "AddRiver": {
+    "title": "Add River to your Club",
+    "description": "Select the drawing tool <drawTool></drawTool> and draw the river path on the map. After drawing, use the select tool <selectTool></selectTool> to click on the river and provide additional information. Only so, you can save the river!",
+    "drawRiver": "Draw River"
+  },
+  "AddLake": {
+    "title": "Add Lake to your Club",
+    "description": "Select the drawing tool <drawTool></drawTool> and draw the lake area on the map. After drawing, use the select tool <selectTool></selectTool> to click on the lake and provide additional information. Only so, you can save the lake!"
+  },
+  "AddZone": {
+    "title": "Add additional no-fishing Zone to your Club",
+    "description": "Select the drawing tool <drawTool></drawTool> and draw the no-fishing zone on the map. After drawing, use the select tool <selectTool></selectTool> to click on the zone and provide additional information. Only so, you can save the zone."
+  },
+  "AddWaterModal": {
+    "title": "Add New Waterbody",
+    "subText": "Set a name for the new waterbody and save it as a draft for your club. You need to edit it later to add more details.",
+    "name": "Name",
+    "namePlaceholder": "Enter the name of the waterbody",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter a brief description",
+    "cancel": "Cancel",
+    "save": "Save Changes"
   }
 }

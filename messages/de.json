@@ -16,9 +16,13 @@
   "Sidebar": {
     "overview": "Übersicht",
     "members": "Mitglieder",
+    "membersOverview": "Übersicht",
+    "membersJoin": "Beitrittsanfragen",
     "waters": "Gewässer",
-    "allWaters": "Alle Gewässer",
-    "addWaterbody": "Gewässer hinzufügen",
+    "watersOverview": "Übersicht",
+    "addRiver": "Fluss hinzufügen",
+    "addLake": "See hinzufügen",
+    "addZone": "Zone hinzufügen",
     "club": "Vereinsverwaltung",
     "catches": "Fänge",
     "billing": "Abrechnung"
@@ -36,7 +40,8 @@
   },
   "UserDropdown": {
     "editProfile": "Profil bearbeiten",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "loading": "Lädt..."
   },
   "MembersPage": {
     "title": "Mitglieder",
@@ -72,7 +77,25 @@
     "title": "Gewässer",
     "tableTitle": "Gewässerliste"
   },
-  "WatersAddPage": {
-    "title": "Gewässer hinzufügen"
+  "AddRiver": {
+    "title": "Fluss hinzufügen",
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne den Flussverlauf auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den Fluss klicken und weitere Informationen hinzufügen. Nur so kannst du den Fluss speichern!",
+    "drawRiver": "Fluss zeichnen"
+  },
+  "AddLake": {
+    "title": "See hinzufügen",
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Seenfläche auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den See klicken und weitere Informationen hinzufügen. Nur so kannst du den See speichern!"
+  },
+  "AddZone": {
+    "title": "Zone hinzufügen",
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Zone speichern."
+  },
+  "AddWaterModal": {
+    "title": "Gewässer hinzufügen",
+    "subText": "Wähle einen Namen für das Gewässer aus und speichere es als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
+    "name": "Name",
+    "namePlaceholder": "Gib den Namen des Gewässers ein",
+    "save": "Als Entwurf speichern",
+    "cancel": "Abbrechen"
   }
 }
