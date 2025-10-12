@@ -5,8 +5,6 @@ import maplibregl, { type Map, type StyleSpecification } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css'
-import { MaplibreTerraDraw } from "@watergis/maplibre-gl-terradraw";
-import { Feature } from "geojson";
 import { MousePointerIcon, WaypointsIcon } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -16,6 +14,7 @@ import { useSidebar } from "@/app/[locale]/context/SidebarContext";
 import { useTheme } from "@/app/[locale]/context/ThemeContext";
 import { useModal } from "@/app/[locale]/hooks/useModal";
 import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../mapUtils";
+import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 
 export default function River() {
     const t = useTranslations("AddRiver");
@@ -23,23 +22,24 @@ export default function River() {
     const [currentStyle, setCurrentStyle] = useState<StyleSpecification>(
         theme === "dark" ? mapStyles["carto-dark"].url : mapStyles["carto-positron"].url
     );
-    const [viewState, setViewState] = useState({
-        longitude: 10.4515,
-        latitude: 51.1657,
-        zoom: 5.5,
-    });
+
     const [selectedFeature, setSelectedFeature] = useState<string>("");
     const [addedFeature, setAddedFeature] = useState<string[]>([]);
 
     const mapRef = useRef<Map | null>(null);
-    const drawControlRef = useRef<MaplibreTerraDraw | null>(null);
+    const drawControlRef = useRef<MaplibreTerradrawControl | null>(null);
     const isInitialMount = useRef(true);
 
     const { selectedClub } = useSidebar();
     const { isOpen, openModal, closeModal } = useModal();
+
+    const viewState = {
+        longitude: 10.4515,
+        latitude: 51.1657,
+        zoom: 5.5,
+    };
     const clubId = selectedClub?.id || "";
 
-    // Effect to initialize the map and draw control ONCE
     useEffect(() => {
         if (mapRef.current) return;
 
@@ -56,15 +56,11 @@ export default function River() {
         mapRef.current = map;
         map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-        // Create the control instance once and store it
         drawControlRef.current = initializeMap(mapRef, "river");
-        map.addControl(drawControlRef.current);
-
         const drawInstance = drawControlRef.current.getTerraDrawInstance();
 
-        // Attach event listeners
         if (drawInstance) {
-            drawInstance.on('select', (id: string) => {
+            drawInstance.on('select', (id) => {
                 const snapshot = drawInstance.getSnapshot();
                 const selected = snapshot?.find((feature) => feature.id === id);
                 const selectedFeatureString = JSON.stringify(selected);
@@ -76,27 +72,19 @@ export default function River() {
             });
         }
 
-        // The 'start' method is called automatically by 'addControl' the first time.
 
         return () => {
             mapRef.current?.remove();
             mapRef.current = null;
         };
-    }, []); // Runs once
+    }, []);
 
     // Effect to update the style URL when the theme changes
     useEffect(() => {
         setCurrentStyle(theme === "dark" ? mapStyles["carto-dark"].url : mapStyles["carto-positron"].url);
     }, [theme]);
 
-    // Effect to update the style URL when the theme changes
     useEffect(() => {
-        setCurrentStyle(theme === "dark" ? mapStyles["carto-dark"].url : mapStyles["carto-positron"].url);
-    }, [theme]);
-
-    // Effect to handle style changes using the correct TerraDraw lifecycle
-    useEffect(() => {
-        // Use the ref to skip the very first run of this effect
         if (isInitialMount.current) {
             isInitialMount.current = false;
             return;
@@ -105,7 +93,6 @@ export default function River() {
         const map = mapRef.current;
         const drawControl = drawControlRef.current;
 
-        // The previous check is no longer needed
         if (!map || !drawControl) {
             return;
         }
@@ -113,27 +100,46 @@ export default function River() {
         const drawInstance = drawControl.getTerraDrawInstance();
         if (!drawInstance) return;
 
-        // 1. Get snapshot of features
         const features = drawInstance.getSnapshot();
 
-        // 2. STOP the draw instance to disconnect it from the current style
         drawInstance.stop();
 
-        // 3. Set the new map style
         map.setStyle(currentStyle);
 
-        // 4. After the new style loads, restart the instance and add data
-        map.once("style.load", () => {
-            // 5. START the same draw instance to connect to the new style
-            drawInstance.start();
+        const waiting = () => {
+            if (!map.isStyleLoaded()) {
+                setTimeout(waiting, 200);
+            } else {
+                drawInstance.start();
 
-            // 6. Add the saved features back
-            if (features.length > 0) {
-                drawInstance.add(features);
+                if (features.length > 0) {
+                    drawInstance.addFeatures(features);
+                }
             }
-        });
+        };
+        waiting();
+    }, [currentStyle]);
 
-    }, [currentStyle]); // The dependency array is correct
+    useEffect(() => {
+        if (addedFeature.length > 0) {
+            const map = mapRef.current;
+            const drawControl = drawControlRef.current;
+
+            if (!map || !drawControl) {
+                return;
+            }
+            const drawInstance = drawControl.getTerraDrawInstance();
+            if (!drawInstance) return;
+            addedFeature.forEach((feature) => {
+                const parsedFeature = JSON.parse(feature);
+                if (drawInstance.hasFeature(parsedFeature.id)) {
+                    drawInstance.removeFeatures([parsedFeature.id]);
+                }
+            });
+            setAddedFeature([]);
+            setSelectedFeature("");
+        }
+    }, [addedFeature]);
 
     return (
         <div>

@@ -22,7 +22,7 @@
     "watersOverview": "All Waters",
     "addRiver": "Add River",
     "addLake": "Add Lake",
-    "addZone": "Add Zone",
+    "addZone": "Add Exclusion",
     "club": "Club Management",
     "catches": "Catches",
     "billing": "Billing"
@@ -78,20 +78,20 @@
     "tableTitle": "Waterbodies List"
   },
   "AddRiver": {
-    "title": "Add River to your Club",
-    "description": "Select the drawing tool <drawTool></drawTool> and draw the river path on the map. After drawing, use the select tool <selectTool></selectTool> to click on the river and provide additional information. Only so, you can save the river!",
+    "title": "Add a River to your Club",
+    "description": "Select the <drawTool>drawing tool</drawTool> and draw the river path on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the river and provide additional information. Only so, you can save the river!",
     "drawRiver": "Draw River"
   },
   "AddLake": {
-    "title": "Add Lake to your Club",
-    "description": "Select the drawing tool <drawTool></drawTool> and draw the lake area on the map. After drawing, use the select tool <selectTool></selectTool> to click on the lake and provide additional information. Only so, you can save the lake!"
+    "title": "Add a Lake to your Club",
+    "description": "Select the <drawTool>drawing tool</drawTool> and draw the lake area on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the lake and provide additional information. Only so, you can save the lake!"
   },
   "AddZone": {
-    "title": "Add additional no-fishing Zone to your Club",
-    "description": "Select the drawing tool <drawTool></drawTool> and draw the no-fishing zone on the map. After drawing, use the select tool <selectTool></selectTool> to click on the zone and provide additional information. Only so, you can save the zone."
+    "title": "Add an additional no-fishing Zone to your Club",
+    "description": "Select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone."
   },
   "AddWaterModal": {
-    "title": "Add New Waterbody",
+    "title": "Add new Waterbody",
     "subText": "Set a name for the new waterbody and save it as a draft for your club. You need to edit it later to add more details.",
     "name": "Name",
     "namePlaceholder": "Enter the name of the waterbody",

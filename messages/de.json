@@ -22,7 +22,7 @@
     "watersOverview": "Übersicht",
     "addRiver": "Fluss hinzufügen",
     "addLake": "See hinzufügen",
-    "addZone": "Zone hinzufügen",
+    "addZone": "Sperrzone hinzufügen",
     "club": "Vereinsverwaltung",
     "catches": "Fänge",
     "billing": "Abrechnung"
@@ -87,8 +87,8 @@
     "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Seenfläche auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den See klicken und weitere Informationen hinzufügen. Nur so kannst du den See speichern!"
   },
   "AddZone": {
-    "title": "Zone hinzufügen",
-    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Zone speichern."
+    "title": "Angelverbotszone hinzufügen",
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern."
   },
   "AddWaterModal": {
     "title": "Gewässer hinzufügen",

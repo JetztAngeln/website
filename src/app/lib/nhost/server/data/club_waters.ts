@@ -3,7 +3,7 @@ import { createNhostClient } from "..";
 
 export async function addWaterToClub(
   clubId: string,
-  userId: string,
+  name: string,
   feature: GeoJSONFeature,
 ): Promise<boolean> {
   const nhost = await createNhostClient();
@@ -14,24 +14,17 @@ export async function addWaterToClub(
   }
 
   const ADD_WATER_TO_CLUB_MUTATION = `
- mutation AddWaterToClub($clubId: uuid!, $feature: jsonb!) {
-    insert_club_water_mark_polygons_one(object: {
-      club_id: $clubId,
-      features: $feature,
-      draft: true
-    }) {
-      id
-      club_id
-      draft
-      features
-    }
-  }`;
+ mutation AddWaterToClub($clubId: uuid = "", $feature: jsonb = "", $name: String = "") {
+  insert_club_waters_one(object: {club_id: $clubId, geo_json: $feature, name: $name, draft: true, fish_types: []}) {
+    id
+  }
+}`;
 
   try {
-    const { body } = await nhost.graphql.request<AddWaterResponse>(
+    const { body } = await nhost.graphql.request(
       {
         query: ADD_WATER_TO_CLUB_MUTATION,
-        variables: { clubId, feature },
+        variables: { clubId, name, feature },
       },
       {
         headers: {

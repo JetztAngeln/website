@@ -27,7 +27,7 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
         if (feature && clubId && !addedFeatures.includes(feature) && name.trim() !== "") {
             setLoading(true);
             try {
-                const response = await fetch(`/api/clubs/${clubId}/waters`, {
+                const response = await fetch(`/api/clubs/${clubId}/waters/add`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -66,14 +66,12 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
             </h4>
             <p className="text-gray-600 dark:text-gray-400 mb-4">{t("subText")}</p>
 
-            <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-                <div className="col-span-1">
-                    <Label>{t("name")}</Label>
-                    <Input type="text" placeholder={t("namePlaceholder")} onChange={(e) => setName(e.target.value)} />
-                </div>
+            <div>
+                <Label>{t("name")}</Label>
+                <Input className="w-full" type="text" placeholder={t("namePlaceholder")} onChange={(e) => setName(e.target.value)} />
             </div>
 
-            <div className="flex items-center justify-end w-full gap-3 mt-6">
+            <div className="flex items-center justify-between w-full gap-3 mt-6">
                 <Button size="sm" variant="outline" onClick={closeModal}>
                     {t("cancel")}
                 </Button>
