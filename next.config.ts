@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "carto.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.gravatar.com",
+      },
     ],
   },
 };

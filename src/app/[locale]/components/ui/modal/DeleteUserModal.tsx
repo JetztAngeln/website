@@ -1,7 +1,8 @@
+import { UserInfo } from "@/app/lib/models/user_info";
+import { deleteUserClubRelation } from "@/app/napi/server/clubs/user_club_relation";
 import { useTranslations } from "next-intl";
-import type { UserInfo } from "@/app/lib/nhost/server/data/users";
-import Button from "../button/Button";
 import { Modal } from ".";
+import Button from "../button/Button";
 
 export default function DeleteUserModal({ isOpen, closeModal, selectedUser, clubId, onSuccess }: { isOpen: boolean; closeModal: () => void; selectedUser: UserInfo | null; clubId: string; onSuccess: () => void }) {
     const t = useTranslations("DeleteUserModal");
@@ -9,14 +10,12 @@ export default function DeleteUserModal({ isOpen, closeModal, selectedUser, club
     const handleDelete = async () => {
         if (selectedUser) {
             try {
-                const response = await fetch(`/api/clubs/${clubId}/users/${selectedUser.id}/`, {
-                    method: "DELETE",
-                });
-                if (!response.ok) {
-                    console.error("Failed to delete user:", response.statusText);
-                } else {
+                const responseOk = await deleteUserClubRelation(selectedUser.id, clubId);
+                if (responseOk) {
                     console.log("User deleted successfully");
                     onSuccess();
+                } else {
+                    console.error("Failed to delete user: user session");
                 }
             } catch (error) {
                 console.error("Error deleting user:", error);

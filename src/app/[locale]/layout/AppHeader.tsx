@@ -1,20 +1,24 @@
 "use client";
+import { ClubInfo } from "@/app/lib/models/club_info";
+import { useAuth } from "@/app/lib/nhost/AuthProvider";
+import { getClubsForCurrentUser } from "@/app/napi/client/clubs/club_user";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 import type React from "react";
 import { useState } from "react";
 import useSWR from "swr";
-import type { ClubInfo } from "@/app/lib/nhost/server/data/clubs";
-import { fetcher } from "@/app/lib/swr/fetcher";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import SelectClub from "../components/header/SelectClub";
 import UserDropdown from "../components/header/UserDropdown";
 import { useSidebar } from "../context/SidebarContext";
 
 const AppHeader: React.FC = () => {
-  const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
-  const { data: clubs, error: errorClubs, isLoading: isLoadingClubs } = useSWR<ClubInfo[]>('/api/clubs', fetcher);
+  const { nhost, session } = useAuth();
+  const [isApplicationMenuOpen, setIsApplicationMenuOpen] = useState(false);
+  const { data: clubs, error: errorClubs, isLoading: isLoadingClubs } = useSWR<ClubInfo[], {
+    error: string;
+  }, any>('appHeader', async (url: any) => await getClubsForCurrentUser(nhost, session));
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar, selectedClub, setSelectedClub } = useSidebar();
   const t = useTranslations("AppHeader");
@@ -28,7 +32,7 @@ const AppHeader: React.FC = () => {
   };
 
   const toggleApplicationMenu = () => {
-    setApplicationMenuOpen(!isApplicationMenuOpen);
+    setIsApplicationMenuOpen(!isApplicationMenuOpen);
   };
 
   return (
@@ -118,7 +122,7 @@ const AppHeader: React.FC = () => {
             </button></div>
 
           <div className="hidden lg:block">
-            {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
+            {clubs && <SelectClub clubs={clubs as ClubInfo[]} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
           </div>
         </div>
         <div
@@ -129,7 +133,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             <div className="hidden lg:block"><ThemeToggleButton /></div>
             <div className="lg:hidden">
-              {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
+              {clubs && <SelectClub clubs={clubs as ClubInfo[]} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
             </div>
             {/* <!-- Dark Mode Toggler --> */}
           </div>

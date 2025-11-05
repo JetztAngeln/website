@@ -1,16 +1,20 @@
+"use server";
+
 import { GeoJSONFeature } from "maplibre-gl";
-import { createNhostClient } from "..";
+import { createNhostClient } from "../../../lib/nhost/server";
 
 export async function addWaterToClub(
   clubId: string,
   name: string,
-  feature: GeoJSONFeature,
-): Promise<boolean> {
+  feature: GeoJSONFeature
+): Promise<{ error?: string }> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
 
   if (!session) {
-    return false;
+    return {
+      error: "session error",
+    };
   }
 
   const ADD_WATER_TO_CLUB_MUTATION = `
@@ -30,17 +34,19 @@ export async function addWaterToClub(
         headers: {
           "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
-      },
+      }
     );
 
     if (body.errors) {
-      console.error("GraphQL Error:", body.errors[0].message);
-      return false;
+      console.error(body.errors);
+      return {
+        error: `GraphQL Error`,
+      };
     }
 
-    return true;
+    return {};
   } catch (error) {
-    console.error("Failed to add water:", error);
-    return false;
+    console.error(error);
+    return { error: `Failed to add water` };
   }
 }

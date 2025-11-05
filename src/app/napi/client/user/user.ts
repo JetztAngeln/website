@@ -1,18 +1,10 @@
-import { createNhostClient } from "..";
+"use client";
 
-export interface UserInfo {
-  avatarUrl: string;
-  displayName: string;
-  email: string;
-}
+import { OwnUserInfo } from "@/app/lib/models/user_info";
+import { useAuth } from "@/app/lib/nhost/AuthProvider";
 
-interface GetUserResponse {
-  users: Array<UserInfo>;
-}
-
-export async function getUserInfo(): Promise<UserInfo | null> {
-  const nhost = await createNhostClient();
-  const session = nhost.getUserSession();
+export async function getUserInfo(): Promise<OwnUserInfo | null> {
+  const { nhost, session } = useAuth();
 
   // If there's no session, there's no user to fetch data for
   if (!session) {
@@ -31,18 +23,15 @@ export async function getUserInfo(): Promise<UserInfo | null> {
     }
   `;
 
+  type GraphQLResponse = {
+    users: Array<OwnUserInfo>;
+  };
+
   try {
-    const { body } = await nhost.graphql.request<GetUserResponse>(
-      {
-        query: GET_USER_QUERY,
-        variables: { userId },
-      },
-      {
-        headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-        },
-      },
-    );
+    const { body } = await nhost.graphql.request<GraphQLResponse>({
+      query: GET_USER_QUERY,
+      variables: { userId },
+    });
 
     if (body.errors) {
       console.error("GraphQL Error:", body.errors[0].message);

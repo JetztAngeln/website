@@ -1,6 +1,6 @@
+import { ClubInfo } from "@/app/lib/models/club_info";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useEffect } from "react";
-import type { ClubInfo } from "@/app/lib/nhost/server/data/clubs";
 
 interface ClubSelectProps {
   clubs: ClubInfo[] | null;

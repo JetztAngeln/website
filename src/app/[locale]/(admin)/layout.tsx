@@ -1,13 +1,15 @@
-import { getUserFromCookies } from "@/app/lib/auth/actions";
+"use client";
+
+import { useAuth } from "@/app/lib/nhost/AuthProvider";
 import AdminLayout from "./_layout_client";
 
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const user = await getUserFromCookies();
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const auth = useAuth();
 
-  if (!user) {
+  if (!auth.isAuthenticated) {
     return null;
   }
 
-  return <AdminLayout user={user}>{children}</AdminLayout>;
+  return <AdminLayout user={auth.user!}>{children}</AdminLayout>;
 }

@@ -1,8 +1,9 @@
+import { UserInfo } from "@/app/lib/models/user_info";
+import { updateUserRole } from "@/app/napi/server/clubs/user_club_relation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import type { UserInfo } from "@/app/lib/nhost/server/data/users";
-import Button from "../button/Button";
 import { Modal } from ".";
+import Button from "../button/Button";
 
 const roleColors: Record<string, string> = {
     ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
@@ -27,15 +28,9 @@ export default function EditUserRoleModal({ isOpen, closeModal, selectedUser, cl
         if (selectedUser) {
             try {
                 setLoading(true);
-                const response = await fetch(`/api/clubs/${clubId}/users/${selectedUser.id}/`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ role }),
-                });
-                if (!response.ok) {
-                    console.error("Failed to update user role:", response.statusText);
+                const responseOk = await updateUserRole(selectedUser.id, role);
+                if (responseOk.error) {
+                    console.error("Failed to update user role:", responseOk.error)
                 } else {
                     console.log("User role updated successfully");
                     onSuccess();

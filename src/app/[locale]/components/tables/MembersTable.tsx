@@ -1,7 +1,10 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
-import { User } from "@nhost/nhost-js/auth";
+import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
+import { UserInfo } from "@/app/lib/models/user_info";
+import { useAuth } from "@/app/lib/nhost/AuthProvider";
+import { getUsersByClubId } from "@/app/napi/client/clubs/club_user";
 import {
     type ColumnDef,
     flexRender,
@@ -10,15 +13,12 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon, EllipsisVerticalIcon } from "lucide-react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import type React from "react";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
-import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
-import type { UserInfo } from "@/app/lib/nhost/server/data/users";
-import { fetcher } from "@/app/lib/swr/fetcher";
 import { useSidebar } from "../../context/SidebarContext";
 import { useUser } from "../../context/UserContext";
 import { useModal } from "../../hooks/useModal";
@@ -50,6 +50,7 @@ function mapSort(inputs: SortingState): MemberSortEnum[] {
 }
 
 const MembersTable: React.FC = () => {
+    const { nhost, session } = useAuth();
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
@@ -64,19 +65,21 @@ const MembersTable: React.FC = () => {
     const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
-    const url = useMemo(() => {
-        if (!clubId) return null;
-        const sortParams = mapSort(sort);
-        if (sortParams.length === 0) {
-            sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
-        }
-        const q = `/api/clubs/${clubId}/users?page=${page + 1}&pageSize=${pageSize}&search=${debouncedSearch}&sort=${sortParams}`;
-        return q;
-    }, [clubId, page, pageSize, debouncedSearch, sort, !isDeleteOpen]);
+    const { data, isLoading, mutate } = useSWR<{ users: UserInfo[]; total: number } | null>(
+        ["membersTable", clubId, page, pageSize, debouncedSearch, sort],
+        async (key: any) => {
+            const sortParams = mapSort(key[5]);
+            if (sortParams.length === 0) {
+                sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
+            }
 
-    const { data, isLoading, mutate } = useSWR<{ data: UserInfo[]; total: number }>(
-        url,
-        fetcher
+            return await getUsersByClubId(nhost, session, key[1],
+                key[2] + 1,
+                key[3],
+                key[4],
+                sortParams[0],
+            );
+        },
     );
 
     const columns = useMemo<ColumnDef<UserInfo>[]>(
@@ -185,7 +188,7 @@ const MembersTable: React.FC = () => {
     );
 
     const table = useReactTable({
-        data: data?.data ?? [],
+        data: data?.users ?? [],
         columns,
         pageCount: data ? Math.ceil(data.total / pageSize) : -1,
         manualPagination: true,
@@ -316,7 +319,7 @@ const MembersTable: React.FC = () => {
                     </tbody>
                 </table>
 
-                {!isLoading && data?.data.length === 0 && (
+                {!isLoading && data?.users.length === 0 && (
                     <div className="p-4 text-center text-gray-500">{t("noUsersFound")}</div>
                 )}
             </div>

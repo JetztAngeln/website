@@ -1,7 +1,7 @@
 "use client";
+import { ClubInfo } from "@/app/lib/models/club_info";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { ClubInfo } from "@/app/lib/nhost/server/data/clubs";
 
 type SidebarContextType = {
   isExpanded: boolean;
