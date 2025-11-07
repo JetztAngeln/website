@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
-import ComponentCard from "../../components/common/ComponentCard";
-import PageBreadcrumb from "../../components/common/PageBreadCrumb";
-import MembersTable from "../../components/tables/MembersTable";
+import ComponentCard from "../../../../components/common/ComponentCard";
+import PageBreadcrumb from "../../../../components/common/PageBreadCrumb";
+import MembersTable from "../../../../components/tables/MembersTable";
 
 export const metadata: Metadata = {
   title: "Mitglieder - JetztAngeln",

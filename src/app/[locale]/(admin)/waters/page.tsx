@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import PageBreadcrumb from "../../../../components/common/PageBreadCrumb";
 
 
 export const metadata: Metadata = {

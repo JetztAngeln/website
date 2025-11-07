@@ -2,11 +2,11 @@
 
 import type { User } from "@nhost/nhost-js/auth";
 import type React from "react";
-import { useSidebar } from "../context/SidebarContext";
-import { UserProvider } from "../context/UserContext";
-import AppHeader from "../layout/AppHeader";
-import AppSidebar from "../layout/AppSidebar";
-import Backdrop from "../layout/Backdrop";
+import { useSidebar } from "../../../context/SidebarContext";
+import { UserProvider } from "../../../context/UserContext";
+import AppHeader from "../../layout/AppHeader";
+import AppSidebar from "../../layout/AppSidebar";
+import Backdrop from "../../layout/Backdrop";
 
 export default function AdminLayout({
   children,

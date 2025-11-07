@@ -8,10 +8,10 @@ import Link from "next/link";
 import type React from "react";
 import { useState } from "react";
 import useSWR from "swr";
-import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
-import SelectClub from "../components/header/SelectClub";
-import UserDropdown from "../components/header/UserDropdown";
-import { useSidebar } from "../context/SidebarContext";
+import { ThemeToggleButton } from "../../components/common/ThemeToggleButton";
+import SelectClub from "../../components/header/SelectClub";
+import UserDropdown from "../../components/header/UserDropdown";
+import { useSidebar } from "../../context/SidebarContext";
 
 const AppHeader: React.FC = () => {
   const { nhost, session } = useAuth();
@@ -122,7 +122,7 @@ const AppHeader: React.FC = () => {
             </button></div>
 
           <div className="hidden lg:block">
-            {clubs && <SelectClub clubs={clubs as ClubInfo[]} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
+            {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
           </div>
         </div>
         <div
@@ -133,7 +133,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             <div className="hidden lg:block"><ThemeToggleButton /></div>
             <div className="lg:hidden">
-              {clubs && <SelectClub clubs={clubs as ClubInfo[]} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
+              {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
             </div>
             {/* <!-- Dark Mode Toggler --> */}
           </div>

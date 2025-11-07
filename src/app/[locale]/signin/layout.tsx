@@ -1,11 +1,11 @@
-import ThemeTogglerTwo from "./../components/common/ThemeTogglerTwo";
+import ThemeTogglerTwo from "../../../components/common/ThemeTogglerTwo";
 
-import { ThemeProvider } from "../context/ThemeContext";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import { useTranslations } from "next-intl";
-import GridShape from "../components/common/GridShape";
+import GridShape from "../../../components/common/GridShape";
+import { ThemeProvider } from "../../../context/ThemeContext";
 
 export default function AuthLayout({
   children,

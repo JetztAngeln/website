@@ -1,8 +1,8 @@
-import GridShape from "./components/common/GridShape";
-import Image from "next/image";
-import Link from "next/link";
 import "@/app/[locale]/globals.css";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
+import GridShape from "../../components/common/GridShape";
 
 export default function NotFound() {
   const t = useTranslations("NotFound");

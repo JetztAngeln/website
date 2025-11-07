@@ -1,11 +1,11 @@
 "use client";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
 import { useState } from "react";
-import Input from "./../components/form/input/InputField";
-import Label from "./../components/form/Label";
-import Button from "../components/ui/button/Button";
+import Input from "../../../components/form/input/InputField";
+import Label from "../../../components/form/Label";
+import Button from "../../../components/ui/button/Button";
 // Import both server actions
 import { getProviderSignInUrl, sendMagicLink } from "./actions";
 

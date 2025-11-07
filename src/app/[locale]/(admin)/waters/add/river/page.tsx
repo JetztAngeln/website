@@ -1,20 +1,20 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: useEffect initialized correctly */
 "use client";
 
-import maplibregl, { type Map, type StyleSpecification } from "maplibre-gl";
-import { useEffect, useRef, useState } from "react";
-import "maplibre-gl/dist/maplibre-gl.css";
-import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css'
-import { MousePointerIcon, WaypointsIcon } from "lucide-react";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-import PageBreadcrumb from "@/app/[locale]/components/common/PageBreadCrumb";
-import AddWaterModal from "@/app/[locale]/components/ui/modal/AddWaterModal";
-import { useSidebar } from "@/app/[locale]/context/SidebarContext";
-import { useTheme } from "@/app/[locale]/context/ThemeContext";
-import { useModal } from "@/app/[locale]/hooks/useModal";
-import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../mapUtils";
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import AddWaterModal from "@/components/ui/modal/AddWaterModal";
+import { useSidebar } from "@/context/SidebarContext";
+import { useTheme } from "@/context/ThemeContext";
+import { useModal } from "@/hooks/useModal";
 import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
+import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
+import { MousePointerIcon, WaypointsIcon } from "lucide-react";
+import maplibregl, { type Map, type StyleSpecification } from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../mapUtils";
 
 export default function River() {
     const t = useTranslations("AddRiver");
