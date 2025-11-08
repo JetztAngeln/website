@@ -1,10 +1,10 @@
 "use client";
 
+import { signOut } from "@/lib/auth/actions";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { signOut } from "@/app/lib/auth/actions";
 import { useUser } from "../../context/UserContext";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";

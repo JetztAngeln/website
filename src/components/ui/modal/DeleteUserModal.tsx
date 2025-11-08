@@ -1,5 +1,5 @@
-import { UserInfo } from "@/app/lib/models/user_info";
-import { deleteUserClubRelation } from "@/app/napi/server/clubs/user_club_relation";
+import { UserInfo } from "@/lib/models/user_info";
+import { deleteUserClubRelation } from "@/napi/server/clubs/user_club_relation";
 import { useTranslations } from "next-intl";
 import { Modal } from ".";
 import Button from "../button/Button";

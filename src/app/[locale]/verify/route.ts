@@ -2,7 +2,7 @@ import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { createNhostClient } from "../../lib/nhost/server";
+import { createNhostClient } from "../../../lib/nhost/server";
 
 interface UserClubRelationResponse {
   user_club_relation: Array<{
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     params.set("message", "No refresh token provided");
 
     return NextResponse.redirect(
-      new URL(`/verify/error?${params.toString()}`, request.url),
+      new URL(`/verify/error?${params.toString()}`, request.url)
     );
   }
 
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       params.set("message", "Already signed in");
 
       return NextResponse.redirect(
-        new URL(`/verify/error?${params.toString()}`, request.url),
+        new URL(`/verify/error?${params.toString()}`, request.url)
       );
     }
 
@@ -64,7 +64,7 @@ query GetAdminRole($userId: uuid = "") {
           headers: {
             "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
           },
-        },
+        }
       );
 
       const { data, errors } = body;
@@ -89,7 +89,7 @@ query GetAdminRole($userId: uuid = "") {
     params.set("message", errorMessage);
 
     return NextResponse.redirect(
-      new URL(`/verify/error?${params.toString()}`, request.url),
+      new URL(`/verify/error?${params.toString()}`, request.url)
     );
   }
 }

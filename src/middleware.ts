@@ -1,9 +1,9 @@
 // middleware.ts
+import createMiddleware from "next-intl/middleware";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import createMiddleware from "next-intl/middleware";
-import { handleNhostMiddleware } from "./app/lib/nhost/server";
 import { routing } from "./i18n/routing";
+import { handleNhostMiddleware } from "./lib/nhost/server";
 
 const publicRoutes = ["/signin", "/redirect"];
 const { locales } = routing;
@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
   const isPublicRoute = publicRoutes.some(
     (route) =>
-      pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`),
+      pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`)
   );
 
   const session = await handleNhostMiddleware(request, response);

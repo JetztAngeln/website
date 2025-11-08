@@ -1,10 +1,10 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
-import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
-import { UserInfo } from "@/app/lib/models/user_info";
-import { useAuth } from "@/app/lib/nhost/AuthProvider";
-import { getUsersByClubId } from "@/app/napi/client/clubs/club_user";
+import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
+import { UserInfo } from "@/lib/models/user_info";
+import { useAuth } from "@/lib/nhost/AuthProvider";
+import { getUsersByClubId } from "@/napi/client/clubs/club_user";
 import {
     type ColumnDef,
     flexRender,

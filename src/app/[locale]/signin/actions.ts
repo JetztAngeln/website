@@ -2,7 +2,7 @@
 
 import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
-import { createNhostClient } from "../../lib/nhost/server";
+import { createNhostClient } from "../../../lib/nhost/server";
 
 /**
  * Sends a magic link to the provided email

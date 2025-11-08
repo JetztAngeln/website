@@ -1,8 +1,8 @@
 "use client";
 
-import { MemberSortEnum } from "@/app/lib/enums/MemberSortEnum";
-import { ClubInfo } from "@/app/lib/models/club_info";
-import { UserInfo } from "@/app/lib/models/user_info";
+import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
+import { ClubInfo } from "@/lib/models/club_info";
+import { UserInfo } from "@/lib/models/user_info";
 import { NhostClient } from "@nhost/nhost-js";
 import { Session } from "@nhost/nhost-js/auth";
 

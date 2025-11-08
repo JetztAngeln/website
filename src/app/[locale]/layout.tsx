@@ -4,7 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { SidebarProvider } from "../../context/SidebarContext";
 import { ThemeProvider } from "../../context/ThemeContext";
-import { AuthProvider } from "../lib/nhost/AuthProvider";
+import { AuthProvider } from "../../lib/nhost/AuthProvider";
 import "./globals.css";
 
 type Props = {

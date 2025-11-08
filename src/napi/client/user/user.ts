@@ -1,7 +1,7 @@
 "use client";
 
-import { OwnUserInfo } from "@/app/lib/models/user_info";
-import { useAuth } from "@/app/lib/nhost/AuthProvider";
+import { OwnUserInfo } from "@/lib/models/user_info";
+import { useAuth } from "@/lib/nhost/AuthProvider";
 
 export async function getUserInfo(): Promise<OwnUserInfo | null> {
   const { nhost, session } = useAuth();

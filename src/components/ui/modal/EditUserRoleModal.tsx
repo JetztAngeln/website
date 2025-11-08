@@ -1,5 +1,5 @@
-import { UserInfo } from "@/app/lib/models/user_info";
-import { updateUserRole } from "@/app/napi/server/clubs/user_club_relation";
+import { UserInfo } from "@/lib/models/user_info";
+import { updateUserRole } from "@/napi/server/clubs/user_club_relation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Modal } from ".";

@@ -1,5 +1,5 @@
 "use client";
-import { ClubInfo } from "@/app/lib/models/club_info";
+import { ClubInfo } from "@/lib/models/club_info";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 

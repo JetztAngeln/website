@@ -1,4 +1,4 @@
-import { ClubInfo } from "@/app/lib/models/club_info";
+import { ClubInfo } from "@/lib/models/club_info";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useEffect } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/app/lib/nhost/AuthProvider";
+import { useAuth } from "@/lib/nhost/AuthProvider";
 import AdminLayout from "./_layout_client";
 
 
