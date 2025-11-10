@@ -14,7 +14,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../mapUtils";
+import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../../../../../../lib/mapUtils";
 
 export default function River() {
     const t = useTranslations("AddRiver");

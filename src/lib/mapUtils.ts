@@ -2,8 +2,8 @@
 import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import type { LngLatBoundsLike, Map, StyleSpecification } from "maplibre-gl";
 import type { RefObject } from "react";
-import mapStyleDark from "../../../../../../public/map/style_dark.json";
-import mapStyleLight from "../../../../../../public/map/style_light.json";
+import mapStyleDark from "../../public/map/style_dark.json";
+import mapStyleLight from "../../public/map/style_light.json";
 
 export const GERMANY_BOUNDS: LngLatBoundsLike = [
   [5.8, 47.2], // Southwest corner
