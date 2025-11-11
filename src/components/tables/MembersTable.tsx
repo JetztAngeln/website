@@ -65,9 +65,17 @@ const MembersTable: React.FC = () => {
     const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
+    console.log(clubId);
+
     const { data, isLoading, mutate } = useSWR<{ users: UserInfo[]; total: number } | null>(
         ["membersTable", clubId, page, pageSize, debouncedSearch, sort],
         async (key: any) => {
+            if (key[1] == null) {
+                return {
+                    users: [],
+                    total: 0,
+                }
+            }
             const sortParams = mapSort(key[5]);
             if (sortParams.length === 0) {
                 sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);

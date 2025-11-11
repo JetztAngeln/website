@@ -2,9 +2,10 @@
 
 import { NhostClient } from "@nhost/nhost-js";
 import { Session } from "@nhost/nhost-js/auth";
+import type { GraphQLResponse } from "@nhost/nhost-js/graphql";
 import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { ClubInfo } from "@/lib/models/club_info";
-import { UserInfo } from "@/lib/models/user_info";
+import type { UserInfo } from "@/lib/models/user_info";
 import { GET_CLUBS_QUERY, GET_USERS_QUERY } from "../graphql/clubs/queries";
 
 /**
@@ -88,7 +89,11 @@ export async function getClubsForCurrentUser(
     }
 
     const clubs =
-      body.data?.user_club_relation.map((relation) => relation.club) || [];
+      (
+        body as GraphQLResponse<{
+          user_club_relation: Array<{ club: ClubInfo }>;
+        }>
+      ).data?.user_club_relation.map((relation) => relation.club) || [];
     return clubs;
   } catch (error) {
     console.error("Failed to fetch club information:", error);

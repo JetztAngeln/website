@@ -25,7 +25,6 @@ export const GET_CLUBS_QUERY = `
         club {
           id
           name
-          logo_url
         }
       }
     }
