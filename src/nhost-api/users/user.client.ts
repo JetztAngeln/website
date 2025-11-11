@@ -2,6 +2,7 @@
 
 import { OwnUserInfo } from "@/lib/models/user_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
+import { GET_USER_QUERY } from "../graphql/users/queries";
 
 export async function getUserInfo(): Promise<OwnUserInfo | null> {
   const { nhost, session } = useAuth();
@@ -12,16 +13,6 @@ export async function getUserInfo(): Promise<OwnUserInfo | null> {
   }
 
   const userId = session.user?.id;
-
-  const GET_USER_QUERY = `
-    query GetUserById($userId: uuid!) {
-        users(where: {id: {_eq: $userId}}) {
-            avatarUrl
-            displayName
-            email
-        }
-    }
-  `;
 
   type GraphQLResponse = {
     users: Array<OwnUserInfo>;

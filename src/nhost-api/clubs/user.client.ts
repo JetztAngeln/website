@@ -1,10 +1,11 @@
 "use client";
 
+import { NhostClient } from "@nhost/nhost-js";
+import { Session } from "@nhost/nhost-js/auth";
 import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { ClubInfo } from "@/lib/models/club_info";
 import { UserInfo } from "@/lib/models/user_info";
-import { NhostClient } from "@nhost/nhost-js";
-import { Session } from "@nhost/nhost-js/auth";
+import { GET_CLUBS_QUERY, GET_USERS_QUERY } from "../graphql/clubs/queries";
 
 /**
  * Fetch users for a given club with pagination, search, and sorting
@@ -16,33 +17,11 @@ export async function getUsersByClubId(
   page: number = 1,
   pageSize: number = 10,
   search: string = "",
-  sort: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC
+  sort: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC,
 ): Promise<{ users: UserInfo[]; total: number } | null> {
   if (!session) return null;
 
   const offset = (page - 1) * pageSize;
-
-  // GraphQL query
-  const GET_USERS_QUERY = `
-    query GetClubUsers(
-        $clubId: uuid!,
-        $offset: Int!,
-        $limit: Int!,
-        $search: String!,
-        $orderBy: [ClubUserOrderByEnum!]
-    ) {
-      getClubUsers(clubId:$clubId, offset:$offset, limit: $limit, search:$search, orderBy: $orderBy){
-        user_club_relation {role, user {
-          id
-          avatarUrl
-          displayName
-          email
-          lastSeen
-        }}
-        user_club_relation_aggregate {aggregate{count}}
-      }
-    }
-  `;
 
   type GraphQLResponse = {
     getClubUsers: {
@@ -88,7 +67,7 @@ export async function getUsersByClubId(
 
 export async function getClubsForCurrentUser(
   nhost: NhostClient,
-  session: Session | null
+  session: Session | null,
 ): Promise<ClubInfo[] | null> {
   // If there's no session, there's no user to fetch data for
   if (!session) {
@@ -96,25 +75,6 @@ export async function getClubsForCurrentUser(
   }
 
   const userId = session.user?.id;
-
-  const GET_CLUBS_QUERY = `
-    query GetClubByUserId($userId: uuid!) {
-      user_club_relation(
-        where: { user_id: { _eq: $userId } }, 
-      ) {
-        club {
-          id
-          name
-        }
-      }
-    }
-  `;
-
-  type GraphQLResponse = {
-    user_club_relation: Array<{
-      club: ClubInfo;
-    }>;
-  };
 
   try {
     const { body } = await nhost.graphql.request<GraphQLResponse>({

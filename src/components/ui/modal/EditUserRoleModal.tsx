@@ -1,9 +1,9 @@
-import { UserInfo } from "@/lib/models/user_info";
-import { updateUserRole } from "@/napi/server/clubs/user_club_relation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { Modal } from ".";
+import { UserInfo } from "@/lib/models/user_info";
+import { updateUserRole } from "@/nhost-api/clubs/relation.server";
 import Button from "../button/Button";
+import { Modal } from ".";
 
 const roleColors: Record<string, string> = {
     ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",

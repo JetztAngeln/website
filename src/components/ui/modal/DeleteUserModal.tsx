@@ -1,8 +1,8 @@
-import { UserInfo } from "@/lib/models/user_info";
-import { deleteUserClubRelation } from "@/napi/server/clubs/user_club_relation";
 import { useTranslations } from "next-intl";
-import { Modal } from ".";
+import { UserInfo } from "@/lib/models/user_info";
+import { deleteUserClubRelation } from "@/nhost-api/clubs/relation.server";
 import Button from "../button/Button";
+import { Modal } from ".";
 
 export default function DeleteUserModal({ isOpen, closeModal, selectedUser, clubId, onSuccess }: { isOpen: boolean; closeModal: () => void; selectedUser: UserInfo | null; clubId: string; onSuccess: () => void }) {
     const t = useTranslations("DeleteUserModal");

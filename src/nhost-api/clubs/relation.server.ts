@@ -1,10 +1,14 @@
 "use server";
 
-import { createNhostClient } from "../../../lib/nhost/server";
+import { createNhostClient } from "../../lib/nhost/server";
+import {
+  DELETE_USER_CLUB_RELATION_MUTATION,
+  UPDATE_USER_ROLE_MUTATION,
+} from "../graphql/clubs/mutations";
 
 export async function deleteUserClubRelation(
   userId: string,
-  clubId: string
+  clubId: string,
 ): Promise<boolean> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
@@ -16,17 +20,6 @@ export async function deleteUserClubRelation(
   if (session.user?.id === userId) {
     return false;
   }
-
-  const DELETE_USER_CLUB_RELATION_MUTATION = `
-  mutation DeleteUserClubRelation($userId: uuid!, $clubId: uuid!) {
-  delete_user_club_relation(where: {club_id: {_eq: $clubId}, user_id: {_eq: $userId}}) {
-    returning {
-      id
-    }
-  }
-}
-
-`;
 
   type GraphQLResponse = {
     delete_user_club_relation: {
@@ -46,7 +39,7 @@ export async function deleteUserClubRelation(
         headers: {
           "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
-      }
+      },
     );
 
     if (body.errors) {
@@ -63,7 +56,7 @@ export async function deleteUserClubRelation(
 
 export async function updateUserRole(
   userId: string,
-  role: string
+  role: string,
 ): Promise<{ error?: string }> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
@@ -74,12 +67,6 @@ export async function updateUserRole(
   if (session.user?.id === userId) {
     return { error: "session error 2" };
   }
-  const UPDATE_USER_ROLE_MUTATION = `mutation UpdateUserRole($role: _enumtable_user_club_role_enum = ADMIN, $userId: uuid = "") {
-  update_user_club_relation(where: {user_id: {_eq: $userId}}, _set: {role: $role}) {
-    returning {id}
-  }
-}
-`;
 
   type GraphQLResponse = {
     update_user_club_relation: {
@@ -99,7 +86,7 @@ export async function updateUserRole(
         headers: {
           "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
-      }
+      },
     );
 
     if (body.errors) {

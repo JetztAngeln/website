@@ -10,7 +10,7 @@ const { locales } = routing;
 
 const handleI18nRouting = createMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Skip i18n handling for API routes

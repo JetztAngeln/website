@@ -1,10 +1,6 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
-import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
-import { UserInfo } from "@/lib/models/user_info";
-import { useAuth } from "@/lib/nhost/AuthProvider";
-import { getUsersByClubId } from "@/napi/client/clubs/club_user";
 import {
     type ColumnDef,
     flexRender,
@@ -13,12 +9,16 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon, EllipsisVerticalIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type React from "react";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
+import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
+import { UserInfo } from "@/lib/models/user_info";
+import { useAuth } from "@/lib/nhost/AuthProvider";
+import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
 import { useSidebar } from "../../context/SidebarContext";
 import { useUser } from "../../context/UserContext";
 import { useModal } from "../../hooks/useModal";

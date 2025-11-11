@@ -1,12 +1,13 @@
 "use server";
 
 import { GeoJSONFeature } from "maplibre-gl";
-import { createNhostClient } from "../../../lib/nhost/server";
+import { createNhostClient } from "../../lib/nhost/server";
+import { ADD_WATER_TO_CLUB_MUTATION } from "../graphql/clubs/mutations";
 
 export async function addWaterToClub(
   clubId: string,
   name: string,
-  feature: GeoJSONFeature
+  feature: GeoJSONFeature,
 ): Promise<{ error?: string }> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
@@ -16,13 +17,6 @@ export async function addWaterToClub(
       error: "session error",
     };
   }
-
-  const ADD_WATER_TO_CLUB_MUTATION = `
- mutation AddWaterToClub($clubId: uuid = "", $feature: jsonb = "", $name: String = "") {
-  insert_club_waters_one(object: {club_id: $clubId, geo_json: $feature, name: $name, draft: true, fish_types: []}) {
-    id
-  }
-}`;
 
   try {
     const { body } = await nhost.graphql.request(
@@ -34,7 +28,7 @@ export async function addWaterToClub(
         headers: {
           "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
-      }
+      },
     );
 
     if (body.errors) {

@@ -1,13 +1,13 @@
 "use client";
-import { ClubInfo } from "@/lib/models/club_info";
-import { useAuth } from "@/lib/nhost/AuthProvider";
-import { getClubsForCurrentUser } from "@/napi/client/clubs/club_user";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type React from "react";
 import { useState } from "react";
 import useSWR from "swr";
+import { ClubInfo } from "@/lib/models/club_info";
+import { useAuth } from "@/lib/nhost/AuthProvider";
+import { getClubsForCurrentUser } from "@/nhost-api/clubs/user.client";
 import { ThemeToggleButton } from "../../components/common/ThemeToggleButton";
 import SelectClub from "../../components/header/SelectClub";
 import UserDropdown from "../../components/header/UserDropdown";
