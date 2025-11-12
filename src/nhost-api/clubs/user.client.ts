@@ -1,11 +1,10 @@
 "use client";
 
-import { NhostClient } from "@nhost/nhost-js";
-import { Session } from "@nhost/nhost-js/auth";
-import type { GraphQLResponse } from "@nhost/nhost-js/graphql";
 import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { ClubInfo } from "@/lib/models/club_info";
 import type { UserInfo } from "@/lib/models/user_info";
+import { NhostClient } from "@nhost/nhost-js";
+import { Session } from "@nhost/nhost-js/auth";
 import { GET_CLUBS_QUERY, GET_USERS_QUERY } from "../graphql/clubs/queries";
 
 /**
@@ -18,7 +17,7 @@ export async function getUsersByClubId(
   page: number = 1,
   pageSize: number = 10,
   search: string = "",
-  sort: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC,
+  sort: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC
 ): Promise<{ users: UserInfo[]; total: number } | null> {
   if (!session) return null;
 
@@ -68,7 +67,7 @@ export async function getUsersByClubId(
 
 export async function getClubsForCurrentUser(
   nhost: NhostClient,
-  session: Session | null,
+  session: Session | null
 ): Promise<ClubInfo[] | null> {
   // If there's no session, there's no user to fetch data for
   if (!session) {
@@ -76,6 +75,10 @@ export async function getClubsForCurrentUser(
   }
 
   const userId = session.user?.id;
+
+  type GraphQLResponse = {
+    user_club_relation: Array<{ club: ClubInfo }>;
+  };
 
   try {
     const { body } = await nhost.graphql.request<GraphQLResponse>({
@@ -89,11 +92,7 @@ export async function getClubsForCurrentUser(
     }
 
     const clubs =
-      (
-        body as GraphQLResponse<{
-          user_club_relation: Array<{ club: ClubInfo }>;
-        }>
-      ).data?.user_club_relation.map((relation) => relation.club) || [];
+      body.data?.user_club_relation.map((relation) => relation.club) || [];
     return clubs;
   } catch (error) {
     console.error("Failed to fetch club information:", error);

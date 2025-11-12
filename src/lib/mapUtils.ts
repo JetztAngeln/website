@@ -2,6 +2,7 @@
 import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import type { LngLatBoundsLike, Map, StyleSpecification } from "maplibre-gl";
 import type { RefObject } from "react";
+import { TerraDrawPolygonMode } from "terra-draw";
 import mapStyleDark from "../../public/map/style_dark.json";
 import mapStyleLight from "../../public/map/style_light.json";
 
@@ -78,6 +79,11 @@ const drawUtilities = (type: keyof typeof utilities) => {
   return new MaplibreTerradrawControl({
     modes: utilities[type],
     open: true,
+    modeOptions: {
+      polygon: new TerraDrawPolygonMode({
+        validation: undefined, // Disable self-intersection validation
+      }),
+    },
   });
 };
 

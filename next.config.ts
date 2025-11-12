@@ -24,7 +24,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.gravatar.com",
       },
+      {
+        protocol: "https",
+        hostname: "10-0-2-2.storage.local.nhost.run",
+      },
     ],
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
   },
 };
 

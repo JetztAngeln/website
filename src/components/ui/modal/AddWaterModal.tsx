@@ -1,12 +1,13 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: / */
 
+import { addWaterToClub } from "@/nhost-api/clubs/waters.server";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { Modal } from ".";
 import Input from "../../form/input/InputField";
 import Label from "../../form/Label";
 import Button from "../button/Button";
-import { Modal } from ".";
 
 export default function AddWaterModal({ isOpen, closeModal, feature, clubId, addedFeatures, addFeature }: { isOpen: boolean; closeModal: () => void; feature: string; clubId: string; addedFeatures: string[]; addFeature: (feature: string[]) => void; }) {
     const [loading, setLoading] = useState(false);
@@ -27,27 +28,18 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
         if (feature && clubId && !addedFeatures.includes(feature) && name.trim() !== "") {
             setLoading(true);
             try {
-                const response = await fetch(`/api/clubs/${clubId}/waters/add`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        geometry: JSON.parse(feature).geometry,
-                        type: "river",
-                        name: name.trim(),
-                    }),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log("Water saved successfully:", data);
-                    addFeature([...addedFeatures, feature]);
+                const response = await addWaterToClub(clubId, name.trim(), JSON.parse(feature).geometry);
+
+                if (response.error) {
+                    console.error("Failed to add water:", response.error);
                     setLoading(false);
-                    closeModal();
-                } else {
-                    console.error("Failed to save water:", response.statusText);
-                    setLoading(false);
+                    return;
                 }
+
+                console.log("Water saved successfully:");
+                addFeature([...addedFeatures, feature]);
+                setLoading(false);
+                closeModal();
             } catch (error) {
                 console.error("Error saving water:", error);
                 setLoading(false);

@@ -109,12 +109,13 @@ export default function River() {
         const waiting = () => {
             if (!map.isStyleLoaded()) {
                 setTimeout(waiting, 200);
-            } else {
-                drawInstance.start();
+                return;
+            }
 
-                if (features.length > 0) {
-                    drawInstance.addFeatures(features);
-                }
+            drawInstance.start();
+
+            if (features.length > 0) {
+                drawInstance.addFeatures(features);
             }
         };
         waiting();
