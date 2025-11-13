@@ -17,7 +17,7 @@ import { notFound, useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../../../../../../lib/mapUtils";
 
-export default function River() {
+export default function AddWaterInMap() {
     const { type, locale } = useParams<{ type: string; locale: string }>()
 
     let typeOfWaterToAdd: string;
