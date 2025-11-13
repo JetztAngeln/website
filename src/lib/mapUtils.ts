@@ -44,7 +44,7 @@ const changeLocale = (mapRef: RefObject<Map | null>, locale: string) => {
       mapRef.current?.setLayoutProperty(layer.id, "text-field", [
         "coalesce",
         ["get", `name:${locale}`], // Replace 'de' with your locale variable
-        ["get", "name"],
+        ["get", "name"], // Fallback to German if the specific locale name doesn't exist
       ]);
     }
   });

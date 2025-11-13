@@ -69,21 +69,29 @@ export default function AddWaterInMap() {
         mapRef.current = map;
         map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-        drawControlRef.current = initializeMap(mapRef, type, locale);
-        const drawInstance = drawControlRef.current.getTerraDrawInstance();
+        const waiting = () => {
+            if (!map.isStyleLoaded()) {
+                setTimeout(waiting, 200);
+                return;
+            }
 
-        if (drawInstance) {
-            drawInstance.on('select', (id) => {
-                const snapshot = drawInstance.getSnapshot();
-                const selected = snapshot?.find((feature) => feature.id === id);
-                const selectedFeatureString = JSON.stringify(selected);
+            drawControlRef.current = initializeMap(mapRef, type, locale);
+            const drawInstance = drawControlRef.current.getTerraDrawInstance();
 
-                if (addedFeature.includes(selectedFeatureString)) return;
+            if (drawInstance) {
+                drawInstance.on('select', (id) => {
+                    const snapshot = drawInstance.getSnapshot();
+                    const selected = snapshot?.find((feature) => feature.id === id);
+                    const selectedFeatureString = JSON.stringify(selected);
 
-                setSelectedFeature(selectedFeatureString);
-                openModal();
-            });
-        }
+                    if (addedFeature.includes(selectedFeatureString)) return;
+
+                    setSelectedFeature(selectedFeatureString);
+                    openModal();
+                });
+            }
+        };
+        waiting();
 
 
         return () => {
