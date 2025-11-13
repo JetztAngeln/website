@@ -13,11 +13,26 @@ import maplibregl, { type Map, type StyleSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../../../../../../lib/mapUtils";
 
-export default function River() {
-    const t = useTranslations("AddRiver");
+export default function River({
+    params
+}: {
+    params: { type: string; locale: string }
+}) {
+    const { type, locale } = useParams<{ type: string; locale: string }>()
+
+    let typeOfWaterToAdd: string;
+    if (type === "river") {
+        typeOfWaterToAdd = "AddRiver";
+    } else if (type === "lake") {
+        typeOfWaterToAdd = "AddLake";
+    } else {
+        typeOfWaterToAdd = "AddZone";
+    }
+    const t = useTranslations(typeOfWaterToAdd);
     const { theme } = useTheme();
     const [currentStyle, setCurrentStyle] = useState<StyleSpecification>(
         theme === "dark" ? mapStyles["carto-dark"].url : mapStyles["carto-positron"].url
@@ -50,13 +65,13 @@ export default function River() {
             style: currentStyle,
             maxBounds: GERMANY_BOUNDS,
             maplibreLogo: false,
-            locale: 'de',
+            locale: locale,
             maxPitch: 0
         });
         mapRef.current = map;
         map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-        drawControlRef.current = initializeMap(mapRef, "river");
+        drawControlRef.current = initializeMap(mapRef, type, locale);
         const drawInstance = drawControlRef.current.getTerraDrawInstance();
 
         if (drawInstance) {
@@ -147,7 +162,7 @@ export default function River() {
             <AddWaterModal isOpen={isOpen} closeModal={closeModal} feature={selectedFeature} clubId={clubId} addedFeatures={addedFeature} addFeature={setAddedFeature} />
             <PageBreadcrumb pageTitle={t("title")} />
             <div className="mb-4">
-                <p className="text-gray-600 dark:text-gray-400">{t.rich('description', {
+                <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">{t.rich('description', {
                     drawTool: (chunks) => <span className="text-brand-500 dark:text-brand-400 font-bold">{chunks} <WaypointsIcon className="inline mb-1" size={16} /></span>,
                     selectTool: (chunks) => <span className="text-brand-500 dark:text-brand-400 font-bold">{chunks} <MousePointerIcon className="inline mb-1" size={16} /></span>
                 })}</p>

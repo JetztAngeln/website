@@ -79,16 +79,16 @@
   },
   "AddRiver": {
     "title": "Fluss hinzufügen",
-    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne den Flussverlauf auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den Fluss klicken und weitere Informationen hinzufügen. Nur so kannst du den Fluss speichern!",
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne den Flussverlauf auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den Fluss klicken und weitere Informationen hinzufügen. Nur so kannst du den Fluss speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen.",
     "drawRiver": "Fluss zeichnen"
   },
   "AddLake": {
     "title": "See hinzufügen",
-    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Seenfläche auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den See klicken und weitere Informationen hinzufügen. Nur so kannst du den See speichern!"
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Seenfläche auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den See klicken und weitere Informationen hinzufügen. Nur so kannst du den See speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
   },
   "AddZone": {
     "title": "Angelverbotszone hinzufügen",
-    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern."
+    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern.\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
   },
   "AddWaterModal": {
     "title": "Gewässer hinzufügen",
