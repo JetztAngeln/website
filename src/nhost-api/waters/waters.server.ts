@@ -2,12 +2,12 @@
 
 import { GeoJSONFeature } from "maplibre-gl";
 import { createNhostClient } from "../../lib/nhost/server";
-import { ADD_WATER_TO_CLUB_MUTATION } from "../graphql/clubs/mutations";
+import { ADD_WATER_TO_CLUB_MUTATION } from "../graphql/waters/mutations";
 
 export async function addWaterToClub(
   clubId: string,
   name: string,
-  feature: GeoJSONFeature,
+  feature: GeoJSONFeature
 ): Promise<{ error?: string }> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
@@ -28,7 +28,7 @@ export async function addWaterToClub(
         headers: {
           "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
         },
-      },
+      }
     );
 
     if (body.errors) {

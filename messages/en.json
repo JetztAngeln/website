@@ -75,7 +75,11 @@
   },
   "WatersPage": {
     "title": "Waters",
-    "tableTitle": "Waterbodies List"
+    "pageDescription": "The changes may take up to an hour to appear in the app.",
+    "description": "Description",
+    "noDescription": "No description found",
+    "fishTypes": "Fish Types ({count})",
+    "draft": "Draft"
   },
   "AddRiver": {
     "title": "Add a River to your Club",
@@ -99,5 +103,8 @@
     "descriptionPlaceholder": "Enter a brief description",
     "cancel": "Cancel",
     "save": "Save Changes"
+  },
+  "FishTypes": {
+    "TROUT": "Trout"
   }
 }

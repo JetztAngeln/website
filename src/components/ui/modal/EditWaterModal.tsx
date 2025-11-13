@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: / */
 
-import { addWaterToClub } from "@/nhost-api/waters/waters.server";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -9,7 +8,7 @@ import Input from "../../form/input/InputField";
 import Label from "../../form/Label";
 import Button from "../button/Button";
 
-export default function AddWaterModal({ isOpen, closeModal, feature, clubId, addedFeatures, addFeature }: { isOpen: boolean; closeModal: () => void; feature: string; clubId: string; addedFeatures: string[]; addFeature: (feature: string[]) => void; }) {
+export default function EditWaterModal({ isOpen, closeModal, waterId }: { isOpen: boolean; closeModal: () => void; waterId: string; }) {
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const t = useTranslations("AddWaterModal");
@@ -18,33 +17,10 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
         if (!isOpen) {
             setLoading(false);
         }
-        if (feature === "") {
-            setLoading(false);
-            closeModal();
-        }
-    }, [isOpen, feature]);
+    }, [isOpen]);
 
     const handleSave = async () => {
-        if (feature && clubId && !addedFeatures.includes(feature) && name.trim() !== "") {
-            setLoading(true);
-            try {
-                const response = await addWaterToClub(clubId, name.trim(), JSON.parse(feature).geometry);
 
-                if (response.error) {
-                    console.error("Failed to add water:", response.error);
-                    setLoading(false);
-                    return;
-                }
-
-                console.log("Water saved successfully:");
-                addFeature([...addedFeatures, feature]);
-                setLoading(false);
-                closeModal();
-            } catch (error) {
-                console.error("Error saving water:", error);
-                setLoading(false);
-            }
-        }
     }
 
     return (
@@ -67,7 +43,7 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
                 <Button size="sm" variant="outline" onClick={closeModal}>
                     {t("cancel")}
                 </Button>
-                <Button size="sm" onClick={handleSave} disabled={loading || !feature || !clubId}>
+                <Button size="sm" onClick={handleSave} disabled={loading}>
                     {t("save")} {loading && <LoaderCircle className="inline ml-2 animate-spin" size={16} />}
                 </Button>
             </div>

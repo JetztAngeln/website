@@ -75,7 +75,11 @@
   },
   "WatersPage": {
     "title": "Gewässer",
-    "tableTitle": "Gewässerliste"
+    "pageDescription": "Die Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
+    "description": "Beschreibung",
+    "noDescription": "Keine Beschreibung vorhanden",
+    "fishTypes": "Fischarten ({count})",
+    "draft": "Entwurf"
   },
   "AddRiver": {
     "title": "Fluss hinzufügen",
@@ -97,5 +101,8 @@
     "namePlaceholder": "Gib den Namen des Gewässers ein",
     "save": "Als Entwurf speichern",
     "cancel": "Abbrechen"
+  },
+  "FishTypes": {
+    "TROUT": "Forelle"
   }
 }
