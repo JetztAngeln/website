@@ -1,19 +1,19 @@
 "use client";
 
+import { createClient, type NhostClient } from "@nhost/nhost-js";
+import { type Session } from "@nhost/nhost-js/auth";
+import { CookieStorage } from "@nhost/nhost-js/session";
+import { useRouter } from "next/navigation";
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useState,
   useMemo,
   useRef,
-  useCallback,
+  useState,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
-import { type Session } from "@nhost/nhost-js/auth";
-import { createClient, type NhostClient } from "@nhost/nhost-js";
-import { CookieStorage } from "@nhost/nhost-js/session";
 
 /**
  * Authentication context interface providing access to user session state and Nhost client.
@@ -67,8 +67,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const nhost = useMemo(
     () =>
       createClient({
-        region: process.env["NHOST_REGION"] || "local",
-        subdomain: process.env["NHOST_SUBDOMAIN"] || "local",
+        region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
+        subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
+        authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
+        functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
+        graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
+        storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
         storage: new CookieStorage({
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",

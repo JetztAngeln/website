@@ -20,12 +20,12 @@ export async function createNhostClient(): Promise<NhostClient> {
   const cookieStore = await cookies();
 
   const nhost = createServerClient({
-    region: process.env["NHOST_REGION"] || "local",
-    subdomain: process.env["NHOST_SUBDOMAIN"] || "local",
-    authUrl: process.env["NHOST_AUTH_URL"] || undefined,
-    functionsUrl: process.env["NHOST_FUNCTIONS_URL"] || undefined,
-    graphqlUrl: process.env["NHOST_GRAPHQL_URL"] || undefined,
-    storageUrl: process.env["NHOST_STORAGE_URL"] || undefined,
+    region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
+    subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
+    authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
+    functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
+    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
+    storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
     storage: {
       // storage compatible with Next.js server components
       get: (): Session | null => {
@@ -63,8 +63,12 @@ export async function handleNhostMiddleware(
   response: NextResponse<unknown>,
 ): Promise<Session | null> {
   const nhost = createServerClient({
-    region: process.env["NHOST_REGION"] || "local",
-    subdomain: process.env["NHOST_SUBDOMAIN"] || "local",
+    region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
+    subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
+    authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
+    functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
+    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
+    storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
     storage: {
       // storage compatible with Next.js middleware
       get: (): Session | null => {
