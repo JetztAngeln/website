@@ -13,15 +13,11 @@ import maplibregl, { type Map, type StyleSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GERMANY_BOUNDS, initializeMap, mapStyles } from "../../../../../../lib/mapUtils";
 
-export default function River({
-    params
-}: {
-    params: { type: string; locale: string }
-}) {
+export default function River() {
     const { type, locale } = useParams<{ type: string; locale: string }>()
 
     let typeOfWaterToAdd: string;
@@ -29,8 +25,10 @@ export default function River({
         typeOfWaterToAdd = "AddRiver";
     } else if (type === "lake") {
         typeOfWaterToAdd = "AddLake";
-    } else {
+    } else if (type === "zone") {
         typeOfWaterToAdd = "AddZone";
+    } else {
+        notFound();
     }
     const t = useTranslations(typeOfWaterToAdd);
     const { theme } = useTheme();
