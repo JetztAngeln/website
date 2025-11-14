@@ -1,144 +1,106 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
+import { useSidebar } from "@/context/SidebarContext";
+import { ClubWater } from "@/lib/models/water";
+import { useAuth } from "@/lib/nhost/AuthProvider";
+import { getWatersByClubId } from "@/nhost-api/waters/waters.client";
 import {
     type ColumnDef,
     flexRender,
     getCoreRowModel,
+    getSortedRowModel,
     type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon, EllipsisVerticalIcon } from "lucide-react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import type React from "react";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
-import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
-import { UserInfo } from "@/lib/models/user_info";
-import { useAuth } from "@/lib/nhost/AuthProvider";
-import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
-import { useSidebar } from "../../context/SidebarContext";
-import { useUser } from "../../context/UserContext";
-import { useModal } from "../../hooks/useModal";
 import { Dropdown, DropdownContent, DropdownTrigger } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import DeleteUserModal from "../ui/modal/DeleteUserModal";
-import EditUserRoleModal from "../ui/modal/EditUserRoleModal";
 
-const roleColors: Record<UserInfo["role"], string> = {
-    ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
-    SUPERVISOR: "bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400",
-    USER: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
-};
-
-
-function mapSort(inputs: SortingState): MemberSortEnum[] {
-    return inputs.map((input) => {
-        switch (input.id) {
-            case "displayName":
-                return input.desc ? MemberSortEnum.DISPLAY_NAME_DESC : MemberSortEnum.DISPLAY_NAME_ASC;
-            case "role":
-                return input.desc ? MemberSortEnum.ROLE_DESC : MemberSortEnum.ROLE_ASC;
-            case "lastSeen":
-                return input.desc ? MemberSortEnum.LAST_SEEN_DESC : MemberSortEnum.LAST_SEEN_ASC;
-            default:
-                return MemberSortEnum.DISPLAY_NAME_ASC;
-        }
-    });
-}
-
-const MembersTable: React.FC = () => {
-    const { nhost, session } = useAuth();
+const WatersTable: React.FC<{ onWaterSelect: (waterId: string) => void; updateCounter: number }> = ({ onWaterSelect, updateCounter }) => {
+    const { nhost } = useAuth();
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
     const [debouncedSearch] = useDebounce(search, 400);
-    const [sort, setSort] = useState<SortingState>([{ id: "displayName", desc: false }]);
-    const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
-    const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
-    const { isOpen: isDeleteOpen, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
+    const [sort, setSort] = useState<SortingState>([{ id: "name", desc: false }]);
     const { selectedClub } = useSidebar();
-    const user = useUser();
-    const t = useTranslations("MembersTable");
-    const clubId = selectedClub?.id;
+    const t = useTranslations("WatersPage");
 
-    console.log(clubId);
-
-    const { data, isLoading, mutate } = useSWR<{ users: UserInfo[]; total: number } | null>(
-        ["membersTable", clubId, page, pageSize, debouncedSearch, sort],
+    const { data, isLoading } = useSWR<ClubWater[], any>(
+        ["watersTable", selectedClub?.id, page, pageSize, debouncedSearch, updateCounter],
         async (key: any) => {
             if (key[1] == null) {
-                return {
-                    users: [],
-                    total: 0,
-                }
+                return [];
             }
-            const sortParams = mapSort(key[5]);
-            if (sortParams.length === 0) {
-                sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
-            }
-
-            return await getUsersByClubId(nhost, session, key[1],
-                key[2] + 1,
-                key[3],
-                key[4],
-                sortParams[0],
-            );
+            // TODO: Add sorting and searching to the API call
+            return await getWatersByClubId(nhost, key[1]);
         },
     );
 
-    const columns = useMemo<ColumnDef<UserInfo>[]>(
+    const columns = useMemo<ColumnDef<ClubWater>[]>(
         () => [
             {
-                accessorKey: "displayName",
-                header: "Name",
+                accessorKey: "image",
+                header: "",
+                enableSorting: false,
                 cell: ({ row }) => {
-                    const user = row.original;
+                    const water = row.original;
+                    const imageUrl = water.image_id ? `${nhost.storage.baseURL + "/files/" + water.image_id}` : "https://gravatar.com/avatar/?d=identicon";
                     return (
-                        <div className="flex items-center gap-3">
-                            <Image
-                                src={user.avatarUrl || "https://gravatar.com/avatar/?d=identicon"}
-                                alt={user.displayName}
-                                width={40}
-                                height={40}
-                                className="h-10 w-10 rounded-full object-cover"
-                            />
-                            <div>
-                                <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{user.displayName}</div>
-                                <div className="text-sm text-gray-500">{user.email}</div>
-                            </div>
-                        </div>
+                        <Image
+                            src={imageUrl}
+                            alt={water.name}
+                            width={40}
+                            height={40}
+                            className="h-10 w-10 rounded-md object-cover"
+                        />
+
                     );
                 },
             },
             {
-                accessorKey: "role",
-                header: t("role"),
+                accessorKey: "name",
+                header: t("name"),
                 cell: ({ row }) => {
-                    const role = row.original.role;
+                    const water = row.original;
+                    return (
+                        <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{water.name}</div>
+                    );
+                },
+            },
+            {
+                accessorKey: "fish_types",
+                header: t("fishTypes", { count: 2 }),
+                cell: ({ row }) => {
+                    const fishTypes = row.original.fish_types;
+                    return (
+                        <span className="text-sm text-gray-600 dark:text-gray-500">
+                            {fishTypes.length}
+                        </span>
+                    );
+                },
+            },
+            {
+                accessorKey: "draft",
+                header: t("status"),
+                cell: ({ row }) => {
+                    const isDraft = row.original.draft;
                     return (
                         <span
-                            className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${roleColors[role]}`}
+                            className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${isDraft
+                                ? "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500"
+                                : ""
+                                }`}
                         >
-                            {role}
+                            {isDraft ? t("draft") : ""}
                         </span>
-                    );
-                },
-            },
-            {
-                accessorKey: "lastSeen",
-                header: t("lastSeen"),
-                cell: ({ row }) => {
-                    const lastSeen = row.original.lastSeen ? new Date(row.original.lastSeen) : null;
-                    return lastSeen ? (
-                        <span className="text-sm text-gray-600 dark:text-gray-500">
-                            {lastSeen.toLocaleDateString()}{" "}
-                            {lastSeen.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                    ) : (
-                        <span className="text-sm text-gray-400">Never</span>
                     );
                 },
             },
@@ -147,56 +109,52 @@ const MembersTable: React.FC = () => {
                 header: t("action"),
                 cell: ({ row }) => {
                     const handleEdit = () => {
-                        setSelectedUser(row.original);
-                        openEditModal();
+                        onWaterSelect(row.original.id);
                     };
 
                     const handleDelete = () => {
-                        setSelectedUser(row.original);
-                        openDeleteModal();
+                        // TODO: Implement delete
                     };
 
                     return (
-                        <div hidden={row.original.id === user?.id}>
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <EllipsisVerticalIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
-                                </DropdownTrigger>
-                                <DropdownContent>
-                                    <DropdownItem
-                                        onClick={handleEdit}
-                                        className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                                    >
-                                        {t("viewProfile")}
-                                    </DropdownItem>
-                                    <DropdownItem
-                                        onClick={handleDelete}
-                                        className="flex w-full font-normal text-left text-error-600! rounded-lg hover:bg-error-50! hover:text-error-700! dark:text-error-500 dark:hover:bg-error-500/10 dark:hover:text-error-400"
-                                    >
-                                        {t("delete")}
-                                    </DropdownItem>
-                                </DropdownContent>
-                            </Dropdown>
-                        </div>
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <EllipsisVerticalIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
+                            </DropdownTrigger>
+                            <DropdownContent>
+                                <DropdownItem
+                                    onClick={handleEdit}
+                                    className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                                >
+                                    {t("edit")}
+                                </DropdownItem>
+                                <DropdownItem
+                                    onClick={handleDelete}
+                                    className="flex w-full font-normal text-left text-error-600! rounded-lg hover:bg-error-50! hover:text-error-700! dark:text-error-500 dark:hover:bg-error-500/10 dark:hover:text-error-400"
+                                >
+                                    {t("delete")}
+                                </DropdownItem>
+                            </DropdownContent>
+                        </Dropdown>
                     );
                 },
             },
         ],
-        [t, openEditModal, openDeleteModal, user?.id]
+        [t, onWaterSelect, nhost.storage]
     );
 
     const table = useReactTable({
-        data: data?.users ?? [],
+        data: data ?? [],
         columns,
-        pageCount: data ? Math.ceil(data.total / pageSize) : -1,
+        pageCount: data ? Math.ceil(data.length / pageSize) : -1, // This needs to be updated with total from API
         manualPagination: true,
-        manualSorting: true,
         onSortingChange: setSort,
         state: {
             pagination: { pageIndex: page, pageSize },
             sorting: sort
         },
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         onPaginationChange: (updater) => {
             const newState =
                 typeof updater === "function"
@@ -231,7 +189,7 @@ const MembersTable: React.FC = () => {
                 </span>
                 <input
                     type="text"
-                    placeholder="Search by name or email..."
+                    placeholder={t("searchPlaceholder")}
                     value={search}
                     onChange={(e) => {
                         setPage(0);
@@ -240,23 +198,6 @@ const MembersTable: React.FC = () => {
                     className="dark:bg-dark-900 h-11 w-fit rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 xl:w-[430px]"
                 />
             </div>
-
-            {/* Edit User Modal */}
-            <EditUserRoleModal
-                isOpen={isEditOpen}
-                closeModal={closeEditModal}
-                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
-                clubId={clubId || ""}
-                onSuccess={mutate}
-            />
-            {/* Delete User Modal */}
-            <DeleteUserModal
-                isOpen={isDeleteOpen}
-                closeModal={closeDeleteModal}
-                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
-                clubId={clubId || ""}
-                onSuccess={mutate}
-            />
 
             {/* Table */}
             <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -287,10 +228,9 @@ const MembersTable: React.FC = () => {
                                 <tr key={i} className="border-b">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
+                                            <div className="h-10 w-10 animate-pulse rounded-md bg-gray-200 dark:bg-gray-700" />
                                             <div>
                                                 <div className="mb-1 h-4 w-32 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
-                                                <div className="h-3 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
                                             </div>
                                         </div>
                                     </td>
@@ -298,7 +238,7 @@ const MembersTable: React.FC = () => {
                                         <div className="h-5 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="h-4 w-28 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+                                        <div className="h-4 w-28 animate-pulse rounded bg-gray-200 dark:bg-ray-700" />
                                     </td>
                                     <td className="px-4 py-3">
                                         <div className="h-6 w-6 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
@@ -317,15 +257,15 @@ const MembersTable: React.FC = () => {
                     </tbody>
                 </table>
 
-                {!isLoading && data?.users.length === 0 && (
-                    <div className="p-4 text-center text-gray-500">{t("noUsersFound")}</div>
+                {!isLoading && data?.length === 0 && (
+                    <div className="p-4 text-center text-gray-500">{t("noWatersFound")}</div>
                 )}
             </div>
 
             {/* Pagination controls */}
             <div className="mt-4 flex items-center justify-between">
                 <span className="text-sm text-gray-600">
-                    {t("page")} {page + 1} {t("of")} {data ? Math.ceil(data.total / pageSize) : 1}
+                    {t("page")} {page + 1} {t("of")} {data ? Math.ceil(data.length / pageSize) : 1}
                 </span>
 
                 <div className="flex items-center gap-4">
@@ -359,10 +299,10 @@ const MembersTable: React.FC = () => {
                             type="button"
                             onClick={() =>
                                 setPage((old) =>
-                                    !data ? old : Math.min(old + 1, Math.ceil(data.total / pageSize) - 1)
+                                    !data ? old : Math.min(old + 1, Math.ceil(data.length / pageSize) - 1)
                                 )
                             }
-                            disabled={!data || page >= Math.ceil(data.total / pageSize) - 1 || isLoading}
+                            disabled={!data || page >= Math.ceil(data.length / pageSize) - 1 || isLoading}
                             className="rounded-md border border-gray-200 text-gray-600 dark:text-gray-500 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] px-2 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-50/5 disabled:opacity-50"
                         >
                             {t("next")}
@@ -373,4 +313,4 @@ const MembersTable: React.FC = () => {
         </div>
     );
 };
-export default MembersTable;
+export default WatersTable;

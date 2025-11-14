@@ -41,7 +41,8 @@
   "UserDropdown": {
     "editProfile": "Edit profile",
     "signOut": "Sign out",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "support": "Support"
   },
   "MembersPage": {
     "title": "Members",
@@ -76,10 +77,21 @@
   "WatersPage": {
     "title": "Waters",
     "pageDescription": "The changes may take up to an hour to appear in the app.",
+    "name": "Name",
     "description": "Description",
     "noDescription": "No description found",
-    "fishTypes": "Fish Types ({count})",
-    "draft": "Draft"
+    "fishTypes": "Fish Types",
+    "draft": "Draft",
+    "action": "Action",
+    "searchPlaceholder": "Search",
+    "status": "Status",
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next",
+    "noWatersFound": "No waters found.",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "AddRiver": {
     "title": "Add a River to your Club",
@@ -99,12 +111,24 @@
     "subText": "Set a name for the new waterbody and save it as a draft for your club. You need to edit it later to add more details.",
     "name": "Name",
     "namePlaceholder": "Enter the name of the waterbody",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter a brief description",
     "cancel": "Cancel",
     "save": "Save Changes"
   },
+  "EditWaterModal": {
+    "title": "Edit waterbody",
+    "subText": "Adjust the body of water here. Changes may take up to an hour to appear in the app.",
+    "name": "Name",
+    "namePlaceholder": "Enter the name of the body of water",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter a description of the body of water",
+    "image": "Image",
+    "isDraft": "Draft",
+    "fishTypes": "Fish Types that can be catched",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
   "FishTypes": {
-    "TROUT": "Trout"
+    "TROUT": "Trout",
+    "CARP": "Carp"
   }
 }

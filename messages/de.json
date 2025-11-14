@@ -41,7 +41,8 @@
   "UserDropdown": {
     "editProfile": "Profil bearbeiten",
     "signOut": "Abmelden",
-    "loading": "Lädt..."
+    "loading": "Lädt...",
+    "support": "Support"
   },
   "MembersPage": {
     "title": "Mitglieder",
@@ -76,10 +77,21 @@
   "WatersPage": {
     "title": "Gewässer",
     "pageDescription": "Die Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
+    "name": "Name",
     "description": "Beschreibung",
     "noDescription": "Keine Beschreibung vorhanden",
-    "fishTypes": "Fischarten ({count})",
-    "draft": "Entwurf"
+    "fishTypes": "Fischarten",
+    "draft": "Entwurf",
+    "action": "Aktion",
+    "searchPlaceholder": "Suche",
+    "status": "Status",
+    "page": "Seite",
+    "of": "von",
+    "previous": "Vorherige",
+    "next": "Nächste",
+    "noWatersFound": "Keine Gewässer gefunden.",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
   },
   "AddRiver": {
     "title": "Fluss hinzufügen",
@@ -102,7 +114,21 @@
     "save": "Als Entwurf speichern",
     "cancel": "Abbrechen"
   },
+  "EditWaterModal": {
+    "title": "Gewässer editieren",
+    "subText": "Passe hier das Gewässer an. Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
+    "name": "Name",
+    "namePlaceholder": "Gib den Namen des Gewässers ein",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Gib die Beschreibung des Gewässers ein",
+    "image": "Bild",
+    "isDraft": "Entwurf",
+    "fishTypes": "Fischarten die gefangen werden können",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
   "FishTypes": {
-    "TROUT": "Forelle"
+    "TROUT": "Forelle",
+    "CARP": "Karpfen"
   }
 }

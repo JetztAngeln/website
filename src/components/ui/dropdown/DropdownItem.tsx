@@ -1,11 +1,11 @@
 import type React from "react";
 import Link from "next/link";
+import { useDropdownContext } from "./Dropdown";
 
 interface DropdownItemProps {
   tag?: "a" | "button";
   href?: string;
   onClick?: () => void;
-  onItemClick?: () => void;
   baseClassName?: string;
   className?: string;
   children: React.ReactNode;
@@ -15,11 +15,11 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
   tag = "button",
   href,
   onClick,
-  onItemClick,
   baseClassName = "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900",
   className = "",
   children,
 }) => {
+  const { setOpen } = useDropdownContext();
   const combinedClasses = `${baseClassName} ${className}`.trim();
 
   const handleClick = (event: React.MouseEvent) => {
@@ -27,7 +27,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
       event.preventDefault();
     }
     if (onClick) onClick();
-    if (onItemClick) onItemClick();
+    setOpen(false);
   };
 
   if (tag === "a" && href) {
@@ -39,7 +39,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
   }
 
   return (
-    <button onClick={handleClick} className={combinedClasses}>
+    <button type="button" onClick={handleClick} className={combinedClasses}>
       {children}
     </button>
   );
