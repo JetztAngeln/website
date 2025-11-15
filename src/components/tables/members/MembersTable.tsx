@@ -1,53 +1,29 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
-import {
-    type ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    type SortingState,
-    useReactTable,
-} from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronUpIcon, EllipsisVerticalIcon } from "lucide-react";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-import type React from "react";
-import { useMemo, useState } from "react";
-import useSWR from "swr";
-import { useDebounce } from "use-debounce";
 import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { UserInfo } from "@/lib/models/user_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
+import membersMapSort from "@/lib/sorting/members/mapSort";
 import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
-import { useSidebar } from "../../context/SidebarContext";
-import { useUser } from "../../context/UserContext";
-import { useModal } from "../../hooks/useModal";
-import { Dropdown, DropdownContent, DropdownTrigger } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import DeleteUserModal from "../ui/modal/DeleteUserModal";
-import EditUserRoleModal from "../ui/modal/EditUserRoleModal";
-
-const roleColors: Record<UserInfo["role"], string> = {
-    ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
-    SUPERVISOR: "bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400",
-    USER: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
-};
-
-
-function mapSort(inputs: SortingState): MemberSortEnum[] {
-    return inputs.map((input) => {
-        switch (input.id) {
-            case "displayName":
-                return input.desc ? MemberSortEnum.DISPLAY_NAME_DESC : MemberSortEnum.DISPLAY_NAME_ASC;
-            case "role":
-                return input.desc ? MemberSortEnum.ROLE_DESC : MemberSortEnum.ROLE_ASC;
-            case "lastSeen":
-                return input.desc ? MemberSortEnum.LAST_SEEN_DESC : MemberSortEnum.LAST_SEEN_ASC;
-            default:
-                return MemberSortEnum.DISPLAY_NAME_ASC;
-        }
-    });
-}
+import {
+    flexRender,
+    getCoreRowModel,
+    type SortingState,
+    useReactTable
+} from "@tanstack/react-table";
+import { ChevronDownIcon, ChevronUpIcon, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { useDebounce } from "use-debounce";
+import { useSidebar } from "../../../context/SidebarContext";
+import { useUser } from "../../../context/UserContext";
+import { useModal } from "../../../hooks/useModal";
+import DeleteUserModal from "../../ui/modal/DeleteUserModal";
+import EditUserRoleModal from "../../ui/modal/EditUserRoleModal";
+import { getMembersColumns } from "./members-columns";
 
 const MembersTable: React.FC = () => {
     const { nhost, session } = useAuth();
@@ -64,8 +40,6 @@ const MembersTable: React.FC = () => {
     const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
-    console.log(clubId);
-
     const { data, isLoading, mutate } = useSWR<{ users: UserInfo[]; total: number } | null>(
         ["membersTable", clubId, page, pageSize, debouncedSearch, sort],
         async (key: any) => {
@@ -75,7 +49,7 @@ const MembersTable: React.FC = () => {
                     total: 0,
                 }
             }
-            const sortParams = mapSort(key[5]);
+            const sortParams = membersMapSort(key[5]);
             if (sortParams.length === 0) {
                 sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
             }
@@ -89,101 +63,7 @@ const MembersTable: React.FC = () => {
         },
     );
 
-    const columns = useMemo<ColumnDef<UserInfo>[]>(
-        () => [
-            {
-                accessorKey: "displayName",
-                header: "Name",
-                cell: ({ row }) => {
-                    const user = row.original;
-                    return (
-                        <div className="flex items-center gap-3">
-                            <Image
-                                src={user.avatarUrl || "https://gravatar.com/avatar/?d=identicon"}
-                                alt={user.displayName}
-                                width={40}
-                                height={40}
-                                className="h-10 w-10 rounded-full object-cover"
-                            />
-                            <div>
-                                <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{user.displayName}</div>
-                                <div className="text-sm text-gray-500">{user.email}</div>
-                            </div>
-                        </div>
-                    );
-                },
-            },
-            {
-                accessorKey: "role",
-                header: t("role"),
-                cell: ({ row }) => {
-                    const role = row.original.role;
-                    return (
-                        <span
-                            className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${roleColors[role]}`}
-                        >
-                            {role}
-                        </span>
-                    );
-                },
-            },
-            {
-                accessorKey: "lastSeen",
-                header: t("lastSeen"),
-                cell: ({ row }) => {
-                    const lastSeen = row.original.lastSeen ? new Date(row.original.lastSeen) : null;
-                    return lastSeen ? (
-                        <span className="text-sm text-gray-600 dark:text-gray-500">
-                            {lastSeen.toLocaleDateString()}{" "}
-                            {lastSeen.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                    ) : (
-                        <span className="text-sm text-gray-400">Never</span>
-                    );
-                },
-            },
-            {
-                id: "actions",
-                header: t("action"),
-                cell: ({ row }) => {
-                    const handleEdit = () => {
-                        setSelectedUser(row.original);
-                        openEditModal();
-                    };
-
-                    const handleDelete = () => {
-                        setSelectedUser(row.original);
-                        openDeleteModal();
-                    };
-
-                    return (
-                        <div hidden={row.original.id === user?.id}>
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <EllipsisVerticalIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
-                                </DropdownTrigger>
-                                <DropdownContent>
-                                    <DropdownItem
-                                        onClick={handleEdit}
-                                        className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                                    >
-                                        {t("viewProfile")}
-                                    </DropdownItem>
-                                    <DropdownItem
-                                        onClick={handleDelete}
-                                        className="flex w-full font-normal text-left text-error-600! rounded-lg hover:bg-error-50! hover:text-error-700! dark:text-error-500 dark:hover:bg-error-500/10 dark:hover:text-error-400"
-                                    >
-                                        {t("delete")}
-                                    </DropdownItem>
-                                </DropdownContent>
-                            </Dropdown>
-                        </div>
-                    );
-                },
-            },
-        ],
-        [t, openEditModal, openDeleteModal, user?.id]
-    );
+    const columns = getMembersColumns({ t, user, openEditModal, openDeleteModal, setSelectedUser });
 
     const table = useReactTable({
         data: data?.users ?? [],
@@ -212,22 +92,7 @@ const MembersTable: React.FC = () => {
             {/* Search bar */}
             <div className="mb-4 flex justify-between relative">
                 <span className="absolute -translate-y-1/2 left-4 top-1/2 pointer-events-none">
-                    <svg
-                        className="fill-gray-500 dark:fill-gray-400"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title>Search icon</title>
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 5.87693 15.7084 9.37363C15.7084 12.8703 12.8731 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z"
-                            fill=""
-                        />
-                    </svg>
+                    <Search className="text-gray-500 dark:text-gray-400" height={20} />
                 </span>
                 <input
                     type="text"
@@ -282,9 +147,9 @@ const MembersTable: React.FC = () => {
                     </thead>
                     <tbody>
                         {isLoading
-                            ? Array.from({ length: pageSize }).map((_, i) => (
-                                // biome-ignore lint/suspicious/noArrayIndexKey: <i> is fine here
+                            ? [...new Array(10).keys()].map((i) => (
                                 <tr key={i} className="border-b">
+                                    {/* Skeleton Items */}
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-3">
                                             <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
@@ -307,6 +172,7 @@ const MembersTable: React.FC = () => {
                             ))
                             : table.getRowModel().rows.map((row) => (
                                 <tr key={row.id} className="border-b border-gray-100 dark:border-white/[0.05] hover:bg-gray-50 dark:hover:bg-gray-50/5 transition-colors">
+                                    {/* Real Items */}
                                     {row.getVisibleCells().map((cell) => (
                                         <td key={cell.id} className="px-4 py-3">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -359,7 +225,7 @@ const MembersTable: React.FC = () => {
                             type="button"
                             onClick={() =>
                                 setPage((old) =>
-                                    !data ? old : Math.min(old + 1, Math.ceil(data.total / pageSize) - 1)
+                                    data ? Math.min(old + 1, Math.ceil(data.total / pageSize) - 1) : old
                                 )
                             }
                             disabled={!data || page >= Math.ceil(data.total / pageSize) - 1 || isLoading}

@@ -13,7 +13,7 @@ import {
     useRole,
 } from "@floating-ui/react";
 import type { HTMLProps, ReactNode } from "react";
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 interface DropdownOptions {
     initialOpen?: boolean;
@@ -55,15 +55,12 @@ export function useDropdown({
 
     const interactions = useInteractions([click, dismiss, role]);
 
-    return useMemo(
-        () => ({
-            open,
-            setOpen,
-            ...interactions,
-            ...data,
-        }),
-        [open, setOpen, interactions, data],
-    );
+    return {
+        open,
+        setOpen,
+        ...interactions,
+        ...data,
+    };
 }
 
 type ContextType = ReturnType<typeof useDropdown> | null;

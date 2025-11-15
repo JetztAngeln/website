@@ -35,6 +35,7 @@ const nextConfig: NextConfig = {
     ],
     dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
   },
+  reactCompiler: true,
 };
 
 const withNextIntl = createNextIntlPlugin();

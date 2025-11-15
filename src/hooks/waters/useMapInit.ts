@@ -1,0 +1,103 @@
+import { useSidebar } from "@/context/SidebarContext";
+import { useTheme } from "@/context/ThemeContext";
+import { GERMANY_BOUNDS, initializeMap, mapStyles } from "@/lib/mapUtils";
+import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
+import maplibregl, { type Map } from "maplibre-gl";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useModal } from "../useModal";
+
+export function useMapInit() {
+  const { type, locale } = useParams<{ type: string; locale: string }>();
+  const { theme } = useTheme();
+  const { selectedClub } = useSidebar();
+  const { openModal, closeModal, isOpen } = useModal();
+
+  const translationMap: Record<string, string> = {
+    river: "AddRiver",
+    lake: "AddLake",
+    zone: "AddZone",
+  };
+  const namespace = translationMap[type] ?? "AddZone";
+  const t = useTranslations(namespace);
+
+  const [currentStyle, setCurrentStyle] = useState(
+    theme === "dark"
+      ? mapStyles["carto-dark"].url
+      : mapStyles["carto-positron"].url
+  );
+
+  const [selectedFeature, setSelectedFeature] = useState("");
+  const [savedFeature, setSavedFeature] = useState<string[]>([]);
+
+  const mapRef = useRef<Map | null>(null);
+  const drawControlRef = useRef<MaplibreTerradrawControl | null>(null);
+
+  const viewState = {
+    longitude: 10.4515,
+    latitude: 51.1657,
+    zoom: 5.5,
+  };
+
+  useEffect(() => {
+    if (mapRef.current) return;
+
+    const map = new maplibregl.Map({
+      container: "map",
+      center: [viewState.longitude, viewState.latitude],
+      zoom: viewState.zoom,
+      style: currentStyle,
+      maxBounds: GERMANY_BOUNDS,
+      maplibreLogo: false,
+      locale: locale,
+      maxPitch: 0,
+    });
+
+    mapRef.current = map;
+    map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+    /**
+     * Add select listener after map style has been loaded
+     */
+    const wait = () => {
+      if (!map.isStyleLoaded()) {
+        setTimeout(wait, 150);
+        return;
+      }
+
+      drawControlRef.current = initializeMap(mapRef, type, locale);
+
+      const drawInstance = drawControlRef.current.getTerraDrawInstance();
+      if (drawInstance) {
+        drawInstance.on("select", (id) => {
+          const snapshot = drawInstance.getSnapshot();
+          const selected = snapshot.find((f) => f.id === id);
+          const stringified = JSON.stringify(selected);
+
+          if (!savedFeature.includes(stringified)) {
+            setSelectedFeature(stringified);
+            openModal();
+          }
+        });
+      }
+    };
+
+    wait();
+  }, []);
+
+  return {
+    mapRef,
+    drawControlRef,
+    selectedFeature,
+    savedFeature,
+    setSavedFeature,
+    isOpen,
+    closeModal,
+    currentStyle,
+    setCurrentStyle,
+    clubId: selectedClub?.id || "",
+    t,
+    theme,
+  };
+}

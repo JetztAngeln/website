@@ -4,11 +4,11 @@
 import type { User } from "@nhost/nhost-js/auth";
 import { createContext, useContext } from "react";
 
-type UserContextType = User | null;
+export type UserContextType = User | null;
 
 const UserContext = createContext<UserContextType>(null);
 
-export function UserProvider({ user, children }: { user: UserContextType; children: React.ReactNode }) {
+export function UserProvider({ user, children }: Readonly<{ user: UserContextType; children: React.ReactNode }>) {
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
 

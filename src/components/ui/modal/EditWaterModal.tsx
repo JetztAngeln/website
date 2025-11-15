@@ -1,6 +1,3 @@
-/** biome-ignore-all lint/correctness/useExhaustiveDependencies: / */
-
-import { useUser } from "@/context/UserContext";
 import { FishType } from "@/lib/models/fish_type";
 import { ClubWater } from "@/lib/models/water";
 import { useAuth } from "@/lib/nhost/AuthProvider";
@@ -18,11 +15,17 @@ import TextArea from "../../form/input/TextArea";
 import Label from "../../form/Label";
 import Button from "../button/Button";
 
-export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: { isOpen: boolean; closeModal: () => void; waterId: string; onSave: () => void; }) {
+type EditWaterModalType = Readonly<{
+    isOpen: boolean;
+    closeModal: () => void;
+    waterId: string;
+    onSave: () => void;
+}>;
+
+export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: EditWaterModalType) {
     const { nhost } = useAuth();
     const t = useTranslations("EditWaterModal");
     const FishTypesT = useTranslations("FishTypes");
-    const user = useUser();
 
     const [loading, setLoading] = useState(false);
     const [water, setWater] = useState<ClubWater | null>(null);
@@ -110,7 +113,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                     fish_types: selectedFishTypeIds,
                 }
             });
-            const { data, errors: updateError } = response.body;
+            const { errors: updateError } = response.body;
 
             if (updateError) {
                 console.error("Error updating water:", updateError);

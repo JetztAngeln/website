@@ -7,7 +7,7 @@ interface ErrorPageProps {
 
 export default async function VerificationError({
   searchParams,
-}: ErrorPageProps) {
+}: Readonly<ErrorPageProps>) {
   const params = await searchParams;
   const errorMessage = params?.message || "Verification failed";
 

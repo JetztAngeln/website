@@ -76,6 +76,7 @@
   },
   "WatersPage": {
     "title": "Waters",
+    "tableTitle": "Waters List",
     "pageDescription": "The changes may take up to an hour to appear in the app.",
     "name": "Name",
     "description": "Description",

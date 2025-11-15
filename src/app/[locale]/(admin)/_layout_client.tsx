@@ -11,18 +11,22 @@ import Backdrop from "../../layout/Backdrop";
 export default function AdminLayout({
   children,
   user
-}: {
+}: Readonly<{
   children: React.ReactNode;
   user: User;
-}) {
+}>) {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
   // Dynamic class for main content margin based on sidebar state
-  const mainContentMargin = isMobileOpen
-    ? "ml-0"
-    : isExpanded || isHovered
-      ? "lg:ml-[290px]"
-      : "lg:ml-[90px]";
+  let mainContentMargin = "";
+
+  if (isMobileOpen) {
+    mainContentMargin = "ml-0";
+  } else if (isExpanded || isHovered) {
+    mainContentMargin = "lg:ml-[290px]";
+  } else {
+    mainContentMargin = "lg:ml-[90px]";
+  }
 
   return (
     <UserProvider user={user}>

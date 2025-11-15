@@ -1,3 +1,4 @@
+import { GET_ADMIN_ROLE_QUERY } from "@/nhost-api/graphql/clubs/queries";
 import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
 import type { NextRequest } from "next/server";
@@ -47,14 +48,6 @@ export async function GET(request: NextRequest) {
 
       console.log("User ID:", userId); // Debugging line
 
-      // 1. Define a clear and correct GraphQL query
-      const GET_ADMIN_ROLE_QUERY = `
-query GetAdminRole($userId: uuid = "") {
-  user_club_relation(where: {role: {_eq: ADMIN}, user_id: {_eq: $userId}}) {
-    role
-  }
-}
-    `;
       const { body } = await nhost.graphql.request<UserClubRelationResponse>(
         {
           query: GET_ADMIN_ROLE_QUERY,

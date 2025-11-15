@@ -76,6 +76,7 @@
   },
   "WatersPage": {
     "title": "Gewässer",
+    "tableTitle": "Gewässerliste",
     "pageDescription": "Die Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
     "name": "Name",
     "description": "Beschreibung",

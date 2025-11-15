@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Dein Angelverein digital in der Hosentasche - JetztAngeln macht's möglich!",
 };
 
-export default async function RootLayout({ children, params }: Props) {
+export default async function RootLayout({ children, params }: Readonly<Props>) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();

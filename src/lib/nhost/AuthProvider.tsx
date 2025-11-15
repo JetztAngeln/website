@@ -9,10 +9,9 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
-  type ReactNode,
+  type ReactNode
 } from "react";
 
 /**
@@ -64,22 +63,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
 
   // Initialize Nhost client with cookie-based storage for server/client session sharing
-  const nhost = useMemo(
-    () =>
-      createClient({
-        region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
-        subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
-        authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
-        functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
-        graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
-        storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
-        storage: new CookieStorage({
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
-        }),
-      }),
-    [],
-  );
+  const nhost = createClient({
+    region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
+    subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
+    authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
+    functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
+    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
+    storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
+    storage: new CookieStorage({
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    }),
+  });
 
   /**
    * Handles session reload when refresh token changes.

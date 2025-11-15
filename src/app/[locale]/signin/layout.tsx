@@ -9,9 +9,9 @@ import { ThemeProvider } from "../../../context/ThemeContext";
 
 export default function AuthLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const t = useTranslations("SignIn");
   return (
     <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">

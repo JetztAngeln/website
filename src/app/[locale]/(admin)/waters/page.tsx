@@ -1,5 +1,8 @@
+import ComponentCard from "@/components/common/ComponentCard";
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import WatersTable from "@/components/tables/waters/WatersTable";
 import type { Metadata } from "next";
-import WatersPage from "./_page_client";
+import { useTranslations } from "next-intl";
 
 
 export const metadata: Metadata = {
@@ -8,7 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default function WatersPageMetadata() {
+  const t = useTranslations("WatersPage");
   return (
-    <WatersPage></WatersPage>
+    <div>
+      <PageBreadcrumb pageTitle={t("title")} />
+      <ComponentCard title={t("tableTitle")}>
+        <WatersTable />
+      </ComponentCard>
+    </div>
   );
 }

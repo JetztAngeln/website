@@ -1,11 +1,11 @@
-import type React from "react";
 import Link from "next/link";
+import type React from "react";
 import { useDropdownContext } from "./Dropdown";
 
 interface DropdownItemProps {
   tag?: "a" | "button";
   href?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent) => void;
   baseClassName?: string;
   className?: string;
   children: React.ReactNode;
@@ -26,7 +26,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
     if (tag === "button") {
       event.preventDefault();
     }
-    if (onClick) onClick();
+    if (onClick) onClick(event);
     setOpen(false);
   };
 
