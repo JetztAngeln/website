@@ -11,10 +11,10 @@ import {
   UsersIcon,
   WavesIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSidebar } from "../../context/SidebarContext";
@@ -180,29 +180,26 @@ const AppSidebar: React.FC = () => {
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // const isActive = (path: string) => path === pathname;
   const isActive = useCallback((path: string) => path === pathname, [pathname]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: </-- IGNORE -->
   useEffect(() => {
     // Check if the current path matches any submenu item
     let submenuMatched = false;
-    ["main", "others"].forEach((menuType) => {
+    for (const menuType of ["main", "others"]) {
       const items = menuType === "main" ? navItems : othersItems;
-      items.forEach((nav, index) => {
-        if (nav.subItems) {
-          nav.subItems.forEach((subItem) => {
-            if (isActive(subItem.path)) {
-              setOpenSubmenu({
-                type: menuType as "main" | "others",
-                index,
-              });
-              submenuMatched = true;
-            }
-          });
+
+      for (const [index, nav] of items.entries()) {
+        for (const subItem of nav.subItems ?? []) {
+          if (isActive(subItem.path)) {
+            setOpenSubmenu({
+              type: menuType as "main" | "others",
+              index,
+            });
+            submenuMatched = true;
+          }
         }
-      });
-    });
+      }
+    }
 
     // If no submenu item matches, close the open submenu
     if (!submenuMatched) {
@@ -226,8 +223,7 @@ const AppSidebar: React.FC = () => {
   const handleSubmenuToggle = (index: number, menuType: "main" | "others") => {
     setOpenSubmenu((prevOpenSubmenu) => {
       if (
-        prevOpenSubmenu &&
-        prevOpenSubmenu.type === menuType &&
+        prevOpenSubmenu?.type === menuType &&
         prevOpenSubmenu.index === index
       ) {
         return null;

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/useExhaustiveDependencies: / */
 
 import { addWaterToClub } from "@/nhost-api/waters/waters.server";
 import { LoaderCircle } from "lucide-react";
@@ -9,7 +8,7 @@ import Input from "../../form/input/InputField";
 import Label from "../../form/Label";
 import Button from "../button/Button";
 
-export default function AddWaterModal({ isOpen, closeModal, feature, clubId, addedFeatures, addFeature }: { isOpen: boolean; closeModal: () => void; feature: string; clubId: string; addedFeatures: string[]; addFeature: (feature: string[]) => void; }) {
+export default function AddWaterModal({ isOpen, closeModal, feature, clubId, addedFeatures, addFeature }: Readonly<{ isOpen: boolean; closeModal: () => void; feature: string; clubId: string; addedFeatures: string[]; addFeature: (feature: string[]) => void; }>) {
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const t = useTranslations("AddWaterModal");

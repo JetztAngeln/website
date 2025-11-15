@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/useExhaustiveDependencies: causes re-render loop */
 "use client";
 
 import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";

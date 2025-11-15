@@ -38,7 +38,7 @@ export async function proxy(request: NextRequest) {
       pathWithoutLocale.startsWith("/signin") ||
       pathWithoutLocale.startsWith("/verify")
     ) {
-      const requestLocale = path.match(localeRegex)?.[1] || "de";
+      const requestLocale = new RegExp(localeRegex).exec(path)?.[1] || "de";
       const dashboardUrl = new URL(`/${requestLocale}/dashboard`, request.url);
       return NextResponse.redirect(dashboardUrl);
     }
@@ -53,14 +53,14 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  const requestLocale = path.match(localeRegex)?.[1] || "de";
+  const requestLocale = new RegExp(localeRegex).exec(path)?.[1] || "de";
   const signInUrl = new URL(`/${requestLocale}/signin`, request.url);
   return NextResponse.redirect(signInUrl);
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    `/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)`,
     "/api/:path*",
   ],
 };

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: no explanation */
 import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import type { LngLatBoundsLike, Map, StyleSpecification } from "maplibre-gl";
 import type { RefObject } from "react";
@@ -38,7 +37,7 @@ const changeLocale = (mapRef: RefObject<Map | null>, locale: string) => {
   // 2. Use optional chaining on `.layers` as well for extra safety
   const layers = mapRef.current.getStyle()?.layers || [];
 
-  layers.forEach((layer) => {
+  for (const layer of layers) {
     if (layer.type === "symbol" && layer.layout?.["text-field"]) {
       // 3. Ensure the map still exists inside the loop
       mapRef.current?.setLayoutProperty(layer.id, "text-field", [
@@ -47,7 +46,7 @@ const changeLocale = (mapRef: RefObject<Map | null>, locale: string) => {
         ["get", "name"], // Fallback to German if the specific locale name doesn't exist
       ]);
     }
-  });
+  }
 };
 
 const utilities: Record<

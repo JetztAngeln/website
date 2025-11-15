@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: not relevant*/
-/** biome-ignore-all lint/a11y/useKeyWithClickEvents: not relevant */
 "use client";
 import { X } from "lucide-react";
 import type React from "react";
@@ -61,15 +59,14 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center overflow-y-auto modal z-99999">
       {!isFullscreen && (
-        <div
+        <button
           className="fixed inset-0 h-full w-full bg-gray-400/50 backdrop-blur-[32px]"
           onClick={onClose}
-        ></div>
+        ></button>
       )}
       <div
         ref={modalRef}
         className={`${contentClasses}  ${className}`}
-        onClick={(e) => e.stopPropagation()}
       >
         {showCloseButton && (
           <button
