@@ -66,10 +66,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const nhost = createClient({
     region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
     subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
-    authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
-    functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
-    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
-    storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
+    authUrl: process.env["NEXT_PUBLIC_NHOST_URL_AUTH"] || undefined,
+    functionsUrl: process.env["NEXT_PUBLIC_NHOST_URL_FUNCTIONS"] || undefined,
+    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_URL_GRAPHQL"] || undefined,
+    storageUrl: process.env["NEXT_PUBLIC_NHOST_URL_STORAGE"] || undefined,
     storage: new CookieStorage({
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

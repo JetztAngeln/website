@@ -22,10 +22,10 @@ export async function createNhostClient(): Promise<NhostClient> {
   const nhost = createServerClient({
     region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
     subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
-    authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
-    functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
-    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
-    storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
+    authUrl: process.env["NEXT_PUBLIC_NHOST_URL_AUTH"] || undefined,
+    functionsUrl: process.env["NEXT_PUBLIC_NHOST_URL_FUNCTIONS"] || undefined,
+    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_URL_GRAPHQL"] || undefined,
+    storageUrl: process.env["NEXT_PUBLIC_NHOST_URL_STORAGE"] || undefined,
     storage: {
       // storage compatible with Next.js server components
       get: (): Session | null => {
@@ -65,10 +65,10 @@ export async function handleNhostMiddleware(
   const nhost = createServerClient({
     region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
     subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
-    authUrl: process.env["NEXT_PUBLIC_NHOST_AUTH_URL"] || undefined,
-    functionsUrl: process.env["NEXT_PUBLIC_NHOST_FUNCTIONS_URL"] || undefined,
-    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_GRAPHQL_URL"] || undefined,
-    storageUrl: process.env["NEXT_PUBLIC_NHOST_STORAGE_URL"] || undefined,
+    authUrl: process.env["NEXT_PUBLIC_NHOST_URL_AUTH"] || undefined,
+    functionsUrl: process.env["NEXT_PUBLIC_NHOST_URL_FUNCTIONS"] || undefined,
+    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_URL_GRAPHQL"] || undefined,
+    storageUrl: process.env["NEXT_PUBLIC_NHOST_URL_STORAGE"] || undefined,
     storage: {
       // storage compatible with Next.js middleware
       get: (): Session | null => {
