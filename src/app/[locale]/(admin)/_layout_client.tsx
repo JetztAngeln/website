@@ -17,7 +17,7 @@ export default function AdminLayout({
 }>) {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
-  // Dynamic class for main content margin based on sidebar state
+  // Dynamic class for main content margin based on sidebar state.
   let mainContentMargin = "";
 
   if (isMobileOpen) {
