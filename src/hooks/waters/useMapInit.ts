@@ -40,6 +40,38 @@ export function useMapInit() {
     zoom: 5.5,
   };
 
+  /**
+   * Add select listener after map style has been loaded
+   */
+  const wait = (map: maplibregl.Map) => {
+    if (!map.isStyleLoaded()) {
+      setTimeout(() => wait(map), 150);
+      return;
+    }
+
+    drawControlRef.current = initializeMap(mapRef, type, locale);
+
+    const drawInstance = drawControlRef.current.getTerraDrawInstance();
+    if (drawInstance) {
+      drawInstance.on("select", (id) => {
+        const snapshot = drawInstance.getSnapshot();
+        const selected = snapshot.find((f) => f.id === id);
+        const stringified = JSON.stringify({
+          ...selected,
+          properties: {
+            waterType: type,
+          },
+          id: undefined,
+        });
+
+        if (!savedFeature.includes(stringified)) {
+          setSelectedFeature(stringified);
+          openModal();
+        }
+      });
+    }
+  };
+
   useEffect(() => {
     if (mapRef.current) return;
 
@@ -57,33 +89,7 @@ export function useMapInit() {
     mapRef.current = map;
     map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-    /**
-     * Add select listener after map style has been loaded
-     */
-    const wait = () => {
-      if (!map.isStyleLoaded()) {
-        setTimeout(wait, 150);
-        return;
-      }
-
-      drawControlRef.current = initializeMap(mapRef, type, locale);
-
-      const drawInstance = drawControlRef.current.getTerraDrawInstance();
-      if (drawInstance) {
-        drawInstance.on("select", (id) => {
-          const snapshot = drawInstance.getSnapshot();
-          const selected = snapshot.find((f) => f.id === id);
-          const stringified = JSON.stringify(selected);
-
-          if (!savedFeature.includes(stringified)) {
-            setSelectedFeature(stringified);
-            openModal();
-          }
-        });
-      }
-    };
-
-    wait();
+    wait(map);
   }, []);
 
   return {

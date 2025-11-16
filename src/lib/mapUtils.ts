@@ -96,6 +96,13 @@ const drawUtilities = (type: keyof typeof utilities) => {
       polygon: new TerraDrawPolygonMode({
         // validation: undefined, // Disable self-intersection validation
         //editable: true,
+        styles: {
+          fillColor: type == "zone" ? "#E47066" : undefined,
+          outlineColor: type == "zone" ? "#EB4335" : undefined,
+          closingPointColor: type == "zone" ? "#EB4335" : undefined,
+          coordinatePointColor: type == "zone" ? "#EB4335" : undefined,
+          editedPointColor: type == "zone" ? "#EB4335" : undefined,
+        },
       }),
       select: new TerraDrawSelectMode({
         flags: {
@@ -103,6 +110,12 @@ const drawUtilities = (type: keyof typeof utilities) => {
           linestring: feature,
           freehand: feature,
           "freehand-linestring": feature,
+        },
+        styles: {
+          selectedPolygonColor: type == "zone" ? "#E47066" : undefined,
+          selectedPolygonOutlineColor: type == "zone" ? "#EB4335" : undefined,
+          midPointColor: type == "zone" ? "#EB4335" : undefined,
+          selectionPointColor: type == "zone" ? "#EB4335" : undefined,
         },
       }),
     },

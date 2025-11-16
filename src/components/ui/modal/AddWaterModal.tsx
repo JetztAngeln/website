@@ -1,5 +1,7 @@
 
-import { addWaterToClub } from "@/nhost-api/waters/waters.server";
+import { ClubWater } from "@/lib/models/water";
+import { capitalizeFirst } from "@/lib/utils";
+import { addWaterToClub, addZoneToWater } from "@/nhost-api/waters/waters.server";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -8,10 +10,22 @@ import Input from "../../form/input/InputField";
 import Label from "../../form/Label";
 import Button from "../button/Button";
 
-export default function AddWaterModal({ isOpen, closeModal, feature, clubId, addedFeatures, addFeature }: Readonly<{ isOpen: boolean; closeModal: () => void; feature: string; clubId: string; addedFeatures: string[]; addFeature: (feature: string[]) => void; }>) {
+export default function AddWaterModal(
+    { isOpen, closeModal, feature, clubId, addedFeatures, addFeature, type, selectedWater }:
+        Readonly<{
+            isOpen: boolean;
+            closeModal: () => void;
+            feature: string;
+            clubId: string;
+            addedFeatures: string[];
+            addFeature: (feature: string[]) => void;
+            type: string;
+            selectedWater: ClubWater | undefined;
+        }>
+) {
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
-    const t = useTranslations("AddWaterModal");
+    const t = useTranslations(`AddWaterModal${capitalizeFirst(type)}`);
 
     useEffect(() => {
         if (!isOpen) {
@@ -24,10 +38,16 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
     }, [isOpen, feature]);
 
     const handleSave = async () => {
-        if (feature && clubId && !addedFeatures.includes(feature) && name.trim() !== "") {
+        if (feature && clubId && !addedFeatures.includes(feature) && (name.trim() !== "" || type == "zone")) {
             setLoading(true);
             try {
-                const response = await addWaterToClub(clubId, name.trim(), JSON.parse(feature).geometry);
+                let response;
+
+                if (type == "zone") {
+                    response = await addZoneToWater(selectedWater!, JSON.parse(feature));
+                } else {
+                    response = await addWaterToClub(clubId, name.trim(), [JSON.parse(feature)]);
+                }
 
                 if (response.error) {
                     console.error("Failed to add water:", response.error);
@@ -57,10 +77,12 @@ export default function AddWaterModal({ isOpen, closeModal, feature, clubId, add
             </h4>
             <p className="text-gray-600 dark:text-gray-400 mb-4">{t("subText")}</p>
 
-            <div>
-                <Label>{t("name")}</Label>
-                <Input className="w-full" type="text" placeholder={t("namePlaceholder")} onChange={(e) => setName(e.target.value)} />
-            </div>
+            {type == "zone" ? null :
+                <div>
+                    <Label>{t("name")}</Label>
+                    <Input className="w-full" type="text" placeholder={t("namePlaceholder")} onChange={(e) => setName(e.target.value)} />
+                </div>
+            }
 
             <div className="flex items-center justify-between w-full gap-3 mt-6">
                 <Button size="sm" variant="outline" onClick={closeModal}>

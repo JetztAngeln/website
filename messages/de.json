@@ -105,14 +105,28 @@
   },
   "AddZone": {
     "title": "Angelverbotszone hinzufügen",
-    "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern.\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
+    "description": "Wähle ein Gewässer aus, auf dem du eine Angelverbotszone hinzufügen willst. Wähle danach das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern.\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
   },
-  "AddWaterModal": {
+  "AddWaterModalLake": {
     "title": "Gewässer hinzufügen",
     "subText": "Wähle einen Namen für das Gewässer aus und speichere es als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
     "name": "Name",
     "namePlaceholder": "Gib den Namen des Gewässers ein",
     "save": "Als Entwurf speichern",
+    "cancel": "Abbrechen"
+  },
+  "AddWaterModalRiver": {
+    "title": "Fluss hinzufügen",
+    "subText": "Wähle einen Namen für den Fluss aus und speichere ihn als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
+    "name": "Name",
+    "namePlaceholder": "Gib den Namen des Flusses ein",
+    "save": "Als Entwurf speichern",
+    "cancel": "Abbrechen"
+  },
+  "AddWaterModalZone": {
+    "title": "Angelverbotszone hinzufügen",
+    "subText": "Speichere den ausgewählten Bereich als Angelverbotszone, für das aktuell ausgewählte Gewässer.",
+    "save": "Speichern",
     "cancel": "Abbrechen"
   },
   "EditWaterModal": {

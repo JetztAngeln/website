@@ -55,8 +55,6 @@ export async function getProviderSignInUrl(provider: "google" | "apple") {
     const origin =
       process.env["NEXT_PUBLIC_APP_URL"] || "http://localhost:3000";
 
-    console.log(origin);
-
     const redirectTo = `${origin}/verify`;
 
     // Get the server Nhost client

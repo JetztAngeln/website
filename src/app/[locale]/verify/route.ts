@@ -46,8 +46,6 @@ export async function GET(request: NextRequest) {
         throw new Error("User ID not found in session after refresh.");
       }
 
-      console.log("User ID:", userId); // Debugging line
-
       const { body } = await nhost.graphql.request<UserClubRelationResponse>(
         {
           query: GET_ADMIN_ROLE_QUERY,

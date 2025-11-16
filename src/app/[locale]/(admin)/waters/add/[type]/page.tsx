@@ -2,17 +2,22 @@
 
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import AddWaterDescription from "@/components/richTags/waters/add/AddWaterDescription";
+import SelectWater from "@/components/tables/waters/SelectWater";
 import AddWaterModal from "@/components/ui/modal/AddWaterModal";
 import { useFeatureCleanup } from "@/hooks/waters/useFeatureCleanup";
 import { useMapInit } from "@/hooks/waters/useMapInit";
 import { useMapStyle } from "@/hooks/waters/useMapStyle";
+import { useSelectedWater } from "@/hooks/waters/useSelectedWater";
 import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
 import "maplibre-gl/dist/maplibre-gl.css";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { mapStyles } from "../../../../../../lib/mapUtils";
 
 export default function AddWaterInMap() {
+    const { type } = useParams<{ type: string; locale: string }>();
+
     const {
         mapRef,
         drawControlRef,
@@ -25,7 +30,7 @@ export default function AddWaterInMap() {
         setCurrentStyle,
         clubId,
         t,
-        theme
+        theme,
     } = useMapInit();
 
     /**
@@ -45,12 +50,26 @@ export default function AddWaterInMap() {
     */
     useFeatureCleanup({ drawControlRef, mapRef, savedFeature, setSavedFeature });
 
+    const { waters, selectedWater, setSelectedWater, loading } = useSelectedWater({ clubId, mapRef, drawControlRef, currentStyle, savedFeature });
+
+    const currentSelectedWater = waters.find((e) => e.id == selectedWater);
+
     return (
         <div>
-            <AddWaterModal isOpen={isOpen} closeModal={closeModal} feature={selectedFeature} clubId={clubId} addedFeatures={savedFeature} addFeature={setSavedFeature} />
+            <AddWaterModal isOpen={isOpen} closeModal={closeModal} feature={selectedFeature} clubId={clubId} addedFeatures={savedFeature} addFeature={setSavedFeature} type={type} selectedWater={currentSelectedWater} />
             <PageBreadcrumb pageTitle={t("title")} />
+            {type === "zone" &&
+                <div className="flex gap-4 items-center">
+                    <p className="text-gray-600 dark:text-gray-400 ">Gewässer auswählen:</p>
+                    {loading ? (
+                        <p className="text-gray-600 dark:text-gray-400 ">Laden...</p>
+                    ) : (
+                        <SelectWater waters={waters} selectedWater={selectedWater} setSelectedWater={setSelectedWater}></SelectWater>
+                    )}
+                </div>
+            }
             {/* Description */}
-            <div className="mb-4">
+            <div className="my-4">
                 <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">{<AddWaterDescription t={t} />}</p>
             </div>
 

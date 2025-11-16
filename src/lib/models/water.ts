@@ -12,7 +12,7 @@ export interface ClubWater {
   /** The unique identifier for the cover image of the water body. */
   image_id?: string; // uuid
   /** A GeoJSON object representing the geometry of the water body. */
-  geo_json: any; // jsonb
+  geo_json: maplibregl.GeoJSONFeature[]; // jsonb
   /** A list of fish types available in this water body. */
   fish_types: FishType[];
   /** The description for the water */

@@ -105,15 +105,29 @@
   },
   "AddZone": {
     "title": "Add an additional no-fishing Zone to your Club",
-    "description": "Select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone.\nTip: With right-click you can delete points."
+    "description": "Select the waterbody where you want to draw a no-fishing zone onto. Afterwards select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone.\nTip: With right-click you can delete points."
   },
-  "AddWaterModal": {
+  "AddWaterModalLake": {
     "title": "Add new Waterbody",
-    "subText": "Set a name for the new waterbody and save it as a draft for your club. You need to edit it later to add more details.",
+    "subText": "Set a name for the new waterbody and save it as a draft for your club. You can add further details in the water overview tab.",
     "name": "Name",
     "namePlaceholder": "Enter the name of the waterbody",
     "cancel": "Cancel",
-    "save": "Save Changes"
+    "save": "Save as draft"
+  },
+  "AddWaterModalRiver": {
+    "title": "Add new river",
+    "subText": "Set a name for the new river and save it as a draft for your club. You can add further details in the water overview tab.",
+    "name": "Name",
+    "namePlaceholder": "Enter the name of the river",
+    "cancel": "Cancel",
+    "save": "Save as draft"
+  },
+  "AddWaterModalZone": {
+    "title": "Add new no-fishing zone",
+    "subText": "Save the currently selected area as a no-fishing zone, for the currently selected waterbody.",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "EditWaterModal": {
     "title": "Edit waterbody",
