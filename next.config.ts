@@ -32,6 +32,18 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "local.storage.local.nhost.run",
       },
+      {
+        protocol: "https",
+        hostname: "storage-test-nhost.jetztangeln.de",
+      },
+      {
+        protocol: "https",
+        hostname: "storage-staging-nhost.jetztangeln.de",
+      },
+      {
+        protocol: "https",
+        hostname: "storage-prod-nhost.jetztangeln.de",
+      },
     ],
     dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
   },
