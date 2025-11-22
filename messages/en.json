@@ -86,6 +86,10 @@
     "action": "Action",
     "searchPlaceholder": "Search",
     "status": "Status",
+    "private": "Private",
+    "public": "Public",
+    "private_info": "Private - Only for club members",
+    "public_info": "Public - Open for everybody",
     "page": "Page",
     "of": "of",
     "previous": "Previous",
@@ -138,6 +142,7 @@
     "descriptionPlaceholder": "Enter a description of the body of water",
     "image": "Image",
     "isDraft": "Draft",
+    "isMembersOnly": "Only for club members",
     "fishTypes": "Fish Types that can be catched",
     "save": "Save",
     "cancel": "Cancel"

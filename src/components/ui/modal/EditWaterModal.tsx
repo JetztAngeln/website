@@ -32,6 +32,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isDraft, setIsDraft] = useState(false);
+    const [isMembersOnly, setIsMembersOnly] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [selectedFishTypeIds, setSelectedFishTypeIds] = useState<string[]>([]);
@@ -43,6 +44,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
             setName("");
             setDescription("");
             setIsDraft(false);
+            setIsMembersOnly(false);
             setImageFile(null);
             setImageUrl(null);
             setSelectedFishTypeIds([]);
@@ -63,6 +65,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                     setName(data.club_waters_by_pk.name);
                     setDescription(data.club_waters_by_pk.description || "");
                     setIsDraft(data.club_waters_by_pk.draft);
+                    setIsMembersOnly(data.club_waters_by_pk.members_only);
                     setImageUrl(data.club_waters_by_pk.image_id ? `${nhost.storage.baseURL}/files/${data.club_waters_by_pk.image_id}` : null);
                     setSelectedFishTypeIds(data.club_waters_by_pk.fish_types || []);
                 }
@@ -109,6 +112,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                     name,
                     description,
                     draft: isDraft,
+                    members_only: isMembersOnly,
                     image_id: newImageId,
                     fish_types: selectedFishTypeIds,
                 }
@@ -192,6 +196,15 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                         onChange={(e) => setIsDraft(e)}
                     />
                     <Label htmlFor="isDraft" className="h-3.5">{t("isDraft")}</Label>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <Checkbox
+                        id="isMembersOnly"
+                        checked={isMembersOnly}
+                        onChange={(e) => setIsMembersOnly(e)}
+                    />
+                    <Label htmlFor="isMembersOnly" className="h-3.5">{t("isMembersOnly")}</Label>
                 </div>
 
                 <div>
