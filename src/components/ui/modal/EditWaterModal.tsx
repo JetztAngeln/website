@@ -143,7 +143,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
         <Modal
             isOpen={isOpen}
             onClose={closeModal}
-            className="max-w-[507px] p-6 lg:p-10"
+            className="max-w-[507px] max-h-8/12 overflow-scroll no-scrollbar p-6 lg:p-10"
         >
             <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white/90">
                 {t("title")}
