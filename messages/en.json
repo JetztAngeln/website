@@ -16,7 +16,7 @@
   "Sidebar": {
     "overview": "Overview",
     "members": "Members",
-    "memberOverview": "All Members",
+    "membersOverview": "All Members",
     "membersJoin": "Join Requests",
     "waters": "Waters",
     "watersOverview": "All Waters",
@@ -142,8 +142,42 @@
     "save": "Save",
     "cancel": "Cancel"
   },
+  "Languages": {
+    "de": "🇩🇪 German",
+    "en": "🇬🇧 English"
+  },
   "FishTypes": {
-    "TROUT": "Trout",
-    "CARP": "Carp"
+    "EEL": "Eel",
+    "GRAYLING": "Grayling",
+    "BARBEL": "Barbel",
+    "EUROPEAN_PERCH": "European Perch",
+    "BREAM": "Bream",
+    "CHUB": "Chub",
+    "BROWN_TROUT": "Brown Trout",
+    "GIBEL_CARP": "Gibel Carp",
+    "GRASS_CARP": "Grass Carp",
+    "WHITE_BREAM": "White Bream",
+    "COMMON_DACE": "Common Dace",
+    "PIKE": "Pike",
+    "CARP": "Carp",
+    "RUFFE": "Ruffe",
+    "SALMON": "Salmon",
+    "ROACH": "Roach",
+    "RUDD": "Rudo",
+    "BROOK_TROUT": "Brook Trout",
+    "TENCH": "Tench",
+    "BLEAK": "Bleak",
+    "EUROPEAN_WELS": "European Wels",
+    "PIKEPERCH": "Pikeperch",
+    "ATLANTIC_COD": "Atlantic Cod",
+    "EUROPEAN_FLOUNDER": "European Flounder",
+    "ATLANTIC_HERRING": "Atlantic Herring",
+    "ATLANTIC_MACKEREL": "Atlantic Mackerel",
+    "EUROPEAN_PLAICE": "European Plaice",
+    "ATLANTIC_POLLACK": "Atlantic Pollack",
+    "DOVER_SOLE": "Dover Sole",
+    "SPRAT": "Sprat",
+    "TURBOT": "Turbot",
+    "RAINBOW_TROUT": "Rainbow Trout"
   }
 }

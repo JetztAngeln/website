@@ -1,5 +1,6 @@
 import ThemeTogglerTwo from "../../../components/common/ThemeTogglerTwo";
 
+import LanguageSelect from "@/components/header/SelectLanguage";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,7 +37,10 @@ export default function AuthLayout({
               </div>
             </div>
           </div>
-          <div className="fixed bottom-6 right-6 z-50 hidden sm:block">
+          <div className="fixed top-6 right-6 z-50 flex sm:top-auto sm:bottom-6 justify-end items-center gap-2 w-60">
+            <div className="w-34">
+              <LanguageSelect />
+            </div>
             <ThemeTogglerTwo />
           </div>
         </div>

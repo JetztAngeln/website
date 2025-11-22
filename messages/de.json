@@ -142,8 +142,42 @@
     "save": "Speichern",
     "cancel": "Abbrechen"
   },
+  "Languages": {
+    "de": "🇩🇪 Deutsch",
+    "en": "🇬🇧 Englisch"
+  },
   "FishTypes": {
-    "TROUT": "Forelle",
-    "CARP": "Karpfen"
+    "EEL": "Aal",
+    "GRAYLING": "Äsche",
+    "BARBEL": "Barbel",
+    "EUROPEAN_PERCH": "Flussbarsch",
+    "BREAM": "Brasse",
+    "CHUB": "Döbel",
+    "BROWN_TROUT": "Bachforelle",
+    "GIBEL_CARP": "Giebel",
+    "GRASS_CARP": "Graskarpfen",
+    "WHITE_BREAM": "Güster",
+    "COMMON_DACE": "Hasel",
+    "PIKE": "Hecht",
+    "CARP": "Karpfen",
+    "RUFFE": "Kaulbarsch",
+    "SALMON": "Lachs",
+    "ROACH": "Rotauge",
+    "RUDD": "Rotfeder",
+    "BROOK_TROUT": "Bachsaibling",
+    "TENCH": "Schleie",
+    "BLEAK": "Ukelei",
+    "EUROPEAN_WELS": "Europäischer Wels",
+    "PIKEPERCH": "Zander",
+    "ATLANTIC_COD": "Dorsch",
+    "EUROPEAN_FLOUNDER": "Flunder",
+    "ATLANTIC_HERRING": "Hering",
+    "ATLANTIC_MACKEREL": "Makrele",
+    "EUROPEAN_PLAICE": "Scholle",
+    "ATLANTIC_POLLACK": "Seelachs",
+    "DOVER_SOLE": "Seezunge",
+    "SPRAT": "Sprotte",
+    "TURBOT": "Steinbutt",
+    "RAINBOW_TROUT": "Regenbogenforelle"
   }
 }

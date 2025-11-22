@@ -25,7 +25,7 @@ export default function UserDropdown() {
       <DropdownTrigger asChild>
         <button
           type="button"
-          className="group flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
+          className="group flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle shrink-0"
         >
           <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
             <Image

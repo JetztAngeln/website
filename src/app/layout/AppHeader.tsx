@@ -1,4 +1,5 @@
 "use client";
+import SelectLanguage from "@/components/header/SelectLanguage";
 import { ClubInfo } from "@/lib/models/club_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import { getClubsForCurrentUser } from "@/nhost-api/clubs/user.client";
@@ -71,6 +72,7 @@ const AppHeader: React.FC = () => {
             />
           </Link>
           <div className="flex gap-x-2">
+            <div className="block lg:hidden"><SelectLanguage /></div>
             <div className="block lg:hidden"><ThemeToggleButton /></div>
             <button
               type="button"
@@ -90,6 +92,7 @@ const AppHeader: React.FC = () => {
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
             {/* <!-- Dark Mode Toggler --> */}
+            <div className="hidden lg:block"><SelectLanguage /></div>
             <div className="hidden lg:block"><ThemeToggleButton /></div>
             <div className="lg:hidden">
               {clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
