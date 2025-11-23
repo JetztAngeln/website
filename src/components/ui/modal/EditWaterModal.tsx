@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/nhost/AuthProvider";
 import { UPDATE_WATER } from "@/nhost-api/graphql/waters/mutations";
 import { GET_WATER_BY_ID } from "@/nhost-api/graphql/waters/queries";
 import { LoaderCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Modal } from ".";
@@ -26,6 +26,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
     const { nhost } = useAuth();
     const t = useTranslations("EditWaterModal");
     const FishTypesT = useTranslations("FishTypes");
+    const locale = useLocale();
 
     const [loading, setLoading] = useState(false);
     const [water, setWater] = useState<ClubWater | null>(null);
@@ -210,18 +211,18 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                 <div>
                     <Label>{t("fishTypes")}</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
-                        {Object.values(FishType).map((fishType) => {
-                            const isSelected = selectedFishTypeIds.includes(fishType);
+                        {Object.values(FishType).map((e) => { return { "key": e, "value": FishTypesT(e) } }).sort((a, b) => a.value.localeCompare(b.value, locale)).map((fishType) => {
+                            const isSelected = selectedFishTypeIds.includes(fishType.key);
                             return (
                                 <button
-                                    key={fishType}
+                                    key={fishType.key}
                                     className={`cursor-pointer rounded-full px-3 py-1 text-sm font-medium transition-colors duration-200 ${isSelected
                                         ? "bg-brand-500 text-white"
                                         : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                                         }`}
-                                    onClick={() => handleFishTypeChange(fishType, !isSelected)}
+                                    onClick={() => handleFishTypeChange(fishType.key, !isSelected)}
                                 >
-                                    {FishTypesT(fishType)}
+                                    {fishType.value}
                                 </button>
                             );
                         })}
