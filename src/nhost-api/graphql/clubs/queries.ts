@@ -3,10 +3,11 @@ export const GET_USERS_QUERY = `
       $clubId: uuid!,
       $offset: Int!,
       $limit: Int!,
+      $pending: Boolean,
       $search: String!,
       $orderBy: [ClubUserOrderByEnum!]
   ) {
-    getClubUsers(clubId:$clubId, offset:$offset, limit: $limit, search:$search, orderBy: $orderBy){
+    getClubUsers(clubId:$clubId, offset:$offset, limit: $limit, pending:$pending, search:$search, orderBy: $orderBy){
       user_club_relation {role, user {
         id
         avatarUrl

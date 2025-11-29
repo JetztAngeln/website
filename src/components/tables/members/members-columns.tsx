@@ -10,9 +10,13 @@ import Image from "next/image";
 type MembersColumns = {
     t: ReturnType<typeof createTranslator<Messages, "MembersPage">>,
     user: UserContextType,
+    pending: boolean,
+    locale: string,
     openEditModal: () => void,
     openDeleteModal: () => void,
-    setSelectedUser: React.Dispatch<React.SetStateAction<UserInfo | null>>
+    openAcceptNewJoinerModal: () => void,
+    openDeclineNewJoinerModal: () => void,
+    setSelectedUser: React.Dispatch<React.SetStateAction<UserInfo | null>>,
 };
 
 const roleColors: Record<UserInfo["role"], string> = {
@@ -21,7 +25,7 @@ const roleColors: Record<UserInfo["role"], string> = {
     USER: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
 };
 
-export const getMembersColumns = ({ t, user, openEditModal, openDeleteModal, setSelectedUser }: MembersColumns) => {
+export const getMembersColumns = ({ t, user, pending, locale, openEditModal, openDeleteModal, openAcceptNewJoinerModal, openDeclineNewJoinerModal, setSelectedUser }: MembersColumns) => {
     const columns: ColumnDef<UserInfo>[] = [
         {
             accessorKey: "displayName",
@@ -66,11 +70,11 @@ export const getMembersColumns = ({ t, user, openEditModal, openDeleteModal, set
                 const lastSeen = row.original.lastSeen ? new Date(row.original.lastSeen) : null;
                 return lastSeen ? (
                     <span className="text-sm text-gray-600 dark:text-gray-500">
-                        {lastSeen.toLocaleDateString()}{" "}
-                        {lastSeen.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        {lastSeen.toLocaleDateString(locale)}{" "}
+                        {lastSeen.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
                     </span>
                 ) : (
-                    <span className="text-sm text-gray-400">Never</span>
+                    <span className="text-sm text-gray-400">{t("never")}</span>
                 );
             },
         },
@@ -88,6 +92,16 @@ export const getMembersColumns = ({ t, user, openEditModal, openDeleteModal, set
                     openDeleteModal();
                 };
 
+                const handleAcceptNewJoiner = () => {
+                    setSelectedUser(row.original);
+                    openAcceptNewJoinerModal();
+                };
+
+                const handleDeclineNewJoiner = () => {
+                    setSelectedUser(row.original);
+                    openDeclineNewJoinerModal();
+                };
+
                 return (
                     <div hidden={row.original.id === user?.id}>
                         <Dropdown>
@@ -96,16 +110,16 @@ export const getMembersColumns = ({ t, user, openEditModal, openDeleteModal, set
                             </DropdownTrigger>
                             <DropdownContent>
                                 <DropdownItem
-                                    onClick={handleEdit}
+                                    onClick={pending ? handleAcceptNewJoiner : handleEdit}
                                     className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                                 >
-                                    {t("viewProfile")}
+                                    {t(pending ? "acceptNewJoiner" : "viewProfile")}
                                 </DropdownItem>
                                 <DropdownItem
-                                    onClick={handleDelete}
+                                    onClick={pending ? handleDeclineNewJoiner : handleDelete}
                                     className="flex w-full font-normal text-left text-error-600! rounded-lg hover:bg-error-500/10! hover:text-error-700! dark:text-error-500!  dark:hover:text-error-400!"
                                 >
-                                    {t("delete")}
+                                    {t(pending ? "declineNewJoiner" : "delete")}
                                 </DropdownItem>
                             </DropdownContent>
                         </Dropdown>

@@ -14,6 +14,7 @@ export async function getUsersByClubId(
   nhost: NhostClient,
   session: Session | null,
   clubId: string,
+  pending?: boolean,
   page: number = 1,
   pageSize: number = 10,
   search: string = "",
@@ -41,6 +42,7 @@ export async function getUsersByClubId(
         limit: pageSize,
         offset,
         search: search ? `%${search}%` : "%%",
+        pending: pending,
         orderBy: [sort],
       },
     });

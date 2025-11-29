@@ -48,6 +48,11 @@
     "title": "Mitglieder",
     "tableTitle": "Mitgliederliste"
   },
+  "MembersJoinPage": {
+    "title": "Neuzugang",
+    "tableTitle": "Beitrittsanfragen",
+    "inviteQrCode": "Einladungs QR-Code herunterladen"
+  },
   "MembersTable": {
     "lastSeen": "Zuletzt aktiv",
     "role": "Rolle",
@@ -57,8 +62,11 @@
     "of": "von",
     "previous": "Vorherige",
     "next": "Nächste",
+    "never": "Niemals",
     "viewProfile": "Mitglied ansehen",
-    "delete": "Mitglied löschen"
+    "delete": "Mitglied löschen",
+    "acceptNewJoiner": "Anfrage akzeptieren",
+    "declineNewJoiner": "Anfrage ablehnen"
   },
   "EditUserRoleModal": {
     "title": "Rolle bearbeiten",
@@ -72,6 +80,20 @@
     "description": "Möchtest du das Mitglied <b>{name}</b> wirklich löschen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
     "user": "Mitglied",
     "delete": "Löschen",
+    "cancel": "Abbrechen"
+  },
+  "AcceptNewJoinerModal": {
+    "title": "Beitrittsanfrage akzeptieren",
+    "description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich akzeptieren? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+    "user": "Mitglied",
+    "accept": "Akzeptieren",
+    "cancel": "Abbrechen"
+  },
+  "DeclineNewJoinerModal": {
+    "title": "Beitrittsanfrage ablehnen",
+    "description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich ablehnen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+    "user": "Mitglied",
+    "decline": "Ablehnen",
     "cancel": "Abbrechen"
   },
   "WatersPage": {

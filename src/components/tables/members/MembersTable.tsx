@@ -1,5 +1,7 @@
 "use client";
 
+import AcceptNewJoinerModal from "@/components/ui/modal/AcceptNewJoinerModal";
+import DeclineNewJoinerModal from "@/components/ui/modal/DeclineNewJoinerModal";
 import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { UserInfo } from "@/lib/models/user_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
@@ -12,9 +14,8 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon, Search } from "lucide-react";
-import { useTranslations } from "next-intl";
-import type React from "react";
-import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useState } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
 import { useSidebar } from "../../../context/SidebarContext";
@@ -24,8 +25,9 @@ import DeleteUserModal from "../../ui/modal/DeleteUserModal";
 import EditUserRoleModal from "../../ui/modal/EditUserRoleModal";
 import { getMembersColumns } from "./members-columns";
 
-const MembersTable: React.FC = () => {
+const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
     const { nhost, session } = useAuth();
+    const locale = useLocale();
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
@@ -34,13 +36,15 @@ const MembersTable: React.FC = () => {
     const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
     const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
     const { isOpen: isDeleteOpen, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
+    const { isOpen: isAcceptNewJoinerOpen, openModal: openAcceptNewJoinerModal, closeModal: closeAcceptNewJoinerModal } = useModal();
+    const { isOpen: isDeclineNewJoinerOpen, openModal: openDeclineNewJoinerModal, closeModal: closeDeclineNewJoinerModal } = useModal();
     const { selectedClub } = useSidebar();
     const user = useUser();
     const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
     const { data, isLoading, mutate } = useSWR<{ users: UserInfo[]; total: number } | null>(
-        ["membersTable", clubId, page, pageSize, debouncedSearch, sort],
+        ["membersTable", clubId, pending, page, pageSize, debouncedSearch, sort],
         async (key: any) => {
             if (key[1] == null) {
                 return {
@@ -48,21 +52,23 @@ const MembersTable: React.FC = () => {
                     total: 0,
                 }
             }
-            const sortParams = membersMapSort(key[5]);
+
+            const sortParams = membersMapSort(key[6]);
             if (sortParams.length === 0) {
                 sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
             }
 
             return await getUsersByClubId(nhost, session, key[1],
-                key[2] + 1,
-                key[3],
+                key[2],
+                key[3] + 1,
                 key[4],
+                key[5],
                 sortParams[0],
             );
         },
     );
 
-    const columns = getMembersColumns({ t, user, openEditModal, openDeleteModal, setSelectedUser });
+    const columns = getMembersColumns({ t, user, pending, locale, openEditModal, openDeleteModal, openAcceptNewJoinerModal, openDeclineNewJoinerModal, setSelectedUser });
 
     const table = useReactTable({
         data: data?.users ?? [],
@@ -117,6 +123,22 @@ const MembersTable: React.FC = () => {
             <DeleteUserModal
                 isOpen={isDeleteOpen}
                 closeModal={closeDeleteModal}
+                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                clubId={clubId || ""}
+                onSuccess={mutate}
+            />
+            {/* Accept New Joiner Modal */}
+            <AcceptNewJoinerModal
+                isOpen={isAcceptNewJoinerOpen}
+                closeModal={closeAcceptNewJoinerModal}
+                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                clubId={clubId || ""}
+                onSuccess={mutate}
+            />
+            {/* Decline New Joiner Modal */}
+            <DeclineNewJoinerModal
+                isOpen={isDeclineNewJoinerOpen}
+                closeModal={closeDeclineNewJoinerModal}
                 selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
                 clubId={clubId || ""}
                 onSuccess={mutate}
