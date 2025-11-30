@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut } from "@/lib/auth/actions";
-import { ChevronDown, CircleUserRound, Info, LogOut } from "lucide-react";
+import { ChevronDown, Info, LogOut } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useUser } from "../../context/UserContext";
@@ -56,17 +56,21 @@ export default function UserDropdown() {
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
-          <li>
+          {
+            /*
+            <li>
             <DropdownItem
               tag="a"
               href="/profile"
               className="flex items-center gap-3 px-3! py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              {/* Profile icon */}
-              <CircleUserRound className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300 flex-none" height={20} />
-              {t("editProfile")}
-            </DropdownItem>
-          </li>
+              {/* Profile icon *//*}
+          <CircleUserRound className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300 flex-none" height={20} />
+          {t("editProfile")}
+        </DropdownItem>
+      </li>
+        */
+          }
           <li>
             <DropdownItem
               tag="a"
@@ -89,7 +93,7 @@ export default function UserDropdown() {
           }}
         >
           {/* Sign out icon */}
-          <LogOut className="text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300 flex-none" height={20} />
+          <LogOut className="text-gray-500 group-hover:text-red-700 dark:group-hover:text-red-300 flex-none" height={20} />
           {t("signOut")}
         </DropdownItem>
       </DropdownContent>

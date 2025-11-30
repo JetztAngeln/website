@@ -14,6 +14,8 @@
     "layoutDescription": "Verwalte die Aktivitäten, Mitglieder und Abrechnung deines Vereins an einem Ort."
   },
   "Sidebar": {
+    "menu": "Menü",
+    "others": "Weitere",
     "overview": "Übersicht",
     "members": "Mitglieder",
     "membersOverview": "Übersicht",

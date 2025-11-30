@@ -14,6 +14,8 @@
     "layoutDescription": "Manage your club's activities, members, and billing all in one place."
   },
   "Sidebar": {
+    "menu": "Menu",
+    "others": "Others",
     "overview": "Overview",
     "members": "Members",
     "membersOverview": "All Members",
