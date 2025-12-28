@@ -15,7 +15,7 @@ export const ClubInviteQRCodeDownload: React.FC = () => {
         const headers = new Headers();
         headers.set("authorization", session?.accessToken!);
 
-        const result = await nhost.functions.post("/get_qr_code_for_club", {
+        const result = await nhost.functions.post("/user_operations/get_qr_code_for_club", {
             clubId: selectedClub?.id
         }, {
             headers: headers,
