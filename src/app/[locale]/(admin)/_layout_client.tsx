@@ -9,41 +9,43 @@ import AppSidebar from "../../layout/AppSidebar";
 import Backdrop from "../../layout/Backdrop";
 
 export default function AdminLayout({
-  children,
-  user
+	children,
+	user,
 }: Readonly<{
-  children: React.ReactNode;
-  user: User;
+	children: React.ReactNode;
+	user: User;
 }>) {
-  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+	const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
-  // Dynamic class for main content margin based on sidebar state.
-  let mainContentMargin = "";
+	// Dynamic class for main content margin based on sidebar state.
+	let mainContentMargin = "";
 
-  if (isMobileOpen) {
-    mainContentMargin = "ml-0";
-  } else if (isExpanded || isHovered) {
-    mainContentMargin = "lg:ml-[290px]";
-  } else {
-    mainContentMargin = "lg:ml-[90px]";
-  }
+	if (isMobileOpen) {
+		mainContentMargin = "ml-0";
+	} else if (isExpanded || isHovered) {
+		mainContentMargin = "lg:ml-[290px]";
+	} else {
+		mainContentMargin = "lg:ml-[90px]";
+	}
 
-  return (
-    <UserProvider user={user}>
-      <div className="min-h-screen xl:flex">
-        {/* Sidebar and Backdrop */}
-        <AppSidebar />
-        <Backdrop />
-        {/* Main Content Area */}
-        <div
-          className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}
-        >
-          {/* Header */}
-          <AppHeader />
-          {/* Page Content */}
-          <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
-        </div>
-      </div>
-    </UserProvider>
-  );
+	return (
+		<UserProvider user={user}>
+			<div className="min-h-screen xl:flex">
+				{/* Sidebar and Backdrop */}
+				<AppSidebar />
+				<Backdrop />
+				{/* Main Content Area */}
+				<div
+					className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}
+				>
+					{/* Header */}
+					<AppHeader />
+					{/* Page Content */}
+					<div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+						{children}
+					</div>
+				</div>
+			</div>
+		</UserProvider>
+	);
 }

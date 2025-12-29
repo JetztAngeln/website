@@ -1,29 +1,32 @@
-import { createNhostClient } from "@/lib/nhost/server";
 import type { Metadata } from "next";
+import { createNhostClient } from "@/lib/nhost/server";
 import PageBreadcrumb from "../../../../components/common/PageBreadCrumb";
 
 export const metadata: Metadata = {
-  title: "Abrechnung - JetztAngeln",
-  description: "Habe stets einen Überblick über deine Abrechnungen",
+	title: "Abrechnung - JetztAngeln",
+	description: "Habe stets einen Überblick über deine Abrechnungen",
 };
 
 export default async function Catches() {
-  const nhost = await createNhostClient();
-  const session = nhost.getUserSession();
+	const nhost = await createNhostClient();
+	const session = nhost.getUserSession();
 
-  return (
-    <div>
-      <PageBreadcrumb pageTitle="Abrechnung" />
-      <div className="rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
-        <div className="mx-auto w-full max-w-[630px] text-center">
-          <h3 className="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
-            In Arbeit
-          </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 sm:text-base">
-            Guten Tag {session?.user?.displayName.split(" ")[0]}, leider ist diese Seite noch in Arbeit. Wir bitten um dein Verständnis. Solltest du bereits Wünsche haben, die auf dieser Seite erscheinen sollen, lass es uns doch gerne wissen :)
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<PageBreadcrumb pageTitle="Abrechnung" />
+			<div className="rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
+				<div className="mx-auto w-full max-w-[630px] text-center">
+					<h3 className="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
+						In Arbeit
+					</h3>
+					<p className="text-sm text-gray-500 dark:text-gray-400 sm:text-base">
+						Guten Tag {session?.user?.displayName.split(" ")[0]}, leider ist
+						diese Seite noch in Arbeit. Wir bitten um dein Verständnis. Solltest
+						du bereits Wünsche haben, die auf dieser Seite erscheinen sollen,
+						lass es uns doch gerne wissen :)
+					</p>
+				</div>
+			</div>
+		</div>
+	);
 }

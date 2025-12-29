@@ -1,239 +1,251 @@
+import type { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
+import maplibregl, { type GeoJSONFeature } from "maplibre-gl";
+import { useParams } from "next/navigation";
+import {
+	type RefObject,
+	type SetStateAction,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 import { mapStyles } from "@/lib/mapUtils";
 import { useAuth } from "@/lib/nhost/AuthProvider";
-import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
+import type { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { getWatersByClubId } from "@/nhost-api/waters/waters.client";
-import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
-import maplibregl, { GeoJSONFeature } from "maplibre-gl";
-import { useParams } from "next/navigation";
-import { RefObject, useCallback, useEffect, useState } from "react";
 
 type UseSelectedWaterType = {
-  clubId?: string;
-  mapRef: RefObject<maplibregl.Map | null>;
-  drawControlRef: RefObject<MaplibreTerradrawControl | null>;
-  currentStyle: maplibregl.StyleSpecification;
-  savedFeature: string[];
+	clubId?: string;
+	mapRef: RefObject<maplibregl.Map | null>;
+	drawControlRef: RefObject<MaplibreTerradrawControl | null>;
+	currentStyle: maplibregl.StyleSpecification;
+	savedFeature: string[];
 };
 
 export function useSelectedWater({
-  clubId,
-  mapRef,
-  drawControlRef,
-  currentStyle,
-  savedFeature,
+	clubId,
+	mapRef,
+	drawControlRef,
+	currentStyle,
 }: UseSelectedWaterType) {
-  const { nhost } = useAuth();
-  const { type } = useParams<{ type: string; locale: string }>();
-  const [waters, setWaters] = useState<ClubWaterFragment[]>([]);
-  const [selectedWater, setSelectedWater] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+	const { nhost } = useAuth();
+	const { type } = useParams<{ type: string; locale: string }>();
+	const [waters, setWaters] = useState<ClubWaterFragment[]>([]);
+	const [selectedWater, setSelectedWater] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<Error | null>(null);
 
-  const fetchWaters = useCallback(async () => {
-    if (!clubId) return;
-    setLoading(true);
-    setError(null);
+	const fetchWaters = useCallback(async () => {
+		if (!clubId) return;
+		setLoading(true);
+		setError(null);
 
-    try {
-      const data = await getWatersByClubId(nhost, clubId);
+		try {
+			const data = await getWatersByClubId(nhost, clubId);
 
-      setWaters(data);
-    } catch (err: any) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [nhost, clubId]);
+			setWaters(data);
+		} catch (err: unknown) {
+			setError(err as SetStateAction<Error | null>);
+		} finally {
+			setLoading(false);
+		}
+	}, [nhost, clubId]);
 
-  useEffect(() => {
-    fetchWaters();
-  }, [fetchWaters, savedFeature]);
+	useEffect(() => {
+		fetchWaters();
+	}, [fetchWaters]);
 
-  useEffect(() => {
-    if (waters.length == 0) {
-      return;
-    }
+	useEffect(() => {
+		if (waters.length === 0) {
+			return;
+		}
 
-    const darkMode = currentStyle == mapStyles["carto-dark"].url;
+		const darkMode = currentStyle === mapStyles["carto-dark"].url;
 
-    const wait = () => {
-      if (!mapRef.current!.isStyleLoaded()) {
-        setTimeout(wait, 200);
-        return;
-      }
+		const wait = () => {
+			if (mapRef.current == null || !mapRef.current.isStyleLoaded()) {
+				setTimeout(wait, 200);
+				return;
+			}
 
-      let watersToIterate = waters;
+			let watersToIterate = waters;
 
-      if (type == "zone") {
-        watersToIterate = [waters.find((e) => e.id == selectedWater)!];
-      }
+			if (type === "zone") {
+				const water = waters.find((e) => e.id === selectedWater);
 
-      // We need the timeout because otherwise it won't load the layers sometimes
-      setTimeout(() => {
-        clearMapStyle(mapRef);
+				if (water != null) {
+					watersToIterate = [water];
+				}
+			}
 
-        for (const water of watersToIterate) {
-          if (water.geo_json == undefined) {
-            continue;
-          }
+			// We need the timeout because otherwise it won't load the layers sometimes
+			setTimeout(() => {
+				clearMapStyle(mapRef);
 
-          const waterToNavigate = (water.geo_json as GeoJSONFeature[]).find(
-            (e) => e.properties.waterType != "zone"
-          );
+				for (const water of watersToIterate) {
+					if (water.geo_json === undefined) {
+						continue;
+					}
 
-          if (waterToNavigate == undefined) {
-            continue;
-          }
-          if (type == "zone" && selectedWater == water.id) {
-            navigateToLocation(waterToNavigate, mapRef);
-          }
+					const waterToNavigate = (water.geo_json as GeoJSONFeature[]).find(
+						(e) => e.properties.waterType !== "zone",
+					);
 
-          addToMap(mapRef, water, darkMode);
-        }
-      }, 0);
-    };
+					if (waterToNavigate === undefined) {
+						continue;
+					}
+					if (type === "zone" && selectedWater === water.id) {
+						navigateToLocation(waterToNavigate, mapRef);
+					}
 
-    wait();
-  }, [selectedWater, currentStyle, waters]);
+					addToMap(mapRef, water, darkMode);
+				}
+			}, 0);
+		};
 
-  useEffect(() => {
-    if (type !== "zone") {
-      return;
-    }
+		wait();
+	}, [selectedWater, currentStyle, waters, mapRef, type]);
 
-    const map = mapRef.current;
-    const ctrl = drawControlRef.current;
-    if (!map || !ctrl) return;
+	useEffect(() => {
+		if (type !== "zone") {
+			return;
+		}
 
-    const draw = ctrl.getTerraDrawInstance();
-    if (!draw) return;
+		const map = mapRef.current;
+		const ctrl = drawControlRef.current;
+		if (!map || !ctrl) return;
 
-    if (draw.enabled) {
-      draw.clear();
-    }
-  }, [selectedWater]);
+		const draw = ctrl.getTerraDrawInstance();
+		if (!draw) return;
 
-  return {
-    waters,
-    selectedWater,
-    setSelectedWater,
-    loading,
-    error,
-  };
+		if (draw.enabled) {
+			draw.clear();
+		}
+	}, [drawControlRef.current, mapRef.current, type]);
+
+	return {
+		waters,
+		selectedWater,
+		setSelectedWater,
+		loading,
+		error,
+	};
 }
 
 function navigateToLocation(
-  selectedWater: maplibregl.GeoJSONFeature,
-  mapRef: RefObject<maplibregl.Map | null>
+	selectedWater: maplibregl.GeoJSONFeature,
+	mapRef: RefObject<maplibregl.Map | null>,
 ) {
-  // Bounding box erstellen
-  const bounds = new maplibregl.LngLatBounds();
-  let coords = (selectedWater.geometry as any).coordinates;
+	// Bounding box erstellen
+	const bounds = new maplibregl.LngLatBounds();
+	// biome-ignore lint/suspicious/noExplicitAny: this value has the coordinates field but the type doesn't resemble it
+	let coords = (selectedWater.geometry as any).coordinates;
 
-  if (selectedWater.geometry.type == "Polygon") {
-    coords = coords[0];
-  }
+	if (selectedWater.geometry.type === "Polygon") {
+		coords = coords[0];
+	}
 
-  for (const [lng, lat] of coords) {
-    bounds.extend([lng, lat]);
-  }
+	for (const [lng, lat] of coords) {
+		bounds.extend([lng, lat]);
+	}
 
-  // Kamera bewegen
-  if (!bounds.isEmpty()) {
-    mapRef.current!.fitBounds(bounds, {
-      padding: 40,
-      duration: 800,
-    });
-  }
+	// Kamera bewegen
+	if (!bounds.isEmpty() && mapRef.current) {
+		mapRef.current.fitBounds(bounds, {
+			padding: 40,
+			duration: 800,
+		});
+	}
 }
 
 function clearMapStyle(mapRef: RefObject<maplibregl.Map | null>) {
-  const layers = mapRef.current
-    ?.getStyle()
-    .layers.filter((e) => e.id.startsWith("preloaded-"));
+	const layers = mapRef.current
+		?.getStyle()
+		.layers.filter((e) => e.id.startsWith("preloaded-"));
 
-  if (layers) {
-    for (const layer of layers) {
-      mapRef.current!.removeLayer(layer.id);
-    }
-  }
+	if (layers && mapRef.current) {
+		for (const layer of layers) {
+			mapRef.current.removeLayer(layer.id);
+		}
+	}
 
-  if (mapRef.current?.getStyle().sources) {
-    const sources = Object.keys(mapRef.current?.getStyle().sources).filter(
-      (e) => e.startsWith("preloaded-")
-    );
+	if (mapRef.current?.getStyle().sources) {
+		const sources = Object.keys(mapRef.current?.getStyle().sources).filter(
+			(e) => e.startsWith("preloaded-"),
+		);
 
-    for (const source of sources) {
-      mapRef.current.removeSource(source);
-    }
-  }
+		for (const source of sources) {
+			mapRef.current.removeSource(source);
+		}
+	}
 }
 function addToMap(
-  mapRef: RefObject<maplibregl.Map | null>,
-  water: ClubWaterFragment,
-  darkMode: boolean
+	mapRef: RefObject<maplibregl.Map | null>,
+	water: ClubWaterFragment,
+	darkMode: boolean,
 ) {
-  mapRef.current!.addSource(`preloaded-${water.id}`, {
-    type: "geojson",
-    data: {
-      type: "FeatureCollection",
-      features: (water.geo_json as GeoJSONFeature[]).filter(
-        (e) => e.geometry.type == "Polygon"
-      ),
-    },
-  });
-  mapRef.current!.addSource(`preloaded-line-${water.id}`, {
-    type: "geojson",
-    data: {
-      type: "FeatureCollection",
-      features: (water.geo_json as GeoJSONFeature[]).filter(
-        (e) => e.geometry.type == "LineString"
-      ),
-    },
-  });
-  mapRef.current!.addLayer({
-    id: `preloaded-layer-${water.id}`,
-    type: "fill",
-    source: `preloaded-${water.id}`,
-    paint: {
-      "fill-color": [
-        "match",
-        ["get", "waterType"], // property name
-        "zone",
-        "#d32f2f",
-        "#29479B", // fallback
-      ],
-      "fill-opacity": 0.8,
-      "fill-outline-color": "#FFFFFF",
-    },
-  });
-  mapRef.current!.addLayer({
-    id: `preloaded-layer-polygon-line-${water.id}`,
-    type: "line",
-    source: `preloaded-${water.id}`,
-    paint: {
-      "line-color": darkMode ? "#FFFFFF" : "#29479B",
-      "line-width": 2,
-    },
-  });
-  mapRef.current!.addLayer({
-    id: `preloaded-layer-line-${water.id}`,
-    type: "line",
-    source: `preloaded-line-${water.id}`,
-    paint: {
-      "line-color": darkMode ? "#FFFFFF" : "#29479B",
-      "line-width": 10,
-    },
-  });
-  const layers = mapRef.current!.getStyle().layers;
-  const terraLayer =
-    layers.find((l) => l.id.startsWith("td-") || l.id.startsWith("terra-draw"))
-      ?.id ?? layers.at(-1)?.id;
+	if (!mapRef.current) return;
 
-  mapRef.current!.moveLayer(`preloaded-layer-${water.id}`, terraLayer);
-  mapRef.current!.moveLayer(
-    `preloaded-layer-polygon-line-${water.id}`,
-    terraLayer
-  );
-  mapRef.current!.moveLayer(`preloaded-layer-line-${water.id}`, terraLayer);
+	mapRef.current.addSource(`preloaded-${water.id}`, {
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: (water.geo_json as GeoJSONFeature[]).filter(
+				(e) => e.geometry.type === "Polygon",
+			),
+		},
+	});
+	mapRef.current.addSource(`preloaded-line-${water.id}`, {
+		type: "geojson",
+		data: {
+			type: "FeatureCollection",
+			features: (water.geo_json as GeoJSONFeature[]).filter(
+				(e) => e.geometry.type === "LineString",
+			),
+		},
+	});
+	mapRef.current.addLayer({
+		id: `preloaded-layer-${water.id}`,
+		type: "fill",
+		source: `preloaded-${water.id}`,
+		paint: {
+			"fill-color": [
+				"match",
+				["get", "waterType"], // property name
+				"zone",
+				"#d32f2f",
+				"#29479B", // fallback
+			],
+			"fill-opacity": 0.8,
+			"fill-outline-color": "#FFFFFF",
+		},
+	});
+	mapRef.current.addLayer({
+		id: `preloaded-layer-polygon-line-${water.id}`,
+		type: "line",
+		source: `preloaded-${water.id}`,
+		paint: {
+			"line-color": darkMode ? "#FFFFFF" : "#29479B",
+			"line-width": 2,
+		},
+	});
+	mapRef.current.addLayer({
+		id: `preloaded-layer-line-${water.id}`,
+		type: "line",
+		source: `preloaded-line-${water.id}`,
+		paint: {
+			"line-color": darkMode ? "#FFFFFF" : "#29479B",
+			"line-width": 10,
+		},
+	});
+	const layers = mapRef.current.getStyle().layers;
+	const terraLayer =
+		layers.find((l) => l.id.startsWith("td-") || l.id.startsWith("terra-draw"))
+			?.id ?? layers.at(-1)?.id;
+
+	mapRef.current.moveLayer(`preloaded-layer-${water.id}`, terraLayer);
+	mapRef.current.moveLayer(
+		`preloaded-layer-polygon-line-${water.id}`,
+		terraLayer,
+	);
+	mapRef.current.moveLayer(`preloaded-layer-line-${water.id}`, terraLayer);
 }
