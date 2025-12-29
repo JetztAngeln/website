@@ -1,11 +1,11 @@
 "use client";
 
-import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { ClubInfo } from "@/lib/models/club_info";
 import type { UserInfo } from "@/lib/models/user_info";
 import { NhostClient } from "@nhost/nhost-js";
 import { Session } from "@nhost/nhost-js/auth";
-import { GET_CLUBS_QUERY, GET_USERS_QUERY } from "../graphql/clubs/queries";
+import { ClubUserOrderByEnum } from "../graphql/generated/sdks";
+import { getGraphQLClient } from "../graphql/graphql_provider";
 
 /**
  * Fetch users for a given club with pagination, search, and sorting
@@ -18,47 +18,29 @@ export async function getUsersByClubId(
   page: number = 1,
   pageSize: number = 10,
   search: string = "",
-  sort: MemberSortEnum = MemberSortEnum.DISPLAY_NAME_ASC
+  sort: ClubUserOrderByEnum = ClubUserOrderByEnum.DisplayNameAsc
 ): Promise<{ users: UserInfo[]; total: number } | null> {
   if (!session) return null;
 
   const offset = (page - 1) * pageSize;
 
-  type GraphQLResponse = {
-    getClubUsers: {
-      user_club_relation: Array<{
-        role: string;
-        user: UserInfo;
-      }>;
-      user_club_relation_aggregate: { aggregate: { count: number } };
-    };
-  };
-
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>({
-      query: GET_USERS_QUERY,
-      variables: {
-        clubId,
-        limit: pageSize,
-        offset,
-        search: search ? `%${search}%` : "%%",
-        pending: pending,
-        orderBy: [sort],
-      },
+    const result = await getGraphQLClient(nhost).GetClubUsers({
+      clubId,
+      limit: pageSize,
+      offset,
+      search: search ? `%${search}%` : "%%",
+      pending: pending,
+      orderBy: [sort],
     });
 
-    if (body.errors) {
-      console.error("GraphQL Error:", body.errors[0].message);
-      return null;
-    }
-
     const users =
-      body.data?.getClubUsers.user_club_relation.map((r) => ({
+      result.getClubUsers.user_club_relation.map((r) => ({
         ...r.user,
         role: r.role,
       })) ?? [];
     const total =
-      body.data?.getClubUsers.user_club_relation_aggregate.aggregate.count ?? 0;
+      result.getClubUsers.user_club_relation_aggregate.aggregate.count ?? 0;
 
     return { users, total };
   } catch (error) {
@@ -78,23 +60,17 @@ export async function getClubsForCurrentUser(
 
   const userId = session.user?.id;
 
-  type GraphQLResponse = {
-    user_club_relation: Array<{ club: ClubInfo }>;
-  };
+  if (userId == null) {
+    return null;
+  }
 
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>({
-      query: GET_CLUBS_QUERY,
-      variables: { userId },
+    const result = await getGraphQLClient(nhost).GetClubsForUser({
+      userId,
     });
 
-    if (body.errors) {
-      console.error("GraphQL Error:", body.errors[0].message);
-      return null;
-    }
-
     const clubs =
-      body.data?.user_club_relation.map((relation) => relation.club) || [];
+      result.user_club_relation.map((relation) => relation.club) || [];
     return clubs;
   } catch (error) {
     console.error("Failed to fetch club information:", error);

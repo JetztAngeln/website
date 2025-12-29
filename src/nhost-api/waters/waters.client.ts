@@ -1,6 +1,8 @@
+import { FishType } from "@/lib/models/fish_type";
 import { ClubWater } from "@/lib/models/water";
 import { NhostClient } from "@nhost/nhost-js";
-import { GET_WATERS_BY_CLUB_ID } from "../graphql/waters/queries";
+import { GeoJSONFeature } from "maplibre-gl";
+import { getGraphQLClient } from "../graphql/graphql_provider";
 
 /**
  * Fetches all waters for a given club.
@@ -12,24 +14,15 @@ export const getWatersByClubId = async (
   nhost: NhostClient,
   club_id: string
 ): Promise<ClubWater[]> => {
-  type GraphQLResponse = { club_waters: ClubWater[] };
-
-  const response = await nhost.graphql.request<GraphQLResponse>({
-    query: GET_WATERS_BY_CLUB_ID,
-    variables: { club_id },
+  const result = await getGraphQLClient(nhost).GetWatersByClubId({
+    club_id,
   });
 
-  const { data, errors } = response.body;
-
-  if (errors) {
-    console.error("Error fetching waters:", errors);
-    // Consider more specific error handling or logging
-    throw new Error("Failed to fetch waters.");
-  }
-
-  if (!data) {
-    return [];
-  }
-
-  return data.club_waters;
+  return result.club_waters.map((e) => {
+    return {
+      ...e,
+      geo_json: e.geo_json as GeoJSONFeature[],
+      fish_types: e.fish_types as FishType[],
+    };
+  });
 };

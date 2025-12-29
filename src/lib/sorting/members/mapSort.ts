@@ -1,21 +1,25 @@
-import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
+import { ClubUserOrderByEnum } from "@/nhost-api/graphql/generated/sdks";
 import { SortingState } from "@tanstack/react-table";
 
-export default function membersMapSort(inputs: SortingState): MemberSortEnum[] {
+export default function membersMapSort(
+  inputs: SortingState
+): ClubUserOrderByEnum[] {
   return inputs.map((input) => {
     switch (input.id) {
       case "displayName":
         return input.desc
-          ? MemberSortEnum.DISPLAY_NAME_DESC
-          : MemberSortEnum.DISPLAY_NAME_ASC;
+          ? ClubUserOrderByEnum.DisplayNameDesc
+          : ClubUserOrderByEnum.DisplayNameAsc;
       case "role":
-        return input.desc ? MemberSortEnum.ROLE_DESC : MemberSortEnum.ROLE_ASC;
+        return input.desc
+          ? ClubUserOrderByEnum.RoleDesc
+          : ClubUserOrderByEnum.RoleAsc;
       case "lastSeen":
         return input.desc
-          ? MemberSortEnum.LAST_SEEN_DESC
-          : MemberSortEnum.LAST_SEEN_ASC;
+          ? ClubUserOrderByEnum.LastSeenDesc
+          : ClubUserOrderByEnum.LastSeenAsc;
       default:
-        return MemberSortEnum.DISPLAY_NAME_ASC;
+        return ClubUserOrderByEnum.DisplayNameAsc;
     }
   });
 }

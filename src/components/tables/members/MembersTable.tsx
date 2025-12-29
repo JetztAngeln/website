@@ -2,11 +2,11 @@
 
 import AcceptNewJoinerModal from "@/components/ui/modal/AcceptNewJoinerModal";
 import DeclineNewJoinerModal from "@/components/ui/modal/DeclineNewJoinerModal";
-import { MemberSortEnum } from "@/lib/enums/MemberSortEnum";
 import { UserInfo } from "@/lib/models/user_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import membersMapSort from "@/lib/sorting/members/mapSort";
 import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
+import { ClubUserOrderByEnum } from "@/nhost-api/graphql/generated/sdks";
 import {
     flexRender,
     getCoreRowModel,
@@ -55,7 +55,7 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
 
             const sortParams = membersMapSort(key[6]);
             if (sortParams.length === 0) {
-                sortParams.push(MemberSortEnum.DISPLAY_NAME_ASC);
+                sortParams.push(ClubUserOrderByEnum.DisplayNameAsc);
             }
 
             return await getUsersByClubId(nhost, session, key[1],
@@ -116,7 +116,6 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
                 isOpen={isEditOpen}
                 closeModal={closeEditModal}
                 selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
-                clubId={clubId || ""}
                 onSuccess={mutate}
             />
             {/* Delete User Modal */}

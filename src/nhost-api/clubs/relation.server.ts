@@ -1,11 +1,8 @@
 "use server";
 
 import { createNhostClient } from "../../lib/nhost/server";
-import {
-  ACCEPT_NEW_JOINER_MUTATION,
-  DELETE_USER_CLUB_RELATION_MUTATION,
-  UPDATE_USER_ROLE_MUTATION,
-} from "../graphql/clubs/mutations";
+import { _Enumtable_User_Club_Role_Enum } from "../graphql/generated/sdks";
+import { getGraphQLClient } from "../graphql/graphql_provider";
 
 export async function acceptNewJoiner(
   userId: string,
@@ -22,31 +19,8 @@ export async function acceptNewJoiner(
     return false;
   }
 
-  type GraphQLResponse = {
-    update_user_club_relation: {
-      returning: {
-        id: string;
-      };
-    };
-  };
-
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>(
-      {
-        query: ACCEPT_NEW_JOINER_MUTATION,
-        variables: { userId, clubId },
-      },
-      {
-        headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-        },
-      }
-    );
-
-    if (body.errors) {
-      console.error("GraphQL Error:", body.errors[0].message);
-      return false;
-    }
+    await getGraphQLClient(nhost).AcceptNewJoiner({ userId, clubId });
 
     return true;
   } catch (error) {
@@ -70,31 +44,8 @@ export async function deleteUserClubRelation(
     return false;
   }
 
-  type GraphQLResponse = {
-    delete_user_club_relation: {
-      returning: {
-        id: string;
-      };
-    };
-  };
-
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>(
-      {
-        query: DELETE_USER_CLUB_RELATION_MUTATION,
-        variables: { userId, clubId },
-      },
-      {
-        headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-        },
-      }
-    );
-
-    if (body.errors) {
-      console.error("GraphQL Error:", body.errors[0].message);
-      return false;
-    }
+    await getGraphQLClient(nhost).DeleteUserClubRelation({ userId, clubId });
 
     return true;
   } catch (error) {
@@ -106,50 +57,26 @@ export async function deleteUserClubRelation(
 export async function updateUserRole(
   userId: string,
   role: string
-): Promise<{ error?: string }> {
+): Promise<boolean> {
   const nhost = await createNhostClient();
   const session = nhost.getUserSession();
 
   if (!session) {
-    return { error: "session error 1" };
+    return false;
   }
   if (session.user?.id === userId) {
-    return { error: "session error 2" };
+    return false;
   }
 
-  type GraphQLResponse = {
-    update_user_club_relation: {
-      returning: {
-        id: string;
-      };
-    };
-  };
-
   try {
-    const { body } = await nhost.graphql.request<GraphQLResponse>(
-      {
-        query: UPDATE_USER_ROLE_MUTATION,
-        variables: { userId, role },
-      },
-      {
-        headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-        },
-      }
-    );
+    await getGraphQLClient(nhost).UpdateUserRole({
+      userId,
+      role: role as _Enumtable_User_Club_Role_Enum,
+    });
 
-    if (body.errors) {
-      console.error(body.errors);
-      return {
-        error: `GraphQL Error`,
-      };
-    }
-
-    return {};
+    return true;
   } catch (error: any) {
     console.error(error);
-    return {
-      error: `Failed to update user role`,
-    };
+    return false;
   }
 }

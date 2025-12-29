@@ -1,5 +1,6 @@
 import { useSidebar } from "@/context/SidebarContext";
 import { useTheme } from "@/context/ThemeContext";
+import { getMapLocaleByLocale } from "@/i18n/map_locales/map_locale";
 import { GERMANY_BOUNDS, initializeMap, mapStyles } from "@/lib/mapUtils";
 import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import maplibregl, { type Map } from "maplibre-gl";
@@ -82,7 +83,7 @@ export function useMapInit() {
       style: currentStyle,
       maxBounds: GERMANY_BOUNDS,
       maplibreLogo: false,
-      locale: locale,
+      locale: getMapLocaleByLocale(locale),
       maxPitch: 0,
     });
 

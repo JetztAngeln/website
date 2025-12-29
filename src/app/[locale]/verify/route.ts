@@ -1,4 +1,4 @@
-import { GET_ADMIN_ROLE_QUERY } from "@/nhost-api/graphql/clubs/queries";
+import { getGraphQLClient } from "@/nhost-api/graphql/graphql_provider";
 import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
 import type { NextRequest } from "next/server";
@@ -46,25 +46,11 @@ export async function GET(request: NextRequest) {
         throw new Error("User ID not found in session after refresh.");
       }
 
-      const { body } = await nhost.graphql.request<UserClubRelationResponse>(
-        {
-          query: GET_ADMIN_ROLE_QUERY,
-          variables: { userId },
-        },
-        {
-          headers: {
-            "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-          },
-        }
-      );
+      const result = await getGraphQLClient(nhost).GetAdminRole({
+        userId,
+      });
 
-      const { data, errors } = body;
-      if (errors) {
-        console.error("GraphQL Errors:", errors);
-        throw new Error(errors[0]?.message || "GraphQL query failed");
-      }
-
-      const isAdmin = (data?.user_club_relation.length ?? 0) > 0;
+      const isAdmin = result.user_club_relation.length > 0;
       if (isAdmin) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }

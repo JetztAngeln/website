@@ -10,5 +10,5 @@ export interface UserInfo {
 export interface OwnUserInfo {
   avatarUrl: string;
   displayName: string;
-  email: string;
+  email?: string | null | undefined;
 }

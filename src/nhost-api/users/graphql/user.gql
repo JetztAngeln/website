@@ -1,0 +1,15 @@
+query GetAdminRole($userId: uuid = "") {
+  user_club_relation(
+    where: { role: { _eq: ADMIN }, user_id: { _eq: $userId } }
+  ) {
+    role
+  }
+}
+
+query GetUserById($userId: uuid!) {
+  users(where: { id: { _eq: $userId } }) {
+    avatarUrl
+    displayName
+    email
+  }
+}

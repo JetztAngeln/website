@@ -41,18 +41,10 @@ export default function AddWaterModal(
         if (feature && clubId && !addedFeatures.includes(feature) && (name.trim() !== "" || type == "zone")) {
             setLoading(true);
             try {
-                let response;
-
                 if (type == "zone") {
-                    response = await addZoneToWater(selectedWater!, JSON.parse(feature));
+                    await addZoneToWater(selectedWater!, JSON.parse(feature));
                 } else {
-                    response = await addWaterToClub(clubId, name.trim(), [JSON.parse(feature)]);
-                }
-
-                if (response.error) {
-                    console.error("Failed to add water:", response.error);
-                    setLoading(false);
-                    return;
+                    await addWaterToClub(clubId, name.trim(), [JSON.parse(feature)]);
                 }
 
                 console.log("Water saved successfully:");

@@ -1,9 +1,9 @@
-import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
 import { UserInfo } from "@/lib/models/user_info";
 import { updateUserRole } from "@/nhost-api/clubs/relation.server";
-import Button from "../button/Button";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { Modal } from ".";
+import Button from "../button/Button";
 
 const roleColors: Record<string, string> = {
     ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
@@ -13,7 +13,7 @@ const roleColors: Record<string, string> = {
 
 const defaultStyle = "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80"
 
-export default function EditUserRoleModal({ isOpen, closeModal, selectedUser, clubId, onSuccess }: { isOpen: boolean; closeModal: () => void; selectedUser: UserInfo | null; clubId: string; onSuccess: () => void; }) {
+export default function EditUserRoleModal({ isOpen, closeModal, selectedUser, onSuccess }: Readonly<{ isOpen: boolean; closeModal: () => void; selectedUser: UserInfo | null; onSuccess: () => void; }>) {
     const [role, setRole] = useState(selectedUser?.role || "USER");
     const [loading, setLoading] = useState(false);
     const t = useTranslations("EditUserRoleModal");
@@ -29,11 +29,11 @@ export default function EditUserRoleModal({ isOpen, closeModal, selectedUser, cl
             try {
                 setLoading(true);
                 const responseOk = await updateUserRole(selectedUser.id, role);
-                if (responseOk.error) {
-                    console.error("Failed to update user role:", responseOk.error)
-                } else {
+                if (responseOk) {
                     console.log("User role updated successfully");
                     onSuccess();
+                } else {
+                    console.error("Failed to update user role")
                 }
             } catch (error) {
                 console.error("Error updating user role:", error);

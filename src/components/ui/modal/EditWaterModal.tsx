@@ -1,9 +1,9 @@
 import { FishType } from "@/lib/models/fish_type";
 import { ClubWater } from "@/lib/models/water";
 import { useAuth } from "@/lib/nhost/AuthProvider";
-import { UPDATE_WATER } from "@/nhost-api/graphql/waters/mutations";
-import { GET_WATER_BY_ID } from "@/nhost-api/graphql/waters/queries";
+import { getGraphQLClient } from "@/nhost-api/graphql/graphql_provider";
 import { LoaderCircle } from "lucide-react";
+import { GeoJSONFeature } from "maplibre-gl";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -55,20 +55,18 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
         const fetchWaterData = async () => {
             setLoading(true);
             try {
-                const response = await nhost.graphql.request<{ club_waters_by_pk: ClubWater }>({ query: GET_WATER_BY_ID, variables: { id: waterId } });
-                const { data, errors } = response.body;
-                if (errors) {
-                    console.error("Error fetching water:", errors);
-                    throw new Error("Failed to fetch water.");
-                }
-                if (data?.club_waters_by_pk) {
-                    setWater(data.club_waters_by_pk);
-                    setName(data.club_waters_by_pk.name);
-                    setDescription(data.club_waters_by_pk.description || "");
-                    setIsDraft(data.club_waters_by_pk.draft);
-                    setIsMembersOnly(data.club_waters_by_pk.members_only);
-                    setImageUrl(data.club_waters_by_pk.image_id ? `${nhost.storage.baseURL}/files/${data.club_waters_by_pk.image_id}` : null);
-                    setSelectedFishTypeIds(data.club_waters_by_pk.fish_types || []);
+                const result = await getGraphQLClient(nhost).GetWaterById({
+                    id: waterId,
+                });
+
+                if (result.club_waters_by_pk) {
+                    setWater({ ...result.club_waters_by_pk, geo_json: result.club_waters_by_pk.geo_json as GeoJSONFeature[], fish_types: result.club_waters_by_pk.fish_types as FishType[] });
+                    setName(result.club_waters_by_pk.name);
+                    setDescription(result.club_waters_by_pk.description || "");
+                    setIsDraft(result.club_waters_by_pk.draft);
+                    setIsMembersOnly(result.club_waters_by_pk.members_only);
+                    setImageUrl(result.club_waters_by_pk.image_id ? `${nhost.storage.baseURL}/files/${result.club_waters_by_pk.image_id}` : null);
+                    setSelectedFishTypeIds(result.club_waters_by_pk.fish_types || []);
                 }
             } catch (err) {
                 console.error("Error fetching water data:", err);
@@ -107,23 +105,15 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
             }
 
             // 2. Call UPDATE_WATER mutation
-            const response = await nhost.graphql.request({
-                query: UPDATE_WATER, variables: {
-                    id: waterId,
-                    name,
-                    description,
-                    draft: isDraft,
-                    members_only: isMembersOnly,
-                    image_id: newImageId,
-                    fish_types: selectedFishTypeIds,
-                }
+            await getGraphQLClient(nhost).UpdateWater({
+                id: waterId,
+                name,
+                description,
+                draft: isDraft,
+                members_only: isMembersOnly,
+                image_id: newImageId,
+                fish_types: selectedFishTypeIds,
             });
-            const { errors: updateError } = response.body;
-
-            if (updateError) {
-                console.error("Error updating water:", updateError);
-                throw new Error("Failed to update water.");
-            }
 
             // 3. Close modal on success
             onSave();
