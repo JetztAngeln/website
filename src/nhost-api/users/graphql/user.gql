@@ -6,10 +6,14 @@ query GetAdminRole($userId: uuid = "") {
   }
 }
 
+fragment OwnUser on users {
+  avatarUrl
+  displayName
+  email
+}
+
 query GetUserById($userId: uuid!) {
   users(where: { id: { _eq: $userId } }) {
-    avatarUrl
-    displayName
-    email
+    ...OwnUser
   }
 }

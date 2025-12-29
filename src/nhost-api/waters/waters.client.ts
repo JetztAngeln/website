@@ -1,7 +1,5 @@
-import { FishType } from "@/lib/models/fish_type";
-import { ClubWater } from "@/lib/models/water";
 import { NhostClient } from "@nhost/nhost-js";
-import { GeoJSONFeature } from "maplibre-gl";
+import { ClubWaterFragment } from "../graphql/generated/sdks";
 import { getGraphQLClient } from "../graphql/graphql_provider";
 
 /**
@@ -13,16 +11,10 @@ import { getGraphQLClient } from "../graphql/graphql_provider";
 export const getWatersByClubId = async (
   nhost: NhostClient,
   club_id: string
-): Promise<ClubWater[]> => {
+): Promise<ClubWaterFragment[]> => {
   const result = await getGraphQLClient(nhost).GetWatersByClubId({
     club_id,
   });
 
-  return result.club_waters.map((e) => {
-    return {
-      ...e,
-      geo_json: e.geo_json as GeoJSONFeature[],
-      fish_types: e.fish_types as FishType[],
-    };
-  });
+  return result.club_waters;
 };

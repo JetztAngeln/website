@@ -1,15 +1,9 @@
-import { getGraphQLClient } from "@/nhost-api/graphql/graphql_provider";
+import { isUserAdmin } from "@/nhost-api/users/user.server";
 import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createNhostClient } from "../../../lib/nhost/server";
-
-interface UserClubRelationResponse {
-  user_club_relation: Array<{
-    role: string;
-  }>;
-}
 
 export async function GET(request: NextRequest) {
   const refreshToken = request.nextUrl.searchParams.get("refreshToken");
@@ -46,11 +40,7 @@ export async function GET(request: NextRequest) {
         throw new Error("User ID not found in session after refresh.");
       }
 
-      const result = await getGraphQLClient(nhost).GetAdminRole({
-        userId,
-      });
-
-      const isAdmin = result.user_club_relation.length > 0;
+      const isAdmin = await isUserAdmin(userId);
       if (isAdmin) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }

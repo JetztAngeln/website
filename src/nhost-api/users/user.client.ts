@@ -1,10 +1,10 @@
 "use client";
 
-import { OwnUserInfo } from "@/lib/models/user_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
+import { OwnUserFragment } from "../graphql/generated/sdks";
 import { getGraphQLClient } from "../graphql/graphql_provider";
 
-export async function getUserInfo(): Promise<OwnUserInfo | null> {
+export async function getUserInfo(): Promise<OwnUserFragment | null> {
   const { nhost, session } = useAuth();
 
   // If there's no session, there's no user to fetch data for
@@ -23,8 +23,7 @@ export async function getUserInfo(): Promise<OwnUserInfo | null> {
       userId,
     });
 
-    const user = result.users[0];
-    return user || null;
+    return result.users[0];
   } catch (error) {
     console.error("Failed to fetch user information:", error);
     return null;

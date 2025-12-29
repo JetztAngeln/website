@@ -12284,6 +12284,8 @@ export type UpdateUserRoleMutationVariables = Exact<{
 
 export type UpdateUserRoleMutation = { __typename?: 'mutation_root', update_user_club_relation?: { __typename?: 'user_club_relation_mutation_response', returning: Array<{ __typename?: 'user_club_relation', id: string }> } | null };
 
+export type ClubUserRelationFragment = { __typename?: 'UserClubRelation', role: string, user: { __typename?: 'User', id: string, avatarUrl: string, displayName: string, email: string, lastSeen: string } };
+
 export type GetClubUsersQueryVariables = Exact<{
   clubId: Scalars['uuid']['input'];
   offset: Scalars['Int']['input'];
@@ -12294,14 +12296,22 @@ export type GetClubUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetClubUsersQuery = { __typename?: 'query_root', getClubUsers: { __typename?: 'GetClubMembersOutput', user_club_relation: Array<{ __typename?: 'UserClubRelation', role: string, user: { __typename?: 'User', id: string, avatarUrl: string, displayName: string, email: string, lastSeen: string } }>, user_club_relation_aggregate: { __typename?: 'UserClubRelationAggregate', aggregate: { __typename?: 'Aggregate', count: number } } } };
+export type GetClubUsersQuery = { __typename?: 'query_root', getClubUsers: { __typename?: 'GetClubMembersOutput', user_club_relation: Array<(
+      { __typename?: 'UserClubRelation' }
+      & ClubUserRelationFragment
+    )>, user_club_relation_aggregate: { __typename?: 'UserClubRelationAggregate', aggregate: { __typename?: 'Aggregate', count: number } } } };
+
+export type ClubForUserFragment = { __typename?: 'clubs', id: string, name: string };
 
 export type GetClubsForUserQueryVariables = Exact<{
   userId: Scalars['uuid']['input'];
 }>;
 
 
-export type GetClubsForUserQuery = { __typename?: 'query_root', user_club_relation: Array<{ __typename?: 'user_club_relation', club: { __typename?: 'clubs', id: string, name: string } }> };
+export type GetClubsForUserQuery = { __typename?: 'query_root', user_club_relation: Array<{ __typename?: 'user_club_relation', club: (
+      { __typename?: 'clubs' }
+      & ClubForUserFragment
+    ) }> };
 
 export type GetAdminRoleQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['uuid']['input']>;
@@ -12310,12 +12320,17 @@ export type GetAdminRoleQueryVariables = Exact<{
 
 export type GetAdminRoleQuery = { __typename?: 'query_root', user_club_relation: Array<{ __typename?: 'user_club_relation', role: _Enumtable_User_Club_Role_Enum }> };
 
+export type OwnUserFragment = { __typename?: 'users', avatarUrl: string, displayName: string, email?: string | null };
+
 export type GetUserByIdQueryVariables = Exact<{
   userId: Scalars['uuid']['input'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', avatarUrl: string, displayName: string, email?: string | null }> };
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<(
+    { __typename?: 'users' }
+    & OwnUserFragment
+  )> };
 
 export type AddWaterToClubMutationVariables = Exact<{
   clubId?: InputMaybe<Scalars['uuid']['input']>;
@@ -12334,6 +12349,8 @@ export type AddZoneToWaterMutationVariables = Exact<{
 
 export type AddZoneToWaterMutation = { __typename?: 'mutation_root', update_club_waters_by_pk?: { __typename?: 'club_waters', id: string } | null };
 
+export type ClubWaterFragment = { __typename?: 'club_waters', id: string, name: string, draft: boolean, members_only: boolean, image_id?: string | null, geo_json: Record<string, unknown> | Array<unknown>, fish_types: Array<string>, description?: string | null };
+
 export type UpdateWaterMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
   name: Scalars['String']['input'];
@@ -12345,23 +12362,68 @@ export type UpdateWaterMutationVariables = Exact<{
 }>;
 
 
-export type UpdateWaterMutation = { __typename?: 'mutation_root', update_club_waters_by_pk?: { __typename?: 'club_waters', id: string, name: string, description?: string | null, draft: boolean, members_only: boolean, image_id?: string | null, fish_types: Array<string> } | null };
+export type UpdateWaterMutation = { __typename?: 'mutation_root', update_club_waters_by_pk?: (
+    { __typename?: 'club_waters' }
+    & ClubWaterFragment
+  ) | null };
 
 export type GetWatersByClubIdQueryVariables = Exact<{
   club_id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetWatersByClubIdQuery = { __typename?: 'query_root', club_waters: Array<{ __typename?: 'club_waters', id: string, name: string, draft: boolean, members_only: boolean, image_id?: string | null, geo_json: Record<string, unknown> | Array<unknown>, fish_types: Array<string>, description?: string | null }> };
+export type GetWatersByClubIdQuery = { __typename?: 'query_root', club_waters: Array<(
+    { __typename?: 'club_waters' }
+    & ClubWaterFragment
+  )> };
 
 export type GetWaterByIdQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetWaterByIdQuery = { __typename?: 'query_root', club_waters_by_pk?: { __typename?: 'club_waters', id: string, name: string, draft: boolean, members_only: boolean, image_id?: string | null, geo_json: Record<string, unknown> | Array<unknown>, description?: string | null, fish_types: Array<string> } | null };
+export type GetWaterByIdQuery = { __typename?: 'query_root', club_waters_by_pk?: (
+    { __typename?: 'club_waters' }
+    & ClubWaterFragment
+  ) | null };
 
-
+export const ClubUserRelationFragmentDoc = gql`
+    fragment ClubUserRelation on UserClubRelation {
+  role
+  user {
+    id
+    avatarUrl
+    displayName
+    email
+    lastSeen
+  }
+}
+    `;
+export const ClubForUserFragmentDoc = gql`
+    fragment ClubForUser on clubs {
+  id
+  name
+}
+    `;
+export const OwnUserFragmentDoc = gql`
+    fragment OwnUser on users {
+  avatarUrl
+  displayName
+  email
+}
+    `;
+export const ClubWaterFragmentDoc = gql`
+    fragment ClubWater on club_waters {
+  id
+  name
+  draft
+  members_only
+  image_id
+  geo_json
+  fish_types
+  description
+}
+    `;
 export const AcceptNewJoinerDocument = gql`
     mutation AcceptNewJoiner($userId: uuid!, $clubId: uuid!) {
   update_user_club_relation(
@@ -12405,14 +12467,7 @@ export const GetClubUsersDocument = gql`
     orderBy: $orderBy
   ) {
     user_club_relation {
-      role
-      user {
-        id
-        avatarUrl
-        displayName
-        email
-        lastSeen
-      }
+      ...ClubUserRelation
     }
     user_club_relation_aggregate {
       aggregate {
@@ -12421,17 +12476,16 @@ export const GetClubUsersDocument = gql`
     }
   }
 }
-    `;
+    ${ClubUserRelationFragmentDoc}`;
 export const GetClubsForUserDocument = gql`
     query GetClubsForUser($userId: uuid!) {
   user_club_relation(where: {user_id: {_eq: $userId}}) {
     club {
-      id
-      name
+      ...ClubForUser
     }
   }
 }
-    `;
+    ${ClubForUserFragmentDoc}`;
 export const GetAdminRoleDocument = gql`
     query GetAdminRole($userId: uuid = "") {
   user_club_relation(where: {role: {_eq: ADMIN}, user_id: {_eq: $userId}}) {
@@ -12442,12 +12496,10 @@ export const GetAdminRoleDocument = gql`
 export const GetUserByIdDocument = gql`
     query GetUserById($userId: uuid!) {
   users(where: {id: {_eq: $userId}}) {
-    avatarUrl
-    displayName
-    email
+    ...OwnUser
   }
 }
-    `;
+    ${OwnUserFragmentDoc}`;
 export const AddWaterToClubDocument = gql`
     mutation AddWaterToClub($clubId: uuid = "", $geo_json: jsonb = "", $name: String = "") {
   insert_club_waters_one(
@@ -12470,44 +12522,24 @@ export const UpdateWaterDocument = gql`
     pk_columns: {id: $id}
     _set: {name: $name, description: $description, draft: $draft, members_only: $members_only, image_id: $image_id, fish_types: $fish_types}
   ) {
-    id
-    name
-    description
-    draft
-    members_only
-    image_id
-    fish_types
+    ...ClubWater
   }
 }
-    `;
+    ${ClubWaterFragmentDoc}`;
 export const GetWatersByClubIdDocument = gql`
     query GetWatersByClubId($club_id: uuid!) {
   club_waters(where: {club_id: {_eq: $club_id}}) {
-    id
-    name
-    draft
-    members_only
-    image_id
-    geo_json
-    fish_types
-    description
+    ...ClubWater
   }
 }
-    `;
+    ${ClubWaterFragmentDoc}`;
 export const GetWaterByIdDocument = gql`
     query GetWaterById($id: uuid!) {
   club_waters_by_pk(id: $id) {
-    id
-    name
-    draft
-    members_only
-    image_id
-    geo_json
-    description
-    fish_types
+    ...ClubWater
   }
 }
-    `;
+    ${ClubWaterFragmentDoc}`;
 export type Requester<C = {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {

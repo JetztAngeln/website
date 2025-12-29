@@ -25,6 +25,17 @@ mutation AddZoneToWater($id: uuid = "", $geo_json: jsonb = "") {
   }
 }
 
+fragment ClubWater on club_waters {
+  id
+  name
+  draft
+  members_only
+  image_id
+  geo_json
+  fish_types
+  description
+}
+
 mutation UpdateWater(
   $id: uuid!
   $name: String!
@@ -45,38 +56,18 @@ mutation UpdateWater(
       fish_types: $fish_types
     }
   ) {
-    id
-    name
-    description
-    draft
-    members_only
-    image_id
-    fish_types
+    ...ClubWater
   }
 }
 
 query GetWatersByClubId($club_id: uuid!) {
   club_waters(where: { club_id: { _eq: $club_id } }) {
-    id
-    name
-    draft
-    members_only
-    image_id
-    geo_json
-    fish_types
-    description
+    ...ClubWater
   }
 }
 
 query GetWaterById($id: uuid!) {
   club_waters_by_pk(id: $id) {
-    id
-    name
-    draft
-    members_only
-    image_id
-    geo_json
-    description
-    fish_types
+    ...ClubWater
   }
 }

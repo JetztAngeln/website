@@ -1,5 +1,5 @@
 "use client";
-import { ClubInfo } from "@/lib/models/club_info";
+import { ClubForUserFragment } from "@/nhost-api/graphql/generated/sdks";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -9,13 +9,13 @@ type SidebarContextType = {
   isHovered: boolean;
   activeItem: string | null;
   openSubmenu: string | null;
-  selectedClub: ClubInfo | null;
+  selectedClub: ClubForUserFragment | null;
   toggleSidebar: () => void;
   toggleMobileSidebar: () => void;
   setIsHovered: (isHovered: boolean) => void;
   setActiveItem: (item: string | null) => void;
   toggleSubmenu: (item: string) => void;
-  setSelectedClub: (club: ClubInfo | null) => void;
+  setSelectedClub: (club: ClubForUserFragment | null) => void;
 };
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
@@ -37,7 +37,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
-  const [selectedClub, setSelectedClub] = useState<ClubInfo | null>(null);
+  const [selectedClub, setSelectedClub] = useState<ClubForUserFragment | null>(null);
 
   useEffect(() => {
     const handleResize = () => {

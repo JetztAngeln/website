@@ -1,9 +1,8 @@
 import { FishType } from "@/lib/models/fish_type";
-import { ClubWater } from "@/lib/models/water";
 import { useAuth } from "@/lib/nhost/AuthProvider";
+import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { getGraphQLClient } from "@/nhost-api/graphql/graphql_provider";
 import { LoaderCircle } from "lucide-react";
-import { GeoJSONFeature } from "maplibre-gl";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -29,7 +28,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
     const locale = useLocale();
 
     const [loading, setLoading] = useState(false);
-    const [water, setWater] = useState<ClubWater | null>(null);
+    const [water, setWater] = useState<ClubWaterFragment | null>(null);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isDraft, setIsDraft] = useState(false);
@@ -60,7 +59,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                 });
 
                 if (result.club_waters_by_pk) {
-                    setWater({ ...result.club_waters_by_pk, geo_json: result.club_waters_by_pk.geo_json as GeoJSONFeature[], fish_types: result.club_waters_by_pk.fish_types as FishType[] });
+                    setWater(result.club_waters_by_pk);
                     setName(result.club_waters_by_pk.name);
                     setDescription(result.club_waters_by_pk.description || "");
                     setIsDraft(result.club_waters_by_pk.draft);

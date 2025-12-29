@@ -1,3 +1,14 @@
+fragment ClubUserRelation on UserClubRelation {
+  role
+  user {
+    id
+    avatarUrl
+    displayName
+    email
+    lastSeen
+  }
+}
+
 query GetClubUsers(
   $clubId: uuid!
   $offset: Int!
@@ -15,14 +26,7 @@ query GetClubUsers(
     orderBy: $orderBy
   ) {
     user_club_relation {
-      role
-      user {
-        id
-        avatarUrl
-        displayName
-        email
-        lastSeen
-      }
+      ...ClubUserRelation
     }
     user_club_relation_aggregate {
       aggregate {
@@ -32,11 +36,15 @@ query GetClubUsers(
   }
 }
 
+fragment ClubForUser on clubs {
+  id
+  name
+}
+
 query GetClubsForUser($userId: uuid!) {
   user_club_relation(where: { user_id: { _eq: $userId } }) {
     club {
-      id
-      name
+      ...ClubForUser
     }
   }
 }

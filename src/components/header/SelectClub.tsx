@@ -1,11 +1,11 @@
-import { ClubInfo } from "@/lib/models/club_info";
+import { ClubForUserFragment } from "@/nhost-api/graphql/generated/sdks";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useEffect } from "react";
 
 interface ClubSelectProps {
-  clubs: ClubInfo[] | null;
-  selectedClub: ClubInfo | null;
-  setSelectedClub: (club: ClubInfo) => void;
+  clubs: ClubForUserFragment[] | null;
+  selectedClub: ClubForUserFragment | null;
+  setSelectedClub: (club: ClubForUserFragment) => void;
   placeholder?: string;
   error?: any;
   isLoading?: boolean;
@@ -29,7 +29,7 @@ const ClubSelect: React.FC<ClubSelectProps> = ({
   if (!clubs || clubs.length === 0) return null;
 
   if (error) return <p className="text-red-500">Failed to load clubs</p>;
-  if (isLoading) return <ClubSelect placeholder="Loading clubs..." clubs={[]} selectedClub={null} setSelectedClub={(_: ClubInfo): void => {
+  if (isLoading) return <ClubSelect placeholder="Loading clubs..." clubs={[]} selectedClub={null} setSelectedClub={(_: ClubForUserFragment): void => {
     throw new Error("Function not implemented.");
   }} />;
 

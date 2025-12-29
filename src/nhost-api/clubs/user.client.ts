@@ -1,10 +1,12 @@
 "use client";
 
-import { ClubInfo } from "@/lib/models/club_info";
-import type { UserInfo } from "@/lib/models/user_info";
 import { NhostClient } from "@nhost/nhost-js";
 import { Session } from "@nhost/nhost-js/auth";
-import { ClubUserOrderByEnum } from "../graphql/generated/sdks";
+import {
+  ClubForUserFragment,
+  ClubUserOrderByEnum,
+  ClubUserRelationFragment,
+} from "../graphql/generated/sdks";
 import { getGraphQLClient } from "../graphql/graphql_provider";
 
 /**
@@ -19,7 +21,10 @@ export async function getUsersByClubId(
   pageSize: number = 10,
   search: string = "",
   sort: ClubUserOrderByEnum = ClubUserOrderByEnum.DisplayNameAsc
-): Promise<{ users: UserInfo[]; total: number } | null> {
+): Promise<{
+  users: ClubUserRelationFragment[];
+  total: number;
+} | null> {
   if (!session) return null;
 
   const offset = (page - 1) * pageSize;
@@ -34,15 +39,10 @@ export async function getUsersByClubId(
       orderBy: [sort],
     });
 
-    const users =
-      result.getClubUsers.user_club_relation.map((r) => ({
-        ...r.user,
-        role: r.role,
-      })) ?? [];
     const total =
       result.getClubUsers.user_club_relation_aggregate.aggregate.count ?? 0;
 
-    return { users, total };
+    return { users: result.getClubUsers.user_club_relation, total };
   } catch (error) {
     console.error("Failed to fetch users for club:", error);
     return null;
@@ -52,7 +52,7 @@ export async function getUsersByClubId(
 export async function getClubsForCurrentUser(
   nhost: NhostClient,
   session: Session | null
-): Promise<ClubInfo[] | null> {
+): Promise<ClubForUserFragment[] | null> {
   // If there's no session, there's no user to fetch data for
   if (!session) {
     return null;

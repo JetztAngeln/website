@@ -1,8 +1,8 @@
 "use client";
 import SelectLanguage from "@/components/header/SelectLanguage";
-import { ClubInfo } from "@/lib/models/club_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import { getClubsForCurrentUser } from "@/nhost-api/clubs/user.client";
+import { ClubForUserFragment } from "@/nhost-api/graphql/generated/sdks";
 import { TextAlignStart, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -18,7 +18,7 @@ import { useSidebar } from "../../context/SidebarContext";
 const AppHeader: React.FC = () => {
   const { nhost, session } = useAuth();
   const [isApplicationMenuOpen, setIsApplicationMenuOpen] = useState(false);
-  const { data: clubs, error: errorClubs, isLoading: isLoadingClubs } = useSWR<ClubInfo[], {
+  const { data: clubs, error: errorClubs, isLoading: isLoadingClubs } = useSWR<ClubForUserFragment[], {
     error: string;
   }, any>('appHeader', async (url: any) => await getClubsForCurrentUser(nhost, session));
 

@@ -2,11 +2,10 @@
 
 import AcceptNewJoinerModal from "@/components/ui/modal/AcceptNewJoinerModal";
 import DeclineNewJoinerModal from "@/components/ui/modal/DeclineNewJoinerModal";
-import { UserInfo } from "@/lib/models/user_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import membersMapSort from "@/lib/sorting/members/mapSort";
 import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
-import { ClubUserOrderByEnum } from "@/nhost-api/graphql/generated/sdks";
+import { ClubUserOrderByEnum, ClubUserRelationFragment } from "@/nhost-api/graphql/generated/sdks";
 import {
     flexRender,
     getCoreRowModel,
@@ -33,7 +32,7 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
     const [search, setSearch] = useState("");
     const [debouncedSearch] = useDebounce(search, 400);
     const [sort, setSort] = useState<SortingState>([{ id: "displayName", desc: false }]);
-    const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
+    const [selectedUserClubRelation, setSelectedUserClubRelation] = useState<ClubUserRelationFragment | null>(null);
     const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
     const { isOpen: isDeleteOpen, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
     const { isOpen: isAcceptNewJoinerOpen, openModal: openAcceptNewJoinerModal, closeModal: closeAcceptNewJoinerModal } = useModal();
@@ -43,7 +42,7 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
     const t = useTranslations("MembersTable");
     const clubId = selectedClub?.id;
 
-    const { data, isLoading, mutate } = useSWR<{ users: UserInfo[]; total: number } | null>(
+    const { data, isLoading, mutate } = useSWR<{ users: ClubUserRelationFragment[]; total: number } | null>(
         ["membersTable", clubId, pending, page, pageSize, debouncedSearch, sort],
         async (key: any) => {
             if (key[1] == null) {
@@ -68,7 +67,7 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
         },
     );
 
-    const columns = getMembersColumns({ t, user, pending, locale, openEditModal, openDeleteModal, openAcceptNewJoinerModal, openDeclineNewJoinerModal, setSelectedUser });
+    const columns = getMembersColumns({ t, user, pending, locale, openEditModal, openDeleteModal, openAcceptNewJoinerModal, openDeclineNewJoinerModal, setSelectedUser: setSelectedUserClubRelation });
 
     const table = useReactTable({
         data: data?.users ?? [],
@@ -115,14 +114,14 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
             <EditUserRoleModal
                 isOpen={isEditOpen}
                 closeModal={closeEditModal}
-                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                selectedUserClubRelation={selectedUserClubRelation ?? null}
                 onSuccess={mutate}
             />
             {/* Delete User Modal */}
             <DeleteUserModal
                 isOpen={isDeleteOpen}
                 closeModal={closeDeleteModal}
-                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                selectedUserClubRelation={selectedUserClubRelation ?? null}
                 clubId={clubId || ""}
                 onSuccess={mutate}
             />
@@ -130,7 +129,7 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
             <AcceptNewJoinerModal
                 isOpen={isAcceptNewJoinerOpen}
                 closeModal={closeAcceptNewJoinerModal}
-                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                selectedUserClubRelation={selectedUserClubRelation ?? null}
                 clubId={clubId || ""}
                 onSuccess={mutate}
             />
@@ -138,7 +137,7 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
             <DeclineNewJoinerModal
                 isOpen={isDeclineNewJoinerOpen}
                 closeModal={closeDeclineNewJoinerModal}
-                selectedUser={selectedUser ? { ...selectedUser, avatarUrl: selectedUser.avatarUrl ?? "" } : null}
+                selectedUserClubRelation={selectedUserClubRelation ?? null}
                 clubId={clubId || ""}
                 onSuccess={mutate}
             />

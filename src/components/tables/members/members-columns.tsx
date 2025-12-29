@@ -1,7 +1,7 @@
 import { Dropdown, DropdownContent, DropdownTrigger } from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
 import { UserContextType } from "@/context/UserContext";
-import { UserInfo } from "@/lib/models/user_info";
+import { UserClubRelation } from "@/nhost-api/graphql/generated/sdks";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { createTranslator, Messages } from "next-intl";
@@ -16,34 +16,34 @@ type MembersColumns = {
     openDeleteModal: () => void,
     openAcceptNewJoinerModal: () => void,
     openDeclineNewJoinerModal: () => void,
-    setSelectedUser: React.Dispatch<React.SetStateAction<UserInfo | null>>,
+    setSelectedUser: React.Dispatch<React.SetStateAction<UserClubRelation | null>>,
 };
 
-const roleColors: Record<UserInfo["role"], string> = {
+const roleColors: Record<UserClubRelation["role"], string> = {
     ADMIN: "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
     SUPERVISOR: "bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400",
     USER: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
 };
 
 export const getMembersColumns = ({ t, user, pending, locale, openEditModal, openDeleteModal, openAcceptNewJoinerModal, openDeclineNewJoinerModal, setSelectedUser }: MembersColumns) => {
-    const columns: ColumnDef<UserInfo>[] = [
+    const columns: ColumnDef<UserClubRelation>[] = [
         {
             accessorKey: "displayName",
             header: "Name",
             cell: ({ row }) => {
-                const user = row.original;
+                const userClubRelation = row.original;
                 return (
                     <div className="flex items-center gap-3">
                         <Image
-                            src={user.avatarUrl || "https://gravatar.com/avatar/?d=identicon"}
-                            alt={user.displayName}
+                            src={userClubRelation.user.avatarUrl || "https://gravatar.com/avatar/?d=identicon"}
+                            alt={userClubRelation.user.displayName}
                             width={40}
                             height={40}
                             className="h-10 w-10 rounded-full object-cover"
                         />
                         <div>
-                            <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{user.displayName}</div>
-                            <div className="text-sm text-gray-500">{user.email}</div>
+                            <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{userClubRelation.user.displayName}</div>
+                            <div className="text-sm text-gray-500">{userClubRelation.user.email}</div>
                         </div>
                     </div>
                 );
@@ -67,7 +67,7 @@ export const getMembersColumns = ({ t, user, pending, locale, openEditModal, ope
             accessorKey: "lastSeen",
             header: t("lastSeen"),
             cell: ({ row }) => {
-                const lastSeen = row.original.lastSeen ? new Date(row.original.lastSeen) : null;
+                const lastSeen = row.original.user.lastSeen ? new Date(row.original.user.lastSeen) : null;
                 return lastSeen ? (
                     <span className="text-sm text-gray-600 dark:text-gray-500">
                         {lastSeen.toLocaleDateString(locale)}{" "}
@@ -103,7 +103,7 @@ export const getMembersColumns = ({ t, user, pending, locale, openEditModal, ope
                 };
 
                 return (
-                    <div hidden={row.original.id === user?.id}>
+                    <div hidden={row.original.user.id === user?.id}>
                         <Dropdown>
                             <DropdownTrigger>
                                 <EllipsisVerticalIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />

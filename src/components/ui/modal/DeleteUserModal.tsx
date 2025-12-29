@@ -1,16 +1,16 @@
-import { useTranslations } from "next-intl";
-import { UserInfo } from "@/lib/models/user_info";
 import { deleteUserClubRelation } from "@/nhost-api/clubs/relation.server";
-import Button from "../button/Button";
+import { ClubUserRelationFragment } from "@/nhost-api/graphql/generated/sdks";
+import { useTranslations } from "next-intl";
 import { Modal } from ".";
+import Button from "../button/Button";
 
-export default function DeleteUserModal({ isOpen, closeModal, selectedUser, clubId, onSuccess }: { isOpen: boolean; closeModal: () => void; selectedUser: UserInfo | null; clubId: string; onSuccess: () => void }) {
+export default function DeleteUserModal({ isOpen, closeModal, selectedUserClubRelation, clubId, onSuccess }: Readonly<{ isOpen: boolean; closeModal: () => void; selectedUserClubRelation: ClubUserRelationFragment | null; clubId: string; onSuccess: () => void }>) {
     const t = useTranslations("DeleteUserModal");
 
     const handleDelete = async () => {
-        if (selectedUser) {
+        if (selectedUserClubRelation) {
             try {
-                const responseOk = await deleteUserClubRelation(selectedUser.id, clubId);
+                const responseOk = await deleteUserClubRelation(selectedUserClubRelation.user.id, clubId);
                 if (responseOk) {
                     console.log("User deleted successfully");
                     onSuccess();
@@ -36,7 +36,7 @@ export default function DeleteUserModal({ isOpen, closeModal, selectedUser, club
                 </h4>
                 <p className="leading-6 text-gray-500 dark:text-gray-400">
                     {t.rich('description', {
-                        b: (chunks) => <b className="text-brand-500 dark:text-brand-400 text-base font-bold">{chunks}</b>, name: selectedUser?.displayName || t("user")
+                        b: (chunks) => <b className="text-brand-500 dark:text-brand-400 text-base font-bold">{chunks}</b>, name: selectedUserClubRelation?.user.displayName || t("user")
                     })}
                 </p>
 

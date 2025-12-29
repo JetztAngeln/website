@@ -1,9 +1,9 @@
 import { mapStyles } from "@/lib/mapUtils";
-import { ClubWater } from "@/lib/models/water";
 import { useAuth } from "@/lib/nhost/AuthProvider";
+import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { getWatersByClubId } from "@/nhost-api/waters/waters.client";
 import { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
-import maplibregl from "maplibre-gl";
+import maplibregl, { GeoJSONFeature } from "maplibre-gl";
 import { useParams } from "next/navigation";
 import { RefObject, useCallback, useEffect, useState } from "react";
 
@@ -24,7 +24,7 @@ export function useSelectedWater({
 }: UseSelectedWaterType) {
   const { nhost } = useAuth();
   const { type } = useParams<{ type: string; locale: string }>();
-  const [waters, setWaters] = useState<ClubWater[]>([]);
+  const [waters, setWaters] = useState<ClubWaterFragment[]>([]);
   const [selectedWater, setSelectedWater] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -73,11 +73,11 @@ export function useSelectedWater({
         clearMapStyle(mapRef);
 
         for (const water of watersToIterate) {
-          if (water?.geo_json == undefined) {
+          if (water.geo_json == undefined) {
             continue;
           }
 
-          const waterToNavigate = water?.geo_json.find(
+          const waterToNavigate = (water.geo_json as GeoJSONFeature[]).find(
             (e) => e.properties.waterType != "zone"
           );
 
@@ -170,21 +170,25 @@ function clearMapStyle(mapRef: RefObject<maplibregl.Map | null>) {
 }
 function addToMap(
   mapRef: RefObject<maplibregl.Map | null>,
-  water: ClubWater,
+  water: ClubWaterFragment,
   darkMode: boolean
 ) {
   mapRef.current!.addSource(`preloaded-${water.id}`, {
     type: "geojson",
     data: {
       type: "FeatureCollection",
-      features: water?.geo_json.filter((e) => e.geometry.type == "Polygon"),
+      features: (water.geo_json as GeoJSONFeature[]).filter(
+        (e) => e.geometry.type == "Polygon"
+      ),
     },
   });
   mapRef.current!.addSource(`preloaded-line-${water.id}`, {
     type: "geojson",
     data: {
       type: "FeatureCollection",
-      features: water?.geo_json.filter((e) => e.geometry.type == "LineString"),
+      features: (water.geo_json as GeoJSONFeature[]).filter(
+        (e) => e.geometry.type == "LineString"
+      ),
     },
   });
   mapRef.current!.addLayer({

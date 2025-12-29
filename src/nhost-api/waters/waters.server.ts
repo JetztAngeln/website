@@ -1,8 +1,8 @@
 "use server";
 
-import { ClubWater } from "@/lib/models/water";
 import { GeoJSONFeature } from "maplibre-gl";
 import { createNhostClient } from "../../lib/nhost/server";
+import { ClubWaterFragment } from "../graphql/generated/sdks";
 import { getGraphQLClient } from "../graphql/graphql_provider";
 
 export async function addWaterToClub(
@@ -23,7 +23,7 @@ export async function addWaterToClub(
 }
 
 export async function addZoneToWater(
-  selectedWater: ClubWater,
+  selectedWater: ClubWaterFragment,
   geo_json: GeoJSONFeature
 ): Promise<boolean> {
   const nhost = await createNhostClient();
@@ -31,7 +31,7 @@ export async function addZoneToWater(
   try {
     await getGraphQLClient(nhost).AddZoneToWater({
       id: selectedWater.id,
-      geo_json: [...selectedWater.geo_json, geo_json],
+      geo_json: [...(selectedWater.geo_json as unknown[]), geo_json],
     });
 
     return true;

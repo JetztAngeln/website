@@ -1,9 +1,9 @@
-import { ClubWater } from "@/lib/models/water";
+import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useEffect } from "react";
 
 interface WaterSelectProps {
-  waters: ClubWater[] | null;
+  waters: ClubWaterFragment[] | null;
   selectedWater: string | null;
   setSelectedWater: (water: string) => void;
   placeholder?: string;

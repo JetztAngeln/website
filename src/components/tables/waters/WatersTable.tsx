@@ -2,8 +2,8 @@
 
 import { useSidebar } from "@/context/SidebarContext";
 import { useModal } from "@/hooks/useModal";
-import { ClubWater } from "@/lib/models/water";
 import { useAuth } from "@/lib/nhost/AuthProvider";
+import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { getWatersByClubId } from "@/nhost-api/waters/waters.client";
 import {
     flexRender,
@@ -33,7 +33,7 @@ const WatersTable = () => {
     const { isOpen, openModal, closeModal } = useModal();
     const [selectedWaterId, setSelectedWaterId] = useState<string | null>();
 
-    const { data, isLoading } = useSWR<ClubWater[], any>(
+    const { data, isLoading } = useSWR<ClubWaterFragment[], any>(
         ["watersTable", selectedClub?.id, page, pageSize, debouncedSearch, selectedWaterId],
         async (key: any) => {
             if (key[1] == null) {

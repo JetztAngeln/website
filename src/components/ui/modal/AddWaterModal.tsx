@@ -1,6 +1,6 @@
 
-import { ClubWater } from "@/lib/models/water";
 import { capitalizeFirst } from "@/lib/utils";
+import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { addWaterToClub, addZoneToWater } from "@/nhost-api/waters/waters.server";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -20,7 +20,7 @@ export default function AddWaterModal(
             addedFeatures: string[];
             addFeature: (feature: string[]) => void;
             type: string;
-            selectedWater: ClubWater | undefined;
+            selectedWater: ClubWaterFragment | undefined;
         }>
 ) {
     const [loading, setLoading] = useState(false);

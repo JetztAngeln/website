@@ -1,5 +1,5 @@
-import { UserInfo } from "@/lib/models/user_info";
 import { updateUserRole } from "@/nhost-api/clubs/relation.server";
+import { ClubUserRelationFragment } from "@/nhost-api/graphql/generated/sdks";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Modal } from ".";
@@ -13,22 +13,22 @@ const roleColors: Record<string, string> = {
 
 const defaultStyle = "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80"
 
-export default function EditUserRoleModal({ isOpen, closeModal, selectedUser, onSuccess }: Readonly<{ isOpen: boolean; closeModal: () => void; selectedUser: UserInfo | null; onSuccess: () => void; }>) {
-    const [role, setRole] = useState(selectedUser?.role || "USER");
+export default function EditUserRoleModal({ isOpen, closeModal, selectedUserClubRelation, onSuccess }: Readonly<{ isOpen: boolean; closeModal: () => void; selectedUserClubRelation: ClubUserRelationFragment | null; onSuccess: () => void; }>) {
+    const [role, setRole] = useState(selectedUserClubRelation?.role || "USER");
     const [loading, setLoading] = useState(false);
     const t = useTranslations("EditUserRoleModal");
 
     useEffect(() => {
-        if (selectedUser) {
-            setRole(selectedUser.role);
+        if (selectedUserClubRelation) {
+            setRole(selectedUserClubRelation.role);
         }
-    }, [selectedUser]);
+    }, [selectedUserClubRelation]);
 
     const handleSave = async () => {
-        if (selectedUser) {
+        if (selectedUserClubRelation) {
             try {
                 setLoading(true);
-                const responseOk = await updateUserRole(selectedUser.id, role);
+                const responseOk = await updateUserRole(selectedUserClubRelation.user.id, role);
                 if (responseOk) {
                     console.log("User role updated successfully");
                     onSuccess();
@@ -58,7 +58,7 @@ export default function EditUserRoleModal({ isOpen, closeModal, selectedUser, on
                 <p className="leading-6 text-gray-500 dark:text-gray-400">
                     {/* {t("description", { name: selectedUser?.displayName || t("user") })} */}
                     {t.rich('description', {
-                        b: (chunks) => <b className="text-brand-500 dark:text-brand-400 text-base font-bold">{chunks}</b>, name: selectedUser?.displayName || t("user")
+                        b: (chunks) => <b className="text-brand-500 dark:text-brand-400 text-base font-bold">{chunks}</b>, name: selectedUserClubRelation?.user.displayName || t("user")
                     })}
                 </p>
                 <div className="relative mt-6 flex items-center justify-center gap-3">

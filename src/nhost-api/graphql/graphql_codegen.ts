@@ -21,6 +21,8 @@ const config: CodegenConfig = {
       ],
       config: {
         scalars: scalars,
+        inlineFragmentTypes: "combine",
+        //extractAllFieldsToTypes: true,
       },
     },
   },

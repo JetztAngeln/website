@@ -1,6 +1,6 @@
 import { Dropdown, DropdownContent, DropdownTrigger } from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
-import { ClubWater } from "@/lib/models/water";
+import { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { NhostClient } from "@nhost/nhost-js";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVerticalIcon } from "lucide-react";
@@ -16,7 +16,7 @@ type WatersColumns = {
 };
 
 export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: WatersColumns) => {
-    const columns: ColumnDef<ClubWater>[] = [
+    const columns: ColumnDef<ClubWaterFragment>[] = [
         {
             accessorKey: "image",
             header: "",
