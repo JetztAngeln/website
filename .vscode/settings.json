@@ -5,6 +5,7 @@
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": "never",
+		"source.removeUnusedImports": "always",
 		"source.organizeImports.biome": "always"
 	},
 	"i18n-ally.localesPaths": ["messages", "src/i18n"],
