@@ -1,3 +1,4 @@
+import type { User } from "@nhost/nhost-js/auth";
 import type { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVerticalIcon } from "lucide-react";
 import Image from "next/image";
@@ -8,12 +9,11 @@ import {
 	DropdownTrigger,
 } from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
-import type { UserContextType } from "@/context/UserContext";
 import type { UserClubRelation } from "@/nhost-api/graphql/generated/sdks";
 
 type MembersColumns = {
 	t: ReturnType<typeof createTranslator<Messages, "MembersPage">>;
-	user: UserContextType;
+	user: User | null | undefined;
 	pending: boolean;
 	locale: string;
 	openEditModal: () => void;

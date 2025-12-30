@@ -4,7 +4,7 @@ import { ChevronDown, Info, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { signOut } from "@/lib/auth/actions";
-import { useUser } from "../../context/UserContext";
+import { useAuth } from "@/lib/nhost/AuthProvider";
 import {
 	Dropdown,
 	DropdownContent,
@@ -14,7 +14,7 @@ import { DropdownItem } from "../ui/dropdown/DropdownItem";
 
 export default function UserDropdown() {
 	const t = useTranslations("UserDropdown");
-	const user = useUser();
+	const { user } = useAuth();
 
 	if (!user) {
 		return (

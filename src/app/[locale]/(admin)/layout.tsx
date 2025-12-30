@@ -12,5 +12,5 @@ export default function DashboardLayout({
 		return null;
 	}
 
-	return <AdminLayout user={auth.user}>{children}</AdminLayout>;
+	return <AdminLayout>{children}</AdminLayout>;
 }

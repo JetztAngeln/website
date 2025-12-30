@@ -22,14 +22,13 @@ import {
 	type ClubUserRelationFragment,
 } from "@/nhost-api/graphql/generated/sdks";
 import { useSidebar } from "../../../context/SidebarContext";
-import { useUser } from "../../../context/UserContext";
 import { useModal } from "../../../hooks/useModal";
 import DeleteUserModal from "../../ui/modal/DeleteUserModal";
 import EditUserRoleModal from "../../ui/modal/EditUserRoleModal";
 import { getMembersColumns } from "./members-columns";
 
 const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
-	const { nhost, session } = useAuth();
+	const { nhost, session, user } = useAuth();
 	const locale = useLocale();
 	const [page, setPage] = useState(0);
 	const [pageSize, setPageSize] = useState(10);
@@ -61,7 +60,6 @@ const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
 		closeModal: closeDeclineNewJoinerModal,
 	} = useModal();
 	const { selectedClub } = useSidebar();
-	const user = useUser();
 	const t = useTranslations("MembersTable");
 	const clubId = selectedClub?.id;
 
