@@ -10,7 +10,7 @@
 		"or": "Or",
 		"tos_text_pre": "By signing in, you agree to our",
 		"tos": "Terms of Service and Privacy Policy",
-		"tos_text_post": "",
+		"tos_text_post": ".",
 		"layoutDescription": "Manage your club's activities, members, and billing all in one place."
 	},
 	"Sidebar": {
@@ -95,7 +95,7 @@
 		"title": "Decline Join Request",
 		"description": "Are you sure you want to decline the join request of <b>{name}</b>? This action <b>cannot</b> be undone.",
 		"user": "Member",
-		"accept": "Decline",
+		"decline": "Decline",
 		"cancel": "Cancel"
 	},
 	"WatersPage": {
