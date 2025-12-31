@@ -4,6 +4,7 @@ export const GET_WATERS_BY_CLUB_ID = `
       id
       name
       draft
+      members_only
       image_id
       geo_json
       fish_types
@@ -18,6 +19,7 @@ export const GET_WATER_BY_ID = `
       id
       name
       draft
+      members_only
       image_id
       description
       fish_types

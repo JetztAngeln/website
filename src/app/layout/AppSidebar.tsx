@@ -289,7 +289,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  t("menu")
                 ) : (
                   <TextAlignStart />
                 )}
@@ -305,7 +305,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  t("others")
                 ) : (
                   <TextAlignStartIcon />
                 )}

@@ -16,6 +16,8 @@
     "layoutDescription": "Verwalte die Aktivitäten, Mitglieder und Abrechnung deines Vereins an einem Ort."
   },
   "Sidebar": {
+    "menu": "Menü",
+    "others": "Weitere",
     "overview": "Übersicht",
     "members": "Mitglieder",
     "membersOverview": "Übersicht",
@@ -54,6 +56,11 @@
     "title": "Mitglieder",
     "tableTitle": "Mitgliederliste"
   },
+  "MembersJoinPage": {
+    "title": "Neuzugang",
+    "tableTitle": "Beitrittsanfragen",
+    "inviteQrCode": "Einladungs QR-Code herunterladen"
+  },
   "MembersTable": {
     "lastSeen": "Zuletzt aktiv",
     "role": "Rolle",
@@ -63,8 +70,11 @@
     "of": "von",
     "previous": "Vorherige",
     "next": "Nächste",
+    "never": "Niemals",
     "viewProfile": "Mitglied ansehen",
-    "delete": "Mitglied löschen"
+    "delete": "Mitglied löschen",
+    "acceptNewJoiner": "Anfrage akzeptieren",
+    "declineNewJoiner": "Anfrage ablehnen"
   },
   "EditUserRoleModal": {
     "title": "Rolle bearbeiten",
@@ -80,6 +90,20 @@
     "delete": "Löschen",
     "cancel": "Abbrechen"
   },
+  "AcceptNewJoinerModal": {
+    "title": "Beitrittsanfrage akzeptieren",
+    "description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich akzeptieren? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+    "user": "Mitglied",
+    "accept": "Akzeptieren",
+    "cancel": "Abbrechen"
+  },
+  "DeclineNewJoinerModal": {
+    "title": "Beitrittsanfrage ablehnen",
+    "description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich ablehnen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+    "user": "Mitglied",
+    "decline": "Ablehnen",
+    "cancel": "Abbrechen"
+  },
   "WatersPage": {
     "title": "Gewässer",
     "tableTitle": "Gewässerliste",
@@ -92,6 +116,10 @@
     "action": "Aktion",
     "searchPlaceholder": "Suche",
     "status": "Status",
+    "private": "Privat",
+    "public": "Öffentlich",
+    "private_info": "Privat - Nur für Vereinsmitglieder",
+    "public_info": "Öffentlich - Zugänglich für jeden",
     "page": "Seite",
     "of": "von",
     "previous": "Vorherige",
@@ -144,13 +172,48 @@
     "descriptionPlaceholder": "Gib die Beschreibung des Gewässers ein",
     "image": "Bild",
     "isDraft": "Entwurf",
+    "isMembersOnly": "Nur für Vereinsmitglieder",
     "fishTypes": "Fischarten die gefangen werden können",
     "save": "Speichern",
     "cancel": "Abbrechen"
   },
+  "Languages": {
+    "de": "🇩🇪 Deutsch",
+    "en": "🇬🇧 Englisch"
+  },
   "FishTypes": {
-    "TROUT": "Forelle",
-    "CARP": "Karpfen"
+    "EEL": "Aal",
+    "GRAYLING": "Äsche",
+    "BARBEL": "Barbe",
+    "EUROPEAN_PERCH": "Flussbarsch",
+    "BREAM": "Brasse",
+    "CHUB": "Döbel",
+    "BROWN_TROUT": "Bachforelle",
+    "GIBEL_CARP": "Giebel",
+    "GRASS_CARP": "Graskarpfen",
+    "WHITE_BREAM": "Güster",
+    "COMMON_DACE": "Hasel",
+    "PIKE": "Hecht",
+    "CARP": "Karpfen",
+    "RUFFE": "Kaulbarsch",
+    "SALMON": "Lachs",
+    "ROACH": "Rotauge",
+    "RUDD": "Rotfeder",
+    "BROOK_TROUT": "Bachsaibling",
+    "TENCH": "Schleie",
+    "BLEAK": "Ukelei",
+    "EUROPEAN_WELS": "Europäischer Wels",
+    "PIKEPERCH": "Zander",
+    "ATLANTIC_COD": "Dorsch",
+    "EUROPEAN_FLOUNDER": "Flunder",
+    "ATLANTIC_HERRING": "Hering",
+    "ATLANTIC_MACKEREL": "Makrele",
+    "EUROPEAN_PLAICE": "Scholle",
+    "ATLANTIC_POLLACK": "Seelachs",
+    "DOVER_SOLE": "Seezunge",
+    "SPRAT": "Sprotte",
+    "TURBOT": "Steinbutt",
+    "RAINBOW_TROUT": "Regenbogenforelle"
   },
   "Landing": {
     "metaTitle": "JetztAngeln - Die Angelplattform",

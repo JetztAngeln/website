@@ -12,7 +12,7 @@ export const getWatersByClubId = async (
   nhost: NhostClient,
   club_id: string
 ): Promise<ClubWater[]> => {
-type GraphQLResponse = { club_waters: ClubWater[] };
+  type GraphQLResponse = { club_waters: ClubWater[] };
 
   const response = await nhost.graphql.request<GraphQLResponse>({
     query: GET_WATERS_BY_CLUB_ID,

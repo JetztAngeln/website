@@ -59,8 +59,26 @@ export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: Wa
             },
         },
         {
-            accessorKey: "draft",
+            accessorKey: "membersOnly",
             header: t("status"),
+            cell: ({ row }) => {
+                const isMembersOnly = row.original.members_only;
+                return (
+                    <span
+                        className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${isMembersOnly
+                            ? "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500"
+                            : "bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500"
+                            }`}
+                        title={isMembersOnly ? t("private_info") : t("public_info")}
+                    >
+                        {isMembersOnly ? t("private") : t("public")}
+                    </span>
+                );
+            },
+        },
+        {
+            accessorKey: "draft",
+            header: t("draft"),
             cell: ({ row }) => {
                 const isDraft = row.original.draft;
                 return (

@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/nhost/AuthProvider";
 import { UPDATE_WATER } from "@/nhost-api/graphql/waters/mutations";
 import { GET_WATER_BY_ID } from "@/nhost-api/graphql/waters/queries";
 import { LoaderCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Modal } from ".";
@@ -26,12 +26,14 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
     const { nhost } = useAuth();
     const t = useTranslations("EditWaterModal");
     const FishTypesT = useTranslations("FishTypes");
+    const locale = useLocale();
 
     const [loading, setLoading] = useState(false);
     const [water, setWater] = useState<ClubWater | null>(null);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isDraft, setIsDraft] = useState(false);
+    const [isMembersOnly, setIsMembersOnly] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [selectedFishTypeIds, setSelectedFishTypeIds] = useState<string[]>([]);
@@ -43,6 +45,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
             setName("");
             setDescription("");
             setIsDraft(false);
+            setIsMembersOnly(false);
             setImageFile(null);
             setImageUrl(null);
             setSelectedFishTypeIds([]);
@@ -63,6 +66,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                     setName(data.club_waters_by_pk.name);
                     setDescription(data.club_waters_by_pk.description || "");
                     setIsDraft(data.club_waters_by_pk.draft);
+                    setIsMembersOnly(data.club_waters_by_pk.members_only);
                     setImageUrl(data.club_waters_by_pk.image_id ? `${nhost.storage.baseURL}/files/${data.club_waters_by_pk.image_id}` : null);
                     setSelectedFishTypeIds(data.club_waters_by_pk.fish_types || []);
                 }
@@ -109,6 +113,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                     name,
                     description,
                     draft: isDraft,
+                    members_only: isMembersOnly,
                     image_id: newImageId,
                     fish_types: selectedFishTypeIds,
                 }
@@ -143,7 +148,7 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
         <Modal
             isOpen={isOpen}
             onClose={closeModal}
-            className="max-w-[507px] p-6 lg:p-10"
+            className="max-w-[507px] max-h-8/12 overflow-scroll no-scrollbar p-6 lg:p-10"
         >
             <h4 className="mb-2 text-lg font-medium text-gray-800 dark:text-white/90">
                 {t("title")}
@@ -194,21 +199,30 @@ export default function EditWaterModal({ isOpen, closeModal, waterId, onSave }: 
                     <Label htmlFor="isDraft" className="h-3.5">{t("isDraft")}</Label>
                 </div>
 
+                <div className="flex items-center gap-2">
+                    <Checkbox
+                        id="isMembersOnly"
+                        checked={isMembersOnly}
+                        onChange={(e) => setIsMembersOnly(e)}
+                    />
+                    <Label htmlFor="isMembersOnly" className="h-3.5">{t("isMembersOnly")}</Label>
+                </div>
+
                 <div>
                     <Label>{t("fishTypes")}</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
-                        {Object.values(FishType).map((fishType) => {
-                            const isSelected = selectedFishTypeIds.includes(fishType);
+                        {Object.values(FishType).map((e) => { return { "key": e, "value": FishTypesT(e) } }).sort((a, b) => a.value.localeCompare(b.value, locale)).map((fishType) => {
+                            const isSelected = selectedFishTypeIds.includes(fishType.key);
                             return (
                                 <button
-                                    key={fishType}
+                                    key={fishType.key}
                                     className={`cursor-pointer rounded-full px-3 py-1 text-sm font-medium transition-colors duration-200 ${isSelected
                                         ? "bg-brand-500 text-white"
                                         : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                                         }`}
-                                    onClick={() => handleFishTypeChange(fishType, !isSelected)}
+                                    onClick={() => handleFishTypeChange(fishType.key, !isSelected)}
                                 >
-                                    {FishTypesT(fishType)}
+                                    {fishType.value}
                                 </button>
                             );
                         })}

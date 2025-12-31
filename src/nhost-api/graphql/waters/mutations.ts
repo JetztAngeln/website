@@ -23,6 +23,7 @@ export const UPDATE_WATER = `
     $name: String!
     $description: String
     $draft: Boolean!
+    $members_only: Boolean!
     $image_id: uuid
     $fish_types: [String!]
   ) {
@@ -32,6 +33,7 @@ export const UPDATE_WATER = `
         name: $name
         description: $description
         draft: $draft
+        members_only: $members_only
         image_id: $image_id
         fish_types: $fish_types
       }
@@ -40,6 +42,7 @@ export const UPDATE_WATER = `
       name
       description
       draft
+      members_only
       image_id
       fish_types
     }

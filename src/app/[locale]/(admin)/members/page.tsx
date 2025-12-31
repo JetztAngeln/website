@@ -24,7 +24,7 @@ export default function MembersPage() {
     <div>
       <PageBreadcrumb pageTitle={t("title")} />
       <ComponentCard title={t("tableTitle")}>
-        <MembersTable />
+        <MembersTable pending={false} />
       </ComponentCard>
     </div>
   );
