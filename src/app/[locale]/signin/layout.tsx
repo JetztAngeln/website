@@ -9,17 +9,17 @@ import ThemeTogglerTwo from "../../../components/common/ThemeTogglerTwo";
 import { ThemeProvider } from "../../../context/ThemeContext";
 
 export async function generateMetadata({
-  params,
+	params,
 }: {
-  params: Promise<{ locale: string }>;
+	params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "SignIn" });
+	const { locale } = await params;
+	const t = await getTranslations({ locale, namespace: "SignIn" });
 
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-  };
+	return {
+		title: t("metaTitle"),
+		description: t("metaDescription"),
+	};
 }
 
 export default function AuthLayout({

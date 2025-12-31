@@ -2,13 +2,14 @@ import AcceptNewJoinerModal from "@/components/ui/modal/AcceptNewJoinerModal";
 import DeclineNewJoinerModal from "@/components/ui/modal/DeclineNewJoinerModal";
 import DeleteUserModal from "@/components/ui/modal/DeleteUserModal";
 import EditUserRoleModal from "@/components/ui/modal/EditUserRoleModal";
+import type { MembersTableModalsType } from "@/hooks/tables/useMembersTableModal";
 
 export default function MembersModals({
 	modals,
 	clubId,
 	onSuccess,
 }: Readonly<{
-	modals: any;
+	modals: MembersTableModalsType;
 	clubId: string | null | undefined;
 	onSuccess: () => void;
 }>) {

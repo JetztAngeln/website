@@ -12332,6 +12332,13 @@ export type Virus_Updates = {
   where: Virus_Bool_Exp;
 };
 
+export type GetClubDashboardStatsQueryVariables = Exact<{
+  clubId: Scalars['uuid']['input'];
+}>;
+
+
+export type GetClubDashboardStatsQuery = { __typename?: 'query_root', clubs_by_pk?: { __typename?: 'clubs', id: string, name: string } | null, members: Array<{ __typename?: 'user_club_relation', id: string, user: { __typename?: 'users', displayName: string, avatarUrl: string } }>, waters: Array<{ __typename?: 'club_waters', id: string, name: string, draft: boolean }> };
+
 export type AcceptNewJoinerMutationVariables = Exact<{
   userId: Scalars['uuid']['input'];
   clubId: Scalars['uuid']['input'];
@@ -12496,6 +12503,29 @@ export const ClubWaterFragmentDoc = gql`
   description
 }
     `;
+export const GetClubDashboardStatsDocument = gql`
+    query GetClubDashboardStats($clubId: uuid!) {
+  clubs_by_pk(id: $clubId) {
+    id
+    name
+  }
+  members: user_club_relation(
+    where: {club_id: {_eq: $clubId}}
+    order_by: {id: desc}
+  ) {
+    id
+    user {
+      displayName
+      avatarUrl
+    }
+  }
+  waters: club_waters(where: {club_id: {_eq: $clubId}}, order_by: {id: desc}) {
+    id
+    name
+    draft
+  }
+}
+    `;
 export const AcceptNewJoinerDocument = gql`
     mutation AcceptNewJoiner($userId: uuid!, $clubId: uuid!) {
   update_user_club_relation(
@@ -12615,6 +12645,9 @@ export const GetWaterByIdDocument = gql`
 export type Requester<C = {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
+    GetClubDashboardStats(variables: GetClubDashboardStatsQueryVariables, options?: C): Promise<GetClubDashboardStatsQuery> {
+      return requester<GetClubDashboardStatsQuery, GetClubDashboardStatsQueryVariables>(GetClubDashboardStatsDocument, variables, options) as Promise<GetClubDashboardStatsQuery>;
+    },
     AcceptNewJoiner(variables: AcceptNewJoinerMutationVariables, options?: C): Promise<AcceptNewJoinerMutation> {
       return requester<AcceptNewJoinerMutation, AcceptNewJoinerMutationVariables>(AcceptNewJoinerDocument, variables, options) as Promise<AcceptNewJoinerMutation>;
     },

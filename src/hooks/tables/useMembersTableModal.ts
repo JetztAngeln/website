@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import type { ClubUserRelationFragment } from "@/nhost-api/graphql/generated/sdks";
 import { useModal } from "../useModal";
 
@@ -9,7 +9,37 @@ export type MembersTableActions = {
 	decline(user: ClubUserRelationFragment): void;
 };
 
-export function useMembersTableModals() {
+export type MembersTableModalsType = {
+	selected: ClubUserRelationFragment | null;
+	setSelected: Dispatch<SetStateAction<ClubUserRelationFragment | null>>;
+	edit: {
+		isOpen: boolean;
+		openModal: () => void;
+		closeModal: () => void;
+		toggleModal: () => void;
+	};
+	del: {
+		isOpen: boolean;
+		openModal: () => void;
+		closeModal: () => void;
+		toggleModal: () => void;
+	};
+	accept: {
+		isOpen: boolean;
+		openModal: () => void;
+		closeModal: () => void;
+		toggleModal: () => void;
+	};
+	decline: {
+		isOpen: boolean;
+		openModal: () => void;
+		closeModal: () => void;
+		toggleModal: () => void;
+	};
+	actions: MembersTableActions;
+};
+
+export function useMembersTableModals(): MembersTableModalsType {
 	const [selected, setSelected] = useState<ClubUserRelationFragment | null>(
 		null,
 	);
