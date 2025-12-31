@@ -9,6 +9,7 @@ import {
 	DropdownTrigger,
 } from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
+import type { MembersTableActions } from "@/hooks/tables/useMembersTableModal";
 import type { UserClubRelation } from "@/nhost-api/graphql/generated/sdks";
 
 type MembersColumns = {
@@ -16,13 +17,7 @@ type MembersColumns = {
 	user: User | null | undefined;
 	pending: boolean;
 	locale: string;
-	openEditModal: () => void;
-	openDeleteModal: () => void;
-	openAcceptNewJoinerModal: () => void;
-	openDeclineNewJoinerModal: () => void;
-	setSelectedUser: React.Dispatch<
-		React.SetStateAction<UserClubRelation | null>
-	>;
+	actions: MembersTableActions;
 };
 
 const roleColors: Record<UserClubRelation["role"], string> = {
@@ -37,11 +32,7 @@ export const getMembersColumns = ({
 	user,
 	pending,
 	locale,
-	openEditModal,
-	openDeleteModal,
-	openAcceptNewJoinerModal,
-	openDeclineNewJoinerModal,
-	setSelectedUser,
+	actions,
 }: MembersColumns) => {
 	const columns: ColumnDef<UserClubRelation>[] = [
 		{
@@ -112,23 +103,19 @@ export const getMembersColumns = ({
 			header: t("action"),
 			cell: ({ row }) => {
 				const handleEdit = () => {
-					setSelectedUser(row.original);
-					openEditModal();
+					actions.edit(row.original);
 				};
 
 				const handleDelete = () => {
-					setSelectedUser(row.original);
-					openDeleteModal();
+					actions.delete(row.original);
 				};
 
 				const handleAcceptNewJoiner = () => {
-					setSelectedUser(row.original);
-					openAcceptNewJoinerModal();
+					actions.accept(row.original);
 				};
 
 				const handleDeclineNewJoiner = () => {
-					setSelectedUser(row.original);
-					openDeclineNewJoinerModal();
+					actions.decline(row.original);
 				};
 
 				return (
