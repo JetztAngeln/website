@@ -986,7 +986,10 @@ export type _Enumtable_User_Club_Role_Updates = {
   where: _Enumtable_User_Club_Role_Bool_Exp;
 };
 
-/** Oauth requests, inserted before redirecting to the provider's site. Don't modify its structure as Hasura Auth relies on it to function properly. */
+/**
+ * Oauth requests, inserted before redirecting to the provider's site. Don't modify
+ * its structure as Hasura Auth relies on it to function properly.
+ */
 export type AuthProviderRequests = {
   __typename?: 'authProviderRequests';
   id: Scalars['uuid']['output'];
@@ -994,7 +997,10 @@ export type AuthProviderRequests = {
 };
 
 
-/** Oauth requests, inserted before redirecting to the provider's site. Don't modify its structure as Hasura Auth relies on it to function properly. */
+/**
+ * Oauth requests, inserted before redirecting to the provider's site. Don't modify
+ * its structure as Hasura Auth relies on it to function properly.
+ */
 export type AuthProviderRequestsOptionsArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1046,7 +1052,10 @@ export type AuthProviderRequests_Delete_At_Path_Input = {
   options?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
 export type AuthProviderRequests_Delete_Elem_Input = {
   options?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1147,7 +1156,10 @@ export type AuthProviderRequests_Updates = {
   _append?: InputMaybe<AuthProviderRequests_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
   _delete_at_path?: InputMaybe<AuthProviderRequests_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  /**
+   * delete the array element with specified index (negative integers count from
+   * the end). throws an error if top level container is not an array
+   */
   _delete_elem?: InputMaybe<AuthProviderRequests_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
   _delete_key?: InputMaybe<AuthProviderRequests_Delete_Key_Input>;
@@ -1494,7 +1506,11 @@ export type AuthRefreshTokenTypes_Updates = {
   where: AuthRefreshTokenTypes_Bool_Exp;
 };
 
-/** User refresh tokens. Hasura auth uses them to rotate new access tokens as long as the refresh token is not expired. Don't modify its structure as Hasura Auth relies on it to function properly. */
+/**
+ * User refresh tokens. Hasura auth uses them to rotate new access tokens as long
+ * as the refresh token is not expired. Don't modify its structure as Hasura Auth
+ * relies on it to function properly.
+ */
 export type AuthRefreshTokens = {
   __typename?: 'authRefreshTokens';
   createdAt: Scalars['timestamptz']['output'];
@@ -1509,7 +1525,11 @@ export type AuthRefreshTokens = {
 };
 
 
-/** User refresh tokens. Hasura auth uses them to rotate new access tokens as long as the refresh token is not expired. Don't modify its structure as Hasura Auth relies on it to function properly. */
+/**
+ * User refresh tokens. Hasura auth uses them to rotate new access tokens as long
+ * as the refresh token is not expired. Don't modify its structure as Hasura Auth
+ * relies on it to function properly.
+ */
 export type AuthRefreshTokensMetadataArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1592,7 +1612,10 @@ export type AuthRefreshTokens_Delete_At_Path_Input = {
   metadata?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
 export type AuthRefreshTokens_Delete_Elem_Input = {
   metadata?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1761,7 +1784,10 @@ export type AuthRefreshTokens_Updates = {
   _append?: InputMaybe<AuthRefreshTokens_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
   _delete_at_path?: InputMaybe<AuthRefreshTokens_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  /**
+   * delete the array element with specified index (negative integers count from
+   * the end). throws an error if top level container is not an array
+   */
   _delete_elem?: InputMaybe<AuthRefreshTokens_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
   _delete_key?: InputMaybe<AuthRefreshTokens_Delete_Key_Input>;
@@ -4299,7 +4325,10 @@ export enum Club_Feed_Constraint {
   ClubFeedPkey = 'club_feed_pkey'
 }
 
-/** Die View ist für die files da, damit diese eine Relationship zu einem image id array haben können. Nur für interne Logik gedacht. */
+/**
+ * Die View ist für die files da, damit diese eine Relationship zu einem image id
+ * array haben können. Nur für interne Logik gedacht.
+ */
 export type Club_Feed_Image_Mapping = {
   __typename?: 'club_feed_image_mapping';
   /** An object relationship */
@@ -4765,7 +4794,10 @@ export type Club_Feed_Variance_Fields = {
   likes_count?: Maybe<Scalars['Int']['output']>;
 };
 
-/** Eigene View damit jeder User die Anzahl an Usern in einem Club sehen kann. Andernfalls ist es permission technisch schiwerig umzusetzen */
+/**
+ * Eigene View damit jeder User die Anzahl an Usern in einem Club sehen kann.
+ * Andernfalls ist es permission technisch schiwerig umzusetzen
+ */
 export type Club_User_Counts = {
   __typename?: 'club_user_counts';
   club_id?: Maybe<Scalars['uuid']['output']>;
@@ -4989,7 +5021,10 @@ export type Club_Waters_Delete_At_Path_Input = {
   geo_json?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
 export type Club_Waters_Delete_Elem_Input = {
   geo_json?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -5165,7 +5200,10 @@ export type Club_Waters_Updates = {
   _append?: InputMaybe<Club_Waters_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
   _delete_at_path?: InputMaybe<Club_Waters_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  /**
+   * delete the array element with specified index (negative integers count from
+   * the end). throws an error if top level container is not an array
+   */
   _delete_elem?: InputMaybe<Club_Waters_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
   _delete_key?: InputMaybe<Club_Waters_Delete_Key_Input>;
@@ -5191,6 +5229,7 @@ export type Clubs = {
   contact_name?: Maybe<Scalars['String']['output']>;
   contact_phone_number?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
   location?: Maybe<Scalars['geography']['output']>;
@@ -5297,6 +5336,7 @@ export type Clubs_Bool_Exp = {
   contact_name?: InputMaybe<String_Comparison_Exp>;
   contact_phone_number?: InputMaybe<String_Comparison_Exp>;
   country?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   location?: InputMaybe<Geography_Comparison_Exp>;
@@ -5332,6 +5372,7 @@ export type Clubs_Insert_Input = {
   contact_name?: InputMaybe<Scalars['String']['input']>;
   contact_phone_number?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   location?: InputMaybe<Scalars['geography']['input']>;
@@ -5353,6 +5394,7 @@ export type Clubs_Max_Fields = {
   contact_name?: Maybe<Scalars['String']['output']>;
   contact_phone_number?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   max_users?: Maybe<Scalars['Int']['output']>;
@@ -5372,6 +5414,7 @@ export type Clubs_Min_Fields = {
   contact_name?: Maybe<Scalars['String']['output']>;
   contact_phone_number?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   max_users?: Maybe<Scalars['Int']['output']>;
@@ -5420,6 +5463,7 @@ export type Clubs_Order_By = {
   contact_name?: InputMaybe<Order_By>;
   contact_phone_number?: InputMaybe<Order_By>;
   country?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   location?: InputMaybe<Order_By>;
@@ -5451,6 +5495,8 @@ export enum Clubs_Select_Column {
   /** column name */
   Country = 'country',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
@@ -5479,6 +5525,7 @@ export type Clubs_Set_Input = {
   contact_name?: InputMaybe<Scalars['String']['input']>;
   contact_phone_number?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   location?: InputMaybe<Scalars['geography']['input']>;
@@ -5527,6 +5574,7 @@ export type Clubs_Stream_Cursor_Value_Input = {
   contact_name?: InputMaybe<Scalars['String']['input']>;
   contact_phone_number?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   location?: InputMaybe<Scalars['geography']['input']>;
@@ -5558,6 +5606,8 @@ export enum Clubs_Update_Column {
   ContactPhoneNumber = 'contact_phone_number',
   /** column name */
   Country = 'country',
+  /** column name */
+  CreatedAt = 'created_at',
   /** column name */
   Description = 'description',
   /** column name */
@@ -6142,7 +6192,10 @@ export type Files_Delete_At_Path_Input = {
   metadata?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
 export type Files_Delete_Elem_Input = {
   metadata?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -6435,7 +6488,10 @@ export type Files_Updates = {
   _append?: InputMaybe<Files_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
   _delete_at_path?: InputMaybe<Files_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  /**
+   * delete the array element with specified index (negative integers count from
+   * the end). throws an error if top level container is not an array
+   */
   _delete_elem?: InputMaybe<Files_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
   _delete_key?: InputMaybe<Files_Delete_Key_Input>;
@@ -11170,7 +11226,11 @@ export type User_Club_Relation_Updates = {
   where: User_Club_Relation_Bool_Exp;
 };
 
-/** Eigene View damit jeder User das Beitrittsdatum aller anderen User sehen kann. Direkt Permission auf die User zu geben ist schwierig, da es zu Permission Konflikten kommt. */
+/**
+ * Eigene View damit jeder User das Beitrittsdatum aller anderen User sehen kann.
+ * Direkt Permission auf die User zu geben ist schwierig, da es zu Permission
+ * Konflikten kommt.
+ */
 export type User_Created_At = {
   __typename?: 'user_created_at';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -11565,7 +11625,10 @@ export type Users_Delete_At_Path_Input = {
   metadata?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
 export type Users_Delete_Elem_Input = {
   metadata?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -11980,7 +12043,10 @@ export type Users_Updates = {
   _append?: InputMaybe<Users_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
   _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  /**
+   * delete the array element with specified index (negative integers count from
+   * the end). throws an error if top level container is not an array
+   */
   _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
   _delete_key?: InputMaybe<Users_Delete_Key_Input>;
@@ -12095,7 +12161,10 @@ export type Virus_Delete_At_Path_Input = {
   userSession?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
 export type Virus_Delete_Elem_Input = {
   userSession?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -12248,7 +12317,10 @@ export type Virus_Updates = {
   _append?: InputMaybe<Virus_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
   _delete_at_path?: InputMaybe<Virus_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  /**
+   * delete the array element with specified index (negative integers count from
+   * the end). throws an error if top level container is not an array
+   */
   _delete_elem?: InputMaybe<Virus_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
   _delete_key?: InputMaybe<Virus_Delete_Key_Input>;

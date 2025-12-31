@@ -9,7 +9,8 @@
 		"lint": "biome check",
 		"format": "biome format --write",
 		"machine-translate": "inlang machine translate --project project.inlang",
-		"graphql_codegen": "graphql-codegen --config src/nhost-api/graphql/graphql_codegen.ts"
+		"graphql_codegen": "graphql-codegen --config src/nhost-api/graphql/graphql_codegen.ts",
+		"get_schema": "get-graphql-schema --header=x-hasura-admin-secret=nhost-admin-secret https://local.hasura.nhost.run/v1/graphql > src/nhost-api/graphql/schema.graphql && npm run graphql_codegen"
 	},
 	"dependencies": {
 		"@floating-ui/react": "0.27.16",
@@ -43,6 +44,7 @@
 		"@graphql-codegen/typescript": "5.0.7",
 		"@graphql-codegen/typescript-resolvers": "5.1.5",
 		"@graphql-codegen/near-operation-file-preset": "4.0.0",
-		"@graphql-codegen/typescript-generic-sdk": "4.0.2"
+		"@graphql-codegen/typescript-generic-sdk": "4.0.2",
+		"get-graphql-schema": "^2.1.2"
 	}
 }

@@ -11,7 +11,6 @@ import useSWR from "swr";
 import { useDebounce } from "use-debounce";
 import { getMembersColumns } from "@/components/tables/members/members-columns";
 import { useSidebar } from "@/context/SidebarContext";
-import { useUser } from "@/context/UserContext";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import membersMapSort from "@/lib/sorting/members/mapSort";
 import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
@@ -22,7 +21,7 @@ export function useMembersTable(
 	pending: boolean,
 	actions: MembersTableActions,
 ) {
-	const { nhost, session } = useAuth();
+	const { nhost, session, user } = useAuth();
 	const { selectedClub } = useSidebar();
 	const locale = useLocale();
 
@@ -33,7 +32,6 @@ export function useMembersTable(
 	const [sort, setSort] = useState<SortingState>([
 		{ id: "displayName", desc: false },
 	]);
-	const user = useUser();
 
 	const t = useTranslations("MembersTable");
 
