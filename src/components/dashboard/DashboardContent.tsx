@@ -1,7 +1,6 @@
 "use client";
 
 import { Droplets, FileText, Plus, Settings, Users } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import type React from "react";
@@ -10,21 +9,9 @@ import useSWR from "swr";
 import { useSidebar } from "@/context/SidebarContext";
 import { useModal } from "@/hooks/useModal";
 import { useAuth } from "@/lib/nhost/AuthProvider";
-import { getUsersByClubId } from "@/nhost-api/clubs/user.client";
-import { GET_CLUB_DASHBOARD_STATS } from "@/nhost-api/graphql/clubs/queries";
+import { getClubsDashboard } from "@/nhost-api/clubs/clubs.client";
+import type { GetClubDashboardStatsQuery } from "@/nhost-api/graphql/generated/sdks";
 import EditWaterModal from "../ui/modal/EditWaterModal";
-
-interface DashboardStats {
-    clubs_by_pk: {
-        id: string;
-        name: string;
-    };
-    waters: {
-        id: string;
-        name: string;
-        draft: boolean;
-    }[];
-}
 
 export default function DashboardContent() {
     const { nhost, session } = useAuth();
@@ -39,29 +26,13 @@ export default function DashboardContent() {
         openModal();
     };
 
-    const { data: stats, error, isLoading, mutate } = useSWR<DashboardStats>(
-        clubId ? ["dashboardStats", clubId] : null,
-        async () => {
-            const { body } = await nhost.graphql.request<DashboardStats>({
-                query: GET_CLUB_DASHBOARD_STATS,
-                variables: {
-                    clubId,
-                },
-            });
-            if (body.errors) {
-                throw new Error(body.errors[0].message);
-            }
-            if (!body.data) {
-                throw new Error("No data returned");
-            }
-            return body.data;
-        }
-    );
-
-    const { data: membersData, isLoading: membersLoading, error: membersError } = useSWR(
-        clubId ? ["dashboardMembers", clubId] : null,
-        () => getUsersByClubId(nhost, session, clubId!, false, 1, 10)
-    );
+    const { data, error, isLoading, mutate } =
+        useSWR<GetClubDashboardStatsQuery | null>(
+            clubId ? ["dashboardStats", clubId] : null,
+            async () => {
+                return getClubsDashboard(nhost, session, clubId);
+            },
+        );
 
     if (!clubId) {
         return (
@@ -71,9 +42,19 @@ export default function DashboardContent() {
         );
     }
 
-    const memberCount = membersData?.total || 0;
-    const publishedWatersCount = stats?.waters?.filter((w) => !w.draft).length || 0;
-    const draftWatersCount = stats?.waters?.filter((w) => w.draft).length || 0;
+    if (isLoading) {
+        return <div className="p-6">Loading...</div>;
+    }
+
+    if (error || data == null) {
+        return <div className="p-6 text-red-500">Error: {error.message}</div>;
+    }
+
+    const stats = data;
+
+    const memberCount = stats.members.length;
+    const publishedWatersCount = stats.waters.filter((w) => !w.draft).length;
+    const draftWatersCount = stats.waters.filter((w) => w.draft).length;
 
     return (
         <div className="space-y-6">
@@ -94,43 +75,21 @@ export default function DashboardContent() {
             )}
             {/* Stats Grid */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {membersLoading ? (
-                    <StatCardSkeleton />
-                ) : membersError ? (
-                    <div className="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-600 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-400">
-                        Error loading members
-                    </div>
-                ) : (
-                    <StatCard
-                        title={t("stats.members")}
-                        value={memberCount}
-                        icon={<Users className="w-6 h-6 text-blue-500" />}
-                    />
-                )}
-
-                {isLoading ? (
-                    <>
-                        <StatCardSkeleton />
-                        <StatCardSkeleton />
-                    </>
-                ) : error ? (
-                    <div className="col-span-2 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-600 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-400">
-                        Error loading waters stats: {error.message}
-                    </div>
-                ) : (
-                    <>
-                        <StatCard
-                            title={t("stats.publishedWaters")}
-                            value={publishedWatersCount}
-                            icon={<Droplets className="w-6 h-6 text-green-500" />}
-                        />
-                        <StatCard
-                            title={t("stats.draftWaters")}
-                            value={draftWatersCount}
-                            icon={<FileText className="w-6 h-6 text-orange-500" />}
-                        />
-                    </>
-                )}
+                <StatCard
+                    title={t("stats.members")}
+                    value={memberCount}
+                    icon={<Users className="w-6 h-6 text-blue-500" />}
+                />
+                <StatCard
+                    title={t("stats.publishedWaters")}
+                    value={publishedWatersCount}
+                    icon={<Droplets className="w-6 h-6 text-green-500" />}
+                />
+                <StatCard
+                    title={t("stats.draftWaters")}
+                    value={draftWatersCount}
+                    icon={<FileText className="w-6 h-6 text-orange-500" />}
+                />
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -140,40 +99,28 @@ export default function DashboardContent() {
                         {t("recentActivity.newMembers")}
                     </h3>
                     <div className="space-y-4">
-                        {membersLoading ? (
-                            <>
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                            </>
-                        ) : membersError ? (
-                            <p className="text-red-500">Error loading members</p>
-                        ) : membersData?.users && membersData.users.length > 0 ? (
-                            membersData.users.map((user) => (
-                                <div key={user.id} className="flex items-center justify-between">
+                        {stats.members.length > 0 ? (
+                            stats.members.slice(0, 5).map((member) => (
+                                <div
+                                    key={member.id}
+                                    className="flex items-center justify-between"
+                                >
                                     <div className="flex items-center gap-3">
-                                        <Image
-                                            src={user.avatarUrl || "https://gravatar.com/avatar/?d=identicon"}
-                                            alt={user.displayName}
-                                            width={40}
-                                            height={40}
-                                            className="h-10 w-10 rounded-full object-cover"
-                                        />
+                                        <div className="h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500">
+                                            {member.user.displayName.charAt(0).toUpperCase()}
+                                        </div>
                                         <div>
                                             <p className="font-medium text-gray-800 dark:text-white/90">
-                                                {user.displayName}
-                                            </p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                {user.email}
+                                                {member.user.displayName}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <p className="text-gray-500 dark:text-gray-400">{t("recentActivity.noMembers")}</p>
+                            <p className="text-gray-500 dark:text-gray-400">
+                                {t("recentActivity.noMembers")}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -184,17 +131,7 @@ export default function DashboardContent() {
                         {t("recentActivity.newWaters")}
                     </h3>
                     <div className="space-y-4">
-                        {isLoading ? (
-                            <>
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                                <ListItemSkeleton />
-                            </>
-                        ) : error ? (
-                            <p className="text-red-500">Error loading waters</p>
-                        ) : stats?.waters && stats.waters.length > 0 ? (
+                        {stats.waters.length > 0 ? (
                             stats.waters.slice(0, 5).map((water) => (
                                 <button
                                     key={water.id}
@@ -211,14 +148,18 @@ export default function DashboardContent() {
                                                 {water.name}
                                             </p>
                                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                {water.draft ? t("stats.draftWaters") : t("stats.publishedWaters")}
+                                                {water.draft
+                                                    ? t("stats.draftWaters")
+                                                    : t("stats.publishedWaters")}
                                             </p>
                                         </div>
                                     </div>
                                 </button>
                             ))
                         ) : (
-                            <p className="text-gray-500 dark:text-gray-400">{t("recentActivity.noWaters")}</p>
+                            <p className="text-gray-500 dark:text-gray-400">
+                                {t("recentActivity.noWaters")}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -296,40 +237,14 @@ function QuickActionCard({
             href={href}
             className="flex items-center gap-3 rounded-xl border border-gray-100 p-4 transition-all hover:border-gray-200 hover:shadow-sm dark:border-gray-800 dark:hover:border-gray-700 dark:hover:bg-white/[0.03]"
         >
-            <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
+            <div
+                className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}
+            >
                 {icon}
             </div>
             <span className="font-medium text-gray-700 dark:text-gray-300">
                 {title}
             </span>
         </Link>
-    );
-}
-
-function StatCardSkeleton() {
-    return (
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-            <div className="flex items-center justify-between">
-                <div>
-                    <div className="h-4 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
-                    <div className="mt-2 h-8 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
-                </div>
-                <div className="h-12 w-12 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
-            </div>
-        </div>
-    );
-}
-
-function ListItemSkeleton() {
-    return (
-        <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-                <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
-                <div>
-                    <div className="mb-1 h-4 w-32 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
-                    <div className="h-3 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
-                </div>
-            </div>
-        </div>
     );
 }

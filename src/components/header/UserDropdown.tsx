@@ -7,6 +7,7 @@ import { signOut } from "@/lib/auth/actions";
 import { Dropdown, DropdownContent, DropdownTrigger } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import LanguageSelect from "./SelectLanguage";
+import { useAuth } from "@/lib/nhost/AuthProvider";
 
 export default function UserDropdown() {
   const t = useTranslations("UserDropdown");
