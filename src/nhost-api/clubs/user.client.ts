@@ -15,17 +15,17 @@ import { getGraphQLClient } from "../graphql/graphql_provider";
 export async function getUsersByClubId(
 	nhost: NhostClient,
 	session: Session | null,
-	clubId: string,
+	clubId: string | null | undefined,
 	pending?: boolean,
 	page: number = 1,
 	pageSize: number = 10,
 	search: string = "",
 	sort: ClubUserOrderByEnum = ClubUserOrderByEnum.DisplayNameAsc,
 ): Promise<{
-	users: ClubUserRelationFragment[];
+	relations: ClubUserRelationFragment[];
 	total: number;
 } | null> {
-	if (!session) return null;
+	if (!session || !clubId) return null;
 
 	const offset = (page - 1) * pageSize;
 
@@ -42,7 +42,7 @@ export async function getUsersByClubId(
 		const total =
 			result.getClubUsers.user_club_relation_aggregate.aggregate.count ?? 0;
 
-		return { users: result.getClubUsers.user_club_relation, total };
+		return { relations: result.getClubUsers.user_club_relation, total };
 	} catch (error) {
 		console.error("Failed to fetch users for club:", error);
 		return null;

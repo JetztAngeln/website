@@ -17,9 +17,17 @@ import { useSidebar } from "../../context/SidebarContext";
 const AppHeader: React.FC = () => {
 	const { nhost, session } = useAuth();
 	const [isApplicationMenuOpen, setIsApplicationMenuOpen] = useState(false);
-	const { data: clubs, error: errorClubs, isLoading: isLoadingClubs } = useSWR<ClubInfo[], {
-		error: string;
-	}, any>('appHeader', async () => await getClubsForCurrentUser(nhost, session));
+	const {
+		data: clubs,
+		error: errorClubs,
+		isLoading: isLoadingClubs,
+	} = useSWR<
+		ClubInfo[],
+		{
+			error: string;
+		},
+		any
+	>("appHeader", async () => await getClubsForCurrentUser(nhost, session));
 
 	const {
 		isMobileOpen,
@@ -52,11 +60,7 @@ const AppHeader: React.FC = () => {
 						onClick={handleToggle}
 						aria-label="Toggle Sidebar"
 					>
-						{isMobileOpen ? (
-							<X />
-						) : (
-							<TextAlignStart />
-						)}
+						{isMobileOpen ? <X /> : <TextAlignStart />}
 						{/* Cross Icon */}
 					</button>
 
@@ -77,31 +81,55 @@ const AppHeader: React.FC = () => {
 						/>
 					</Link>
 					<div className="flex gap-x-4 items-center">
-
-						<div className="block lg:hidden"><ThemeToggleButton /></div>
+						<div className="block lg:hidden">
+							<ThemeToggleButton />
+						</div>
 						<button
 							type="button"
 							onClick={toggleApplicationMenu}
 							className="flex items-center justify-center w-10 h-10 -ml-2 text-gray-700 rounded-lg z-99999 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"
 						>
 							<TextAlignStart />
-						</button></div>
+						</button>
+					</div>
 
 					<div className="hidden lg:block">
-						{clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
+						{clubs && (
+							<SelectClub
+								clubs={clubs}
+								selectedClub={selectedClub}
+								setSelectedClub={setSelectedClub}
+								placeholder={t("selectClubPlaceholder")}
+								error={errorClubs}
+								isLoading={isLoadingClubs}
+							/>
+						)}
 					</div>
 				</div>
 				<div
-					className={`${isApplicationMenuOpen ? "flex" : "hidden"
-						} items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
-				>          {/* <!-- Language Selector & Theme Toggler --> */}
-					<div className="hidden lg:block"><ThemeToggleButton /></div>
+					className={`${
+						isApplicationMenuOpen ? "flex" : "hidden"
+					} items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+				>
+					{" "}
+					{/* <!-- Language Selector & Theme Toggler --> */}
+					<div className="hidden lg:block">
+						<ThemeToggleButton />
+					</div>
 					<div className="lg:hidden">
-						{clubs && <SelectClub clubs={clubs} selectedClub={selectedClub} setSelectedClub={setSelectedClub} placeholder={t("selectClubPlaceholder")} error={errorClubs} isLoading={isLoadingClubs} />}
+						{clubs && (
+							<SelectClub
+								clubs={clubs}
+								selectedClub={selectedClub}
+								setSelectedClub={setSelectedClub}
+								placeholder={t("selectClubPlaceholder")}
+								error={errorClubs}
+								isLoading={isLoadingClubs}
+							/>
+						)}
 					</div>
 					{/* <!-- User Area --> */}
 					<UserDropdown />
-
 				</div>
 			</div>
 		</header>

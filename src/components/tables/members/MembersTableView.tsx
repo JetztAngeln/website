@@ -7,10 +7,7 @@ type Props<T> = {
 	table: ReactTable<T>;
 	isLoading: boolean;
 	data:
-		| {
-				users: ClubUserRelationFragment[];
-				total: number;
-		  }
+		| { relations: ClubUserRelationFragment[]; total: number }
 		| null
 		| undefined;
 	t: ReturnType<typeof createTranslator<Messages, "MembersTable">>;
@@ -79,7 +76,7 @@ export default function MembersTableView<T>({
 				</tbody>
 			</table>
 
-			{!isLoading && data?.users.length === 0 && (
+			{!isLoading && data?.relations.length === 0 && (
 				<div className="p-4 text-center text-gray-500">{t("noUsersFound")}</div>
 			)}
 		</div>

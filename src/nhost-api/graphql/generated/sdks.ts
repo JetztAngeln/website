@@ -12337,7 +12337,7 @@ export type GetClubDashboardStatsQueryVariables = Exact<{
 }>;
 
 
-export type GetClubDashboardStatsQuery = { __typename?: 'query_root', clubs_by_pk?: { __typename?: 'clubs', id: string, name: string } | null, members: Array<{ __typename?: 'user_club_relation', id: string, user: { __typename?: 'users', displayName: string, avatarUrl: string } }>, waters: Array<{ __typename?: 'club_waters', id: string, name: string, draft: boolean }> };
+export type GetClubDashboardStatsQuery = { __typename?: 'query_root', clubs_by_pk?: { __typename?: 'clubs', id: string, name: string } | null, waters: Array<{ __typename?: 'club_waters', id: string, name: string, draft: boolean }> };
 
 export type AcceptNewJoinerMutationVariables = Exact<{
   userId: Scalars['uuid']['input'];
@@ -12508,16 +12508,6 @@ export const GetClubDashboardStatsDocument = gql`
   clubs_by_pk(id: $clubId) {
     id
     name
-  }
-  members: user_club_relation(
-    where: {club_id: {_eq: $clubId}}
-    order_by: {id: desc}
-  ) {
-    id
-    user {
-      displayName
-      avatarUrl
-    }
   }
   waters: club_waters(where: {club_id: {_eq: $clubId}}, order_by: {id: desc}) {
     id

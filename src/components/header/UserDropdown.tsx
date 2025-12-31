@@ -1,11 +1,18 @@
 "use client";
 
-import { ChevronDown, LogOut, MessageCircleQuestionMarkIcon } from "lucide-react";
+import {
+	ChevronDown,
+	LogOut,
+	MessageCircleQuestionMarkIcon,
+} from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { signOut } from "@/lib/auth/actions";
-import { useAuth } from "@/lib/nhost/AuthProvider";
-import { Dropdown, DropdownContent, DropdownTrigger } from "../ui/dropdown/Dropdown";
+import {
+	Dropdown,
+	DropdownContent,
+	DropdownTrigger,
+} from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import LanguageSelect from "./SelectLanguage";
 
@@ -64,16 +71,18 @@ export default function UserDropdown() {
               href="/profile"
               className="flex items-center gap-3 px-3! py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              {/* Profile icon *//*}
+              {/* Profile icon */
+					/*}
 <CircleUserRound className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300 flex-none" height={20} />
 {t("editProfile")}
 </DropdownItem>
 </li>
-*/
-					}
+*/}
 
 					<li>
-						<LanguageSelect className="flex items-center w-full gap-3 px-3! py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 cursor-pointer"><p>{t("selectLanguage")}</p></LanguageSelect>
+						<LanguageSelect className="flex items-center w-full gap-3 px-3! py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 cursor-pointer">
+							<p>{t("selectLanguage")}</p>
+						</LanguageSelect>
 					</li>
 					<li>
 						<DropdownItem
@@ -82,7 +91,10 @@ export default function UserDropdown() {
 							className="flex items-center gap-3 px-3! py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
 						>
 							{/* Support icon */}
-							<MessageCircleQuestionMarkIcon className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300 flex-none" height={22} />
+							<MessageCircleQuestionMarkIcon
+								className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300 flex-none"
+								height={22}
+							/>
 							{t("support")}
 						</DropdownItem>
 					</li>
@@ -97,7 +109,10 @@ export default function UserDropdown() {
 					}}
 				>
 					{/* Sign out icon */}
-					<LogOut className="text-gray-500 group-hover:text-red-700 dark:group-hover:text-red-300 flex-none" height={20} />
+					<LogOut
+						className="text-gray-500 group-hover:text-red-700 dark:group-hover:text-red-300 flex-none"
+						height={20}
+					/>
 					{t("signOut")}
 				</DropdownItem>
 			</DropdownContent>

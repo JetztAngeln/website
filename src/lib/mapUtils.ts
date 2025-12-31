@@ -98,6 +98,7 @@ const drawUtilities = (type: keyof typeof utilities) => {
 
 	return new MaplibreTerradrawControl({
 		modes: utilities[type],
+		showDeleteConfirmation: true,
 		open: true,
 		modeOptions: {
 			polygon: new TerraDrawPolygonMode({

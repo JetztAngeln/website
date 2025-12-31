@@ -3,16 +3,6 @@ query GetClubDashboardStats($clubId: uuid!) {
 		id
 		name
 	}
-	members: user_club_relation(
-		where: { club_id: { _eq: $clubId } }
-		order_by: { id: desc }
-	) {
-		id
-		user {
-			displayName
-			avatarUrl
-		}
-	}
 	waters: club_waters(
 		where: { club_id: { _eq: $clubId } }
 		order_by: { id: desc }
