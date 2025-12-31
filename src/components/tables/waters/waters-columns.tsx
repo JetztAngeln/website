@@ -1,12 +1,12 @@
-import { Dropdown, DropdownContent, DropdownTrigger } from "@/components/ui/dropdown/Dropdown";
-import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
-import { ClubWater } from "@/lib/models/water";
 import { NhostClient } from "@nhost/nhost-js";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVerticalIcon } from "lucide-react";
-import { createTranslator, Messages } from "next-intl";
 import Image from "next/image";
+import { createTranslator, Messages } from "next-intl";
 import { Dispatch, SetStateAction } from "react";
+import { Dropdown, DropdownContent, DropdownTrigger } from "@/components/ui/dropdown/Dropdown";
+import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
+import { ClubWater } from "@/lib/models/water";
 
 type WatersColumns = {
     t: ReturnType<typeof createTranslator<Messages, "WatersPage">>,
@@ -28,9 +28,9 @@ export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: Wa
                     <Image
                         src={imageUrl}
                         alt={water.name}
-                        width={128}
-                        height={60}
-                        className="max-h-16 rounded-md object-cover"
+                        width={200}
+                        height={120}
+                        className="h-14 w-32 min-w-[64px] rounded-md object-cover"
                     />
 
                 );

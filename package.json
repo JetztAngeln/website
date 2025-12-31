@@ -15,6 +15,7 @@
     "@nhost/nhost-js": "^4.2.0",
     "@simplewebauthn/browser": "^13.2.2",
     "@tanstack/react-table": "^8.21.3",
+    "country-flag-icons": "^1.6.4",
     "lucide-react": "^0.555.0",
     "maplibre-gl": "^5.7.3",
     "next": "16.0.7",
