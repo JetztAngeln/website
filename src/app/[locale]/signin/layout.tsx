@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type React from "react";
 import LanguageSelect from "@/components/header/SelectLanguage";
 import GridShape from "../../../components/common/GridShape";
-import ThemeTogglerTwo from "../../../components/common/ThemeTogglerTwo";
 import ThemeTogglerTwo from "../../../components/common/ThemeTogglerTwo";
 import { ThemeProvider } from "../../../context/ThemeContext";
 
