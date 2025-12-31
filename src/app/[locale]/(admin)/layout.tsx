@@ -3,13 +3,14 @@
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import AdminLayout from "./_layout_client";
 
+export default function DashboardLayout({
+	children,
+}: Readonly<{ children: React.ReactNode }>) {
+	const auth = useAuth();
 
-export default function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const auth = useAuth();
+	if (!auth.isAuthenticated || auth.user == null) {
+		return null;
+	}
 
-  if (!auth.isAuthenticated) {
-    return null;
-  }
-
-  return <AdminLayout user={auth.user!}>{children}</AdminLayout>;
+	return <AdminLayout>{children}</AdminLayout>;
 }

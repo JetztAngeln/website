@@ -1,7 +1,7 @@
 import { createServerClient, type NhostClient } from "@nhost/nhost-js";
 import { DEFAULT_SESSION_KEY, type Session } from "@nhost/nhost-js/session";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest, NextResponse } from "next/server";
 
 const key = DEFAULT_SESSION_KEY;
 
@@ -17,35 +17,35 @@ const key = DEFAULT_SESSION_KEY;
  *
  */
 export async function createNhostClient(): Promise<NhostClient> {
-  const cookieStore = await cookies();
+	const cookieStore = await cookies();
 
-  const nhost = createServerClient({
-    region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
-    subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
-    authUrl: process.env["NEXT_PUBLIC_NHOST_URL_AUTH"] || undefined,
-    functionsUrl: process.env["NEXT_PUBLIC_NHOST_URL_FUNCTIONS"] || undefined,
-    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_URL_GRAPHQL"] || undefined,
-    storageUrl: process.env["NEXT_PUBLIC_NHOST_URL_STORAGE"] || undefined,
-    storage: {
-      // storage compatible with Next.js server components
-      get: (): Session | null => {
-        const s = cookieStore.get(key)?.value || null;
-        if (!s) {
-          return null;
-        }
-        const session = JSON.parse(s) as Session;
-        return session;
-      },
-      set: (value: Session) => {
-        cookieStore.set(key, JSON.stringify(value));
-      },
-      remove: () => {
-        cookieStore.delete(key);
-      },
-    },
-  });
+	const nhost = createServerClient({
+		region: process.env.NEXT_PUBLIC_NHOST_REGION || "local",
+		subdomain: process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN || "local",
+		authUrl: process.env.NEXT_PUBLIC_NHOST_URL_AUTH,
+		functionsUrl: process.env.NEXT_PUBLIC_NHOST_URL_FUNCTIONS,
+		graphqlUrl: process.env.NEXT_PUBLIC_NHOST_URL_GRAPHQL,
+		storageUrl: process.env.NEXT_PUBLIC_NHOST_URL_STORAGE,
+		storage: {
+			// storage compatible with Next.js server components
+			get: (): Session | null => {
+				const s = cookieStore.get(key)?.value || null;
+				if (!s) {
+					return null;
+				}
+				const session = JSON.parse(s) as Session;
+				return session;
+			},
+			set: (value: Session) => {
+				cookieStore.set(key, JSON.stringify(value));
+			},
+			remove: () => {
+				cookieStore.delete(key);
+			},
+		},
+	});
 
-  return nhost;
+	return nhost;
 }
 
 /**
@@ -59,44 +59,44 @@ export async function createNhostClient(): Promise<NhostClient> {
  * @param {NextResponse} response - The outgoing Next.js response object
  */
 export async function handleNhostMiddleware(
-  request: NextRequest,
-  response: NextResponse<unknown>,
+	request: NextRequest,
+	response: NextResponse<unknown>,
 ): Promise<Session | null> {
-  const nhost = createServerClient({
-    region: process.env["NEXT_PUBLIC_NHOST_REGION"] || "local",
-    subdomain: process.env["NEXT_PUBLIC_NHOST_SUBDOMAIN"] || "local",
-    authUrl: process.env["NEXT_PUBLIC_NHOST_URL_AUTH"] || undefined,
-    functionsUrl: process.env["NEXT_PUBLIC_NHOST_URL_FUNCTIONS"] || undefined,
-    graphqlUrl: process.env["NEXT_PUBLIC_NHOST_URL_GRAPHQL"] || undefined,
-    storageUrl: process.env["NEXT_PUBLIC_NHOST_URL_STORAGE"] || undefined,
-    storage: {
-      // storage compatible with Next.js middleware
-      get: (): Session | null => {
-        const raw = request.cookies.get(key)?.value || null;
-        if (!raw) {
-          return null;
-        }
-        const session = JSON.parse(raw) as Session;
-        return session;
-      },
-      set: (value: Session) => {
-        response.cookies.set({
-          name: key,
-          value: JSON.stringify(value),
-          path: "/",
-          httpOnly: false, //if set to true we can't access it in the client
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
-          maxAge: 60 * 60 * 24 * 30, // 30 days in seconds
-        });
-      },
-      remove: () => {
-        response.cookies.delete(key);
-      },
-    },
-  });
+	const nhost = createServerClient({
+		region: process.env.NEXT_PUBLIC_NHOST_REGION || "local",
+		subdomain: process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN || "local",
+		authUrl: process.env.NEXT_PUBLIC_NHOST_URL_AUTH,
+		functionsUrl: process.env.NEXT_PUBLIC_NHOST_URL_FUNCTIONS,
+		graphqlUrl: process.env.NEXT_PUBLIC_NHOST_URL_GRAPHQL,
+		storageUrl: process.env.NEXT_PUBLIC_NHOST_URL_STORAGE,
+		storage: {
+			// storage compatible with Next.js middleware
+			get: (): Session | null => {
+				const raw = request.cookies.get(key)?.value || null;
+				if (!raw) {
+					return null;
+				}
+				const session = JSON.parse(raw) as Session;
+				return session;
+			},
+			set: (value: Session) => {
+				response.cookies.set({
+					name: key,
+					value: JSON.stringify(value),
+					path: "/",
+					httpOnly: false, //if set to true we can't access it in the client
+					secure: process.env.NODE_ENV === "production",
+					sameSite: "lax",
+					maxAge: 60 * 60 * 24 * 30, // 30 days in seconds
+				});
+			},
+			remove: () => {
+				response.cookies.delete(key);
+			},
+		},
+	});
 
-  // we only want to refresh the session if  the token will
-  // expire in the next 60 seconds
-  return await nhost.refreshSession(60);
+	// we only want to refresh the session if  the token will
+	// expire in the next 60 seconds
+	return await nhost.refreshSession(60);
 }
