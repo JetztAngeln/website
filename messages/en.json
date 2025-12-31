@@ -1,5 +1,7 @@
 {
   "SignIn": {
+    "metaTitle": "Sign In - JetztAngeln",
+    "metaDescription": "Sign in to your club dashboard.",
     "title": "Club Dashboard",
     "subtitle": "Sign in as an admin to your club.",
     "signInWithGoogle": "Sign in with Google",
@@ -35,6 +37,8 @@
     "backToHome": "Go Back to Dashboard"
   },
   "Redirect": {
+    "metaTitle": "Redirecting... - JetztAngeln",
+    "metaDescription": "You are being redirected.",
     "message": "You are not allowed to access this page.",
     "backToHome": "Go Back to Homepage"
   },
@@ -45,6 +49,8 @@
     "support": "Support"
   },
   "MembersPage": {
+    "metaTitle": "Members - JetztAngeln",
+    "metaDescription": "Manage your club members.",
     "title": "Members",
     "tableTitle": "Members List"
   },
@@ -145,5 +151,62 @@
   "FishTypes": {
     "TROUT": "Trout",
     "CARP": "Carp"
+  },
+  "Landing": {
+    "metaTitle": "JetztAngeln - The Fishing Platform",
+    "metaDescription": "Your fishing club digitally in your pocket - JetztAngeln makes it possible!"
+  },
+  "Dashboard": {
+    "metaTitle": "Dashboard - JetztAngeln",
+    "metaDescription": "Overview of your fishing club activities.",
+    "selectClub": "Please select a club from the sidebar to view the dashboard.",
+    "stats": {
+      "members": "Members",
+      "totalWaters": "Total Waters",
+      "draftWaters": "Draft Waters",
+      "publishedWaters": "Published Waters",
+      "daysActive": "Days Active"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "addMember": "Add Member",
+      "addWater": "Add Water",
+      "editProfile": "Edit Profile"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "newMembers": "New Members",
+      "newWaters": "New Waters",
+      "noMembers": "No members yet",
+      "noWaters": "No waters yet"
+    }
+  },
+  "Billing": {
+    "metaTitle": "Billing - JetztAngeln",
+    "metaDescription": "Manage your club's billing and subscription."
+  },
+  "Catches": {
+    "metaTitle": "Catches - JetztAngeln",
+    "metaDescription": "View and manage catch reports."
+  },
+  "Club": {
+    "metaTitle": "Club Management - JetztAngeln",
+    "metaDescription": "Manage your club settings and details."
+  },
+  "Waters": {
+    "metaTitle": "Waters - JetztAngeln",
+    "metaDescription": "Manage your club's waters."
+  },
+  "AddWater": {
+    "metaTitle": "Add Water - JetztAngeln",
+    "metaDescription": "Add a new water to your club."
+  },
+  "Profile": {
+    "metaTitle": "User Profile - JetztAngeln",
+    "metaDescription": "Manage your user profile."
+  },
+  "VerifyError": {
+    "metaTitle": "Verification Error - JetztAngeln",
+    "metaDescription": "There was an error verifying your account."
   }
 }

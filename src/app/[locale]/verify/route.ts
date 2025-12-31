@@ -1,8 +1,8 @@
-import { GET_ADMIN_ROLE_QUERY } from "@/nhost-api/graphql/clubs/queries";
 import type { ErrorResponse } from "@nhost/nhost-js/auth";
 import type { FetchError } from "@nhost/nhost-js/fetch";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { GET_ADMIN_ROLE_QUERY } from "@/nhost-api/graphql/clubs/queries";
 import { createNhostClient } from "../../../lib/nhost/server";
 
 interface UserClubRelationResponse {
@@ -20,22 +20,12 @@ export async function GET(request: NextRequest) {
     params.set("message", "No refresh token provided");
 
     return NextResponse.redirect(
-      new URL(`/verify/error?${params.toString()}`, request.url)
+      new URL(`/verify/error?${params.toString()}`, request.url),
     );
   }
 
   try {
     const nhost = await createNhostClient();
-
-    if (nhost.getUserSession()) {
-      // Collect all query parameters
-      const params = new URLSearchParams(request.nextUrl.searchParams);
-      params.set("message", "Already signed in");
-
-      return NextResponse.redirect(
-        new URL(`/verify/error?${params.toString()}`, request.url)
-      );
-    }
 
     await nhost.auth.refreshToken({ refreshToken });
     const userSession = nhost.getUserSession();
@@ -55,7 +45,7 @@ export async function GET(request: NextRequest) {
           headers: {
             "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
           },
-        }
+        },
       );
 
       const { data, errors } = body;
@@ -80,7 +70,7 @@ export async function GET(request: NextRequest) {
     params.set("message", errorMessage);
 
     return NextResponse.redirect(
-      new URL(`/verify/error?${params.toString()}`, request.url)
+      new URL(`/verify/error?${params.toString()}`, request.url),
     );
   }
 }

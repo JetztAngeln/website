@@ -1,8 +1,25 @@
+import { getTranslations } from "next-intl/server";
+
 interface ErrorPageProps {
   searchParams: Promise<{
     message?: string;
     [key: string]: string | undefined;
   }>;
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "VerifyError" });
+
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
 }
 
 export default async function VerificationError({

@@ -1,13 +1,22 @@
-import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import ComponentCard from "../../../../components/common/ComponentCard";
 import PageBreadcrumb from "../../../../components/common/PageBreadCrumb";
 import MembersTable from "../../../../components/tables/members/MembersTable";
 
-export const metadata: Metadata = {
-  title: "Mitglieder - JetztAngeln",
-  description: "Verwalte die Mitglieder deines Angelvereins",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "MembersPage" });
+
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
 export default function MembersPage() {
   const t = useTranslations("MembersPage");

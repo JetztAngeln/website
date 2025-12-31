@@ -37,3 +37,30 @@ export const GET_CLUBS_QUERY = `
     }
   }
 `;
+
+export const GET_CLUB_DASHBOARD_STATS = `
+  query GetClubDashboardStats($clubId: uuid!) {
+  clubs_by_pk(id: $clubId) {
+    id
+    name
+  }
+  members: user_club_relation(
+    where: { club_id: { _eq: $clubId } }
+    order_by: { id: desc }
+  ) {
+    id
+    user {
+      displayName
+      avatarUrl
+    }
+  }
+  waters: club_waters(
+    where: { club_id: { _eq: $clubId } }
+    order_by: { id: desc }
+  ) {
+    id
+    name
+    draft
+  }
+}
+`;

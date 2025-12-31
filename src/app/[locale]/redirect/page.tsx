@@ -1,8 +1,23 @@
 import "@/app/[locale]/globals.css";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import GridShape from "../../../components/common/GridShape";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Redirect" });
+
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
 export default function Redirect() {
   const t = useTranslations("Redirect");

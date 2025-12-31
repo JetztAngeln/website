@@ -1,5 +1,7 @@
 {
   "SignIn": {
+    "metaTitle": "Anmelden - JetztAngeln",
+    "metaDescription": "Melde dich bei deinem Vereins-Dashboard an.",
     "title": "Vereins Dashboard",
     "subtitle": "Melde dich als Admin bei deinem Verein an.",
     "signInWithGoogle": "Mit Google anmelden",
@@ -35,6 +37,8 @@
     "backToHome": "Zurück zum Dashboard"
   },
   "Redirect": {
+    "metaTitle": "Weiterleitung... - JetztAngeln",
+    "metaDescription": "Du wirst weitergeleitet.",
     "message": "Du bist nicht berechtigt, auf diese Seite zuzugreifen.",
     "backToHome": "Zurück zur Startseite"
   },
@@ -45,6 +49,8 @@
     "support": "Support"
   },
   "MembersPage": {
+    "metaTitle": "Mitglieder - JetztAngeln",
+    "metaDescription": "Verwalte deine Vereinsmitglieder.",
     "title": "Mitglieder",
     "tableTitle": "Mitgliederliste"
   },
@@ -145,5 +151,62 @@
   "FishTypes": {
     "TROUT": "Forelle",
     "CARP": "Karpfen"
+  },
+  "Landing": {
+    "metaTitle": "JetztAngeln - Die Angelplattform",
+    "metaDescription": "Dein Angelverein digital in der Hosentasche - JetztAngeln macht's möglich!"
+  },
+  "Dashboard": {
+    "metaTitle": "Dashboard - JetztAngeln",
+    "metaDescription": "Übersicht über deine Vereinsaktivitäten.",
+    "selectClub": "Bitte wähle einen Verein aus der Seitenleiste, um das Dashboard anzuzeigen.",
+    "stats": {
+      "members": "Mitglieder",
+      "totalWaters": "Gewässer Gesamt",
+      "draftWaters": "Gewässer (Entwurf)",
+      "publishedWaters": "Gewässer (Veröffentlicht)",
+      "daysActive": "Tage Aktiv"
+    },
+    "quickActions": {
+      "title": "Schnellzugriff",
+      "addMember": "Mitglied hinzufügen",
+      "addWater": "Gewässer hinzufügen",
+      "editProfile": "Profil bearbeiten"
+    },
+    "recentActivity": {
+      "title": "Letzte Aktivitäten",
+      "newMembers": "Neue Mitglieder",
+      "newWaters": "Neue Gewässer",
+      "noMembers": "Noch keine Mitglieder",
+      "noWaters": "Noch keine Gewässer"
+    }
+  },
+  "Billing": {
+    "metaTitle": "Abrechnung - JetztAngeln",
+    "metaDescription": "Verwalte die Abrechnung und das Abonnement deines Vereins."
+  },
+  "Catches": {
+    "metaTitle": "Fänge - JetztAngeln",
+    "metaDescription": "Fangmeldungen einsehen und verwalten."
+  },
+  "Club": {
+    "metaTitle": "Vereinsverwaltung - JetztAngeln",
+    "metaDescription": "Verwalte deine Vereinseinstellungen und Details."
+  },
+  "Waters": {
+    "metaTitle": "Gewässer - JetztAngeln",
+    "metaDescription": "Verwalte die Gewässer deines Vereins."
+  },
+  "AddWater": {
+    "metaTitle": "Gewässer hinzufügen - JetztAngeln",
+    "metaDescription": "Füge deinem Verein ein neues Gewässer hinzu."
+  },
+  "Profile": {
+    "metaTitle": "Benutzerprofil - JetztAngeln",
+    "metaDescription": "Verwalte dein Benutzerprofil."
+  },
+  "VerifyError": {
+    "metaTitle": "Verifizierungsfehler - JetztAngeln",
+    "metaDescription": "Es gab einen Fehler bei der Verifizierung deines Kontos."
   }
 }
