@@ -48,7 +48,7 @@ export function useMembersTable(
 	] as const;
 
 	const swr = useSWR(swrKey, async (key) => {
-		if (!key[1]) return { users: [], total: 0 };
+		if (!key[1]) return { relations: [], total: 0 };
 
 		const sortParams = membersMapSort(key[6]);
 		if (!sortParams.length) {
@@ -76,7 +76,7 @@ export function useMembersTable(
 	});
 
 	const table = useReactTable({
-		data: swr.data?.users ?? [],
+		data: swr.data?.relations ?? [],
 		columns,
 		pageCount: swr.data ? Math.ceil(swr.data.total / pageSize) : -1,
 		manualPagination: true,
