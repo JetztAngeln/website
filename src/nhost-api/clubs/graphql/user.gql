@@ -1,0 +1,50 @@
+fragment ClubUserRelation on UserClubRelation {
+	role
+	user {
+		id
+		avatarUrl
+		displayName
+		email
+		lastSeen
+	}
+}
+
+query GetClubUsers(
+	$clubId: uuid!
+	$offset: Int!
+	$limit: Int!
+	$pending: Boolean
+	$search: String!
+	$orderBy: [ClubUserOrderByEnum!]
+) {
+	getClubUsers(
+		clubId: $clubId
+		offset: $offset
+		limit: $limit
+		pending: $pending
+		search: $search
+		orderBy: $orderBy
+	) {
+		user_club_relation {
+			...ClubUserRelation
+		}
+		user_club_relation_aggregate {
+			aggregate {
+				count
+			}
+		}
+	}
+}
+
+fragment ClubForUser on clubs {
+	id
+	name
+}
+
+query GetClubsForUser($userId: uuid!) {
+	user_club_relation(where: { user_id: { _eq: $userId } }) {
+		club {
+			...ClubForUser
+		}
+	}
+}

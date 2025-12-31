@@ -1,23 +1,20 @@
 "use client";
 
-import { ChevronDown, Info, LogOut, MessageCircleQuestionMarkIcon } from "lucide-react";
+import { ChevronDown, LogOut, MessageCircleQuestionMarkIcon } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { signOut } from "@/lib/auth/actions";
-import { useUser } from "../../context/UserContext";
 import { Dropdown, DropdownContent, DropdownTrigger } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import LanguageSelect from "./SelectLanguage";
 
 export default function UserDropdown() {
   const t = useTranslations("UserDropdown");
-  const user = useUser();
+  const { user } = useAuth();
 
   if (!user) {
     return (
-      <div className="text-gray-500 dark:text-gray-400">
-        {t("loading")}
-      </div>
+      <div className="text-gray-500 dark:text-gray-400">{t("loading")}</div>
     );
   }
 
@@ -32,7 +29,9 @@ export default function UserDropdown() {
             <Image
               width={44}
               height={44}
-              src={user.avatarUrl ?? "https://www.gravatar.com/avatar/?d=identicon"}
+              src={
+                user.avatarUrl ?? "https://www.gravatar.com/avatar/?d=identicon"
+              }
               alt="User"
               loading="lazy"
             />
@@ -57,8 +56,7 @@ export default function UserDropdown() {
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
-          {
-            /*
+          {/*
             <li>
             <DropdownItem
               tag="a"

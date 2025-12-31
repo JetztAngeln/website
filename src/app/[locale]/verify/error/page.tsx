@@ -1,63 +1,63 @@
 import { getTranslations } from "next-intl/server";
 
 interface ErrorPageProps {
-  searchParams: Promise<{
-    message?: string;
-    [key: string]: string | undefined;
-  }>;
-  params: Promise<{ locale: string }>;
+	searchParams: Promise<{
+		message?: string;
+		[key: string]: string | undefined;
+	}>;
+	params: Promise<{ locale: string }>;
 }
 
 export async function generateMetadata({
-  params,
+	params,
 }: {
-  params: Promise<{ locale: string }>;
+	params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "VerifyError" });
+	const { locale } = await params;
+	const t = await getTranslations({ locale, namespace: "VerifyError" });
 
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-  };
+	return {
+		title: t("metaTitle"),
+		description: t("metaDescription"),
+	};
 }
 
 export default async function VerificationError({
-  searchParams,
+	searchParams,
 }: Readonly<ErrorPageProps>) {
-  const params = await searchParams;
-  const errorMessage = params?.message || "Verification failed";
+	const params = await searchParams;
+	const errorMessage = params?.message || "Verification failed";
 
-  // Extract all URL parameters to display
-  const urlParams = { ...params };
-  delete urlParams.message; // Remove message from parameters display since we're already showing it
+	// Extract all URL parameters to display
+	const urlParams = { ...params };
+	delete urlParams.message; // Remove message from parameters display since we're already showing it
 
-  const hasUrlParams = Object.keys(urlParams).length > 0;
+	const hasUrlParams = Object.keys(urlParams).length > 0;
 
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="glass-card w-full p-8 mb-6">
-        <h2 className="text-2xl mb-6">Verification Failed</h2>
-        <p className="text-red-500 mb-4">{errorMessage}</p>
+	return (
+		<div className="flex flex-col items-center justify-center">
+			<div className="glass-card w-full p-8 mb-6">
+				<h2 className="text-2xl mb-6">Verification Failed</h2>
+				<p className="text-red-500 mb-4">{errorMessage}</p>
 
-        {hasUrlParams && (
-          <div className="mb-4 p-4 bg-gray-100 rounded-md text-left overflow-auto max-h-48">
-            <p className="font-semibold mb-2">URL Parameters:</p>
-            {Object.entries(urlParams).map(([key, value]) => (
-              <div key={key} className="mb-1">
-                <span className="font-mono text-blue-600">{key}:</span>{" "}
-                <span className="font-mono">{value}</span>
-              </div>
-            ))}
-          </div>
-        )}
+				{hasUrlParams && (
+					<div className="mb-4 p-4 bg-gray-100 rounded-md text-left overflow-auto max-h-48">
+						<p className="font-semibold mb-2">URL Parameters:</p>
+						{Object.entries(urlParams).map(([key, value]) => (
+							<div key={key} className="mb-1">
+								<span className="font-mono text-blue-600">{key}:</span>{" "}
+								<span className="font-mono">{value}</span>
+							</div>
+						))}
+					</div>
+				)}
 
-        <div className="mt-6">
-          <a href="/signin" className="btn btn-primary">
-            Back to Sign In
-          </a>
-        </div>
-      </div>
-    </div>
-  );
+				<div className="mt-6">
+					<a href="/signin" className="btn btn-primary">
+						Back to Sign In
+					</a>
+				</div>
+			</div>
+		</div>
+	);
 }

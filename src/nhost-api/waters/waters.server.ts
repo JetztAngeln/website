@@ -1,93 +1,42 @@
 "use server";
 
-import { ClubWater } from "@/lib/models/water";
-import { GeoJSONFeature } from "maplibre-gl";
+import type { GeoJSONFeature } from "maplibre-gl";
 import { createNhostClient } from "../../lib/nhost/server";
-import {
-  ADD_WATER_TO_CLUB_MUTATION,
-  ADD_ZONE_TO_WATER_MUTATION,
-} from "../graphql/waters/mutations";
+import type { ClubWaterFragment } from "../graphql/generated/sdks";
+import { getGraphQLClient } from "../graphql/graphql_provider";
 
 export async function addWaterToClub(
-  clubId: string,
-  name: string,
-  geo_json: GeoJSONFeature[]
-): Promise<{ error?: string }> {
-  const nhost = await createNhostClient();
-  const session = nhost.getUserSession();
+	clubId: string,
+	name: string,
+	geo_json: GeoJSONFeature[],
+): Promise<boolean> {
+	const nhost = await createNhostClient();
 
-  if (!session) {
-    return {
-      error: "session error",
-    };
-  }
+	try {
+		await getGraphQLClient(nhost).AddWaterToClub({ clubId, name, geo_json });
 
-  try {
-    const { body } = await nhost.graphql.request(
-      {
-        query: ADD_WATER_TO_CLUB_MUTATION,
-        variables: { clubId, name, geo_json },
-      },
-      {
-        headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-        },
-      }
-    );
-
-    if (body.errors) {
-      console.error(body.errors);
-      return {
-        error: `GraphQL Error`,
-      };
-    }
-
-    return {};
-  } catch (error) {
-    console.error(error);
-    return { error: `Failed to add water` };
-  }
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
 }
 
 export async function addZoneToWater(
-  selectedWater: ClubWater,
-  geo_json: GeoJSONFeature
-): Promise<{ error?: string }> {
-  const nhost = await createNhostClient();
-  const session = nhost.getUserSession();
+	selectedWater: ClubWaterFragment,
+	geo_json: GeoJSONFeature,
+): Promise<boolean> {
+	const nhost = await createNhostClient();
 
-  if (!session) {
-    return {
-      error: "session error",
-    };
-  }
+	try {
+		await getGraphQLClient(nhost).AddZoneToWater({
+			id: selectedWater.id,
+			geo_json: [...(selectedWater.geo_json as unknown[]), geo_json],
+		});
 
-  try {
-    const { body } = await nhost.graphql.request(
-      {
-        query: ADD_ZONE_TO_WATER_MUTATION,
-        variables: {
-          id: selectedWater.id,
-          geo_json: [...selectedWater.geo_json, geo_json],
-        },
-      },
-      {
-        headers: {
-          "X-Access-Token": process.env.STAGING_NHOST_ACCESS_TOKEN || null,
-        },
-      }
-    );
-
-    if (body.errors) {
-      console.error(body.errors);
-      return {
-        error: `GraphQL Error`,
-      };
-    }
-
-    return {};
-  } catch (error) {
-    console.error(error);
-    return { error: `Failed to add water` };
-  }
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
 }

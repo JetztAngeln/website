@@ -1,5 +1,12 @@
 {
-  "recommendations": [
-    "inlang.vs-code-extension"
-  ]
+	"recommendations": [
+		"inlang.vs-code-extension",
+		"biomejs.biome",
+		"fill-labs.dependi",
+		"irongeek.vscode-env",
+		"mquandalle.graphql",
+		"lokalise.i18n-ally",
+		"sonarsource.sonarlint-vscode",
+		"wayou.vscode-todo-highlight"
+	]
 }

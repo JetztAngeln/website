@@ -66,9 +66,7 @@ export default function DashboardContent() {
     if (!clubId) {
         return (
             <div className="p-6">
-                <p className="text-gray-500 dark:text-gray-400">
-                    {t("selectClub")}
-                </p>
+                <p className="text-gray-500 dark:text-gray-400">{t("selectClub")}</p>
             </div>
         );
     }

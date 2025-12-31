@@ -1,38 +1,48 @@
-import { NhostClient } from "@nhost/nhost-js";
-import { ColumnDef } from "@tanstack/react-table";
+import type { NhostClient } from "@nhost/nhost-js";
+import type { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVerticalIcon } from "lucide-react";
 import Image from "next/image";
-import { createTranslator, Messages } from "next-intl";
-import { Dispatch, SetStateAction } from "react";
-import { Dropdown, DropdownContent, DropdownTrigger } from "@/components/ui/dropdown/Dropdown";
+import type { createTranslator, Messages } from "next-intl";
+import type { Dispatch, SetStateAction } from "react";
+import {
+    Dropdown,
+    DropdownContent,
+    DropdownTrigger,
+} from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
-import { ClubWater } from "@/lib/models/water";
+import type { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 
 type WatersColumns = {
-    t: ReturnType<typeof createTranslator<Messages, "WatersPage">>,
-    nhost: NhostClient,
-    openModal: () => void,
-    setSelectedWaterId: Dispatch<SetStateAction<string | null | undefined>>
+    t: ReturnType<typeof createTranslator<Messages, "WatersPage">>;
+    nhost: NhostClient;
+    openModal: () => void;
+    setSelectedWaterId: Dispatch<SetStateAction<string | null | undefined>>;
 };
 
-export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: WatersColumns) => {
-    const columns: ColumnDef<ClubWater>[] = [
+export const getWatersColumns = ({
+    t,
+    nhost,
+    openModal,
+    setSelectedWaterId,
+}: WatersColumns) => {
+    const columns: ColumnDef<ClubWaterFragment>[] = [
         {
             accessorKey: "image",
             header: "",
             enableSorting: false,
             cell: ({ row }) => {
                 const water = row.original;
-                const imageUrl = water.image_id ? `${nhost.storage.baseURL + "/files/" + water.image_id}` : "https://gravatar.com/avatar/?d=identicon";
+                const imageUrl = water.image_id
+                    ? `${`${nhost.storage.baseURL}/files/${water.image_id}`}`
+                    : "https://gravatar.com/avatar/?d=identicon";
                 return (
                     <Image
                         src={imageUrl}
                         alt={water.name}
-                        width={200}
-                        height={120}
-                        className="h-14 w-32 min-w-[64px] rounded-md object-cover"
+                        width={128}
+                        height={60}
+                        className="max-h-16 rounded-md object-cover"
                     />
-
                 );
             },
         },
@@ -42,7 +52,9 @@ export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: Wa
             cell: ({ row }) => {
                 const water = row.original;
                 return (
-                    <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">{water.name}</div>
+                    <div className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                        {water.name}
+                    </div>
                 );
             },
         },
@@ -66,8 +78,8 @@ export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: Wa
                 return (
                     <span
                         className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${isMembersOnly
-                            ? "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500"
-                            : "bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500"
+                                ? "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500"
+                                : "bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500"
                             }`}
                         title={isMembersOnly ? t("private_info") : t("public_info")}
                     >
@@ -84,8 +96,8 @@ export const getWatersColumns = ({ t, nhost, openModal, setSelectedWaterId }: Wa
                 return (
                     <span
                         className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${isDraft
-                            ? "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500"
-                            : ""
+                                ? "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500"
+                                : ""
                             }`}
                     >
                         {isDraft ? t("draft") : ""}
