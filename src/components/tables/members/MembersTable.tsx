@@ -9,44 +9,44 @@ import MembersSearch from "./MembersSearch";
 import MembersTableView from "./MembersTableView";
 
 const MembersTable: React.FC<{ pending: boolean }> = ({ pending }) => {
-	const modals = useMembersTableModals();
-	const members = useMembersTable(pending, modals.actions);
+    const modals = useMembersTableModals();
+    const members = useMembersTable(pending, modals.actions);
 
-	return (
-		<div className="rounded-lg">
-			<MembersSearch
-				value={members.search}
-				onChange={(v) => {
-					members.setPage(0);
-					members.setSearch(v);
-				}}
-			></MembersSearch>
+    return (
+        <div className="rounded-lg">
+            <MembersSearch
+                value={members.search}
+                onChange={(v) => {
+                    members.setPage(0);
+                    members.setSearch(v);
+                }}
+            ></MembersSearch>
 
-			<MembersModals
-				clubId={members.clubId}
-				onSuccess={members.mutate}
-				modals={modals}
-			></MembersModals>
+            <MembersModals
+                clubId={members.clubId}
+                onSuccess={members.mutate}
+                modals={modals}
+            ></MembersModals>
 
-			{/* Table */}
-			<MembersTableView
-				isLoading={members.isLoading}
-				table={members.table}
-				data={members.data}
-				t={members.t}
-			></MembersTableView>
+            {/* Table */}
+            <MembersTableView
+                isLoading={members.isLoading}
+                table={members.table}
+                data={members.data}
+                t={members.t}
+            ></MembersTableView>
 
-			{/* Pagination controls */}
-			<MembersPagination
-				page={members.page}
-				pageSize={members.pageSize}
-				total={members.data?.total ?? 0}
-				isLoading={members.isLoading}
-				onPageChange={members.setPage}
-				onPageSizeChange={members.setPageSize}
-				t={members.t}
-			/>
-		</div>
-	);
+            {/* Pagination controls */}
+            <MembersPagination
+                page={members.page}
+                pageSize={members.pageSize}
+                total={members.data?.total ?? 0}
+                isLoading={members.isLoading}
+                onPageChange={members.setPage}
+                onPageSizeChange={members.setPageSize}
+                t={members.t}
+            />
+        </div>
+    );
 };
 export default MembersTable;

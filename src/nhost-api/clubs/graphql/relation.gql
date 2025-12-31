@@ -1,34 +1,34 @@
 mutation AcceptNewJoiner($userId: uuid!, $clubId: uuid!) {
-	update_user_club_relation(
-		where: { user_id: { _eq: $userId }, club_id: { _eq: $clubId } }
-		_set: { pending: false }
-	) {
-		returning {
-			id
-		}
-	}
+    update_user_club_relation(
+        where: { user_id: { _eq: $userId }, club_id: { _eq: $clubId } }
+        _set: { pending: false }
+    ) {
+        returning {
+            id
+        }
+    }
 }
 
 mutation DeleteUserClubRelation($userId: uuid!, $clubId: uuid!) {
-	delete_user_club_relation(
-		where: { club_id: { _eq: $clubId }, user_id: { _eq: $userId } }
-	) {
-		returning {
-			id
-		}
-	}
+    delete_user_club_relation(
+        where: { club_id: { _eq: $clubId }, user_id: { _eq: $userId } }
+    ) {
+        returning {
+            id
+        }
+    }
 }
 
 mutation UpdateUserRole(
-	$role: _enumtable_user_club_role_enum!
-	$userId: uuid!
+    $role: _enumtable_user_club_role_enum!
+    $userId: uuid!
 ) {
-	update_user_club_relation(
-		where: { user_id: { _eq: $userId } }
-		_set: { role: $role }
-	) {
-		returning {
-			id
-		}
-	}
+    update_user_club_relation(
+        where: { user_id: { _eq: $userId } }
+        _set: { role: $role }
+    ) {
+        returning {
+            id
+        }
+    }
 }

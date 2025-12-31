@@ -1,73 +1,73 @@
 mutation AddWaterToClub(
-	$clubId: uuid = ""
-	$geo_json: jsonb = ""
-	$name: String = ""
+    $clubId: uuid = ""
+    $geo_json: jsonb = ""
+    $name: String = ""
 ) {
-	insert_club_waters_one(
-		object: {
-			club_id: $clubId
-			geo_json: $geo_json
-			name: $name
-			draft: true
-			fish_types: []
-		}
-	) {
-		id
-	}
+    insert_club_waters_one(
+        object: {
+            club_id: $clubId
+            geo_json: $geo_json
+            name: $name
+            draft: true
+            fish_types: []
+        }
+    ) {
+        id
+    }
 }
 
 mutation AddZoneToWater($id: uuid = "", $geo_json: jsonb = "") {
-	update_club_waters_by_pk(
-		pk_columns: { id: $id }
-		_set: { geo_json: $geo_json }
-	) {
-		id
-	}
+    update_club_waters_by_pk(
+        pk_columns: { id: $id }
+        _set: { geo_json: $geo_json }
+    ) {
+        id
+    }
 }
 
 fragment ClubWater on club_waters {
-	id
-	name
-	draft
-	members_only
-	image_id
-	geo_json
-	fish_types
-	description
+    id
+    name
+    draft
+    members_only
+    image_id
+    geo_json
+    fish_types
+    description
 }
 
 mutation UpdateWater(
-	$id: uuid!
-	$name: String!
-	$description: String
-	$draft: Boolean!
-	$members_only: Boolean!
-	$image_id: uuid
-	$fish_types: [String!]
+    $id: uuid!
+    $name: String!
+    $description: String
+    $draft: Boolean!
+    $members_only: Boolean!
+    $image_id: uuid
+    $fish_types: [String!]
 ) {
-	update_club_waters_by_pk(
-		pk_columns: { id: $id }
-		_set: {
-			name: $name
-			description: $description
-			draft: $draft
-			members_only: $members_only
-			image_id: $image_id
-			fish_types: $fish_types
-		}
-	) {
-		...ClubWater
-	}
+    update_club_waters_by_pk(
+        pk_columns: { id: $id }
+        _set: {
+            name: $name
+            description: $description
+            draft: $draft
+            members_only: $members_only
+            image_id: $image_id
+            fish_types: $fish_types
+        }
+    ) {
+        ...ClubWater
+    }
 }
 
 query GetWatersByClubId($club_id: uuid!) {
-	club_waters(where: { club_id: { _eq: $club_id } }) {
-		...ClubWater
-	}
+    club_waters(where: { club_id: { _eq: $club_id } }) {
+        ...ClubWater
+    }
 }
 
 query GetWaterById($id: uuid!) {
-	club_waters_by_pk(id: $id) {
-		...ClubWater
-	}
+    club_waters_by_pk(id: $id) {
+        ...ClubWater
+    }
 }

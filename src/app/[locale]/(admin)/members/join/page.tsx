@@ -6,19 +6,19 @@ import { ClubInviteQRCodeDownload } from "@/components/header/ClubInviteQRCodeDo
 import MembersTable from "@/components/tables/members/MembersTable";
 
 export const metadata: Metadata = {
-	title: "Mitglieder - JetztAngeln",
-	description: "Verwalte die Mitglieder deines Angelvereins",
+    title: "Mitglieder - JetztAngeln",
+    description: "Verwalte die Mitglieder deines Angelvereins",
 };
 
 export default function MembersPage() {
-	const t = useTranslations("MembersJoinPage");
-	return (
-		<div>
-			<PageBreadcrumb pageTitle={t("title")} />
-			<ClubInviteQRCodeDownload />
-			<ComponentCard title={t("tableTitle")}>
-				<MembersTable pending={true} />
-			</ComponentCard>
-		</div>
-	);
+    const t = useTranslations("MembersJoinPage");
+    return (
+        <div>
+            <PageBreadcrumb pageTitle={t("title")} />
+            <ClubInviteQRCodeDownload />
+            <ComponentCard title={t("tableTitle")}>
+                <MembersTable pending={true} />
+            </ComponentCard>
+        </div>
+    );
 }

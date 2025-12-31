@@ -8,43 +8,43 @@ import { AuthProvider } from "../../lib/nhost/AuthProvider";
 import "./globals.css";
 
 type Props = {
-	children: React.ReactNode;
-	params: Promise<{ locale: string }>;
+    children: React.ReactNode;
+    params: Promise<{ locale: string }>;
 };
 
 export async function generateMetadata({
-	params,
+    params,
 }: {
-	params: Promise<{ locale: string }>;
+    params: Promise<{ locale: string }>;
 }) {
-	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "Landing" });
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Landing" });
 
-	return {
-		title: t("metaTitle"),
-		description: t("metaDescription"),
-	};
+    return {
+        title: t("metaTitle"),
+        description: t("metaDescription"),
+    };
 }
 
 export default async function RootLayout({
-	children,
-	params,
+    children,
+    params,
 }: Readonly<Props>) {
-	const { locale } = await params;
-	if (!hasLocale(routing.locales, locale)) {
-		notFound();
-	}
-	return (
-		<html lang={locale}>
-			<body className="dark:bg-gray-900">
-				<NextIntlClientProvider>
-					<ThemeProvider>
-						<AuthProvider>
-							<SidebarProvider>{children}</SidebarProvider>
-						</AuthProvider>
-					</ThemeProvider>
-				</NextIntlClientProvider>
-			</body>
-		</html>
-	);
+    const { locale } = await params;
+    if (!hasLocale(routing.locales, locale)) {
+        notFound();
+    }
+    return (
+        <html lang={locale}>
+            <body className="dark:bg-gray-900">
+                <NextIntlClientProvider>
+                    <ThemeProvider>
+                        <AuthProvider>
+                            <SidebarProvider>{children}</SidebarProvider>
+                        </AuthProvider>
+                    </ThemeProvider>
+                </NextIntlClientProvider>
+            </body>
+        </html>
+    );
 }

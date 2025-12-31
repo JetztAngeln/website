@@ -1,19 +1,19 @@
 query GetAdminRole($userId: uuid = "") {
-	user_club_relation(
-		where: { role: { _eq: ADMIN }, user_id: { _eq: $userId } }
-	) {
-		role
-	}
+    user_club_relation(
+        where: { role: { _eq: ADMIN }, user_id: { _eq: $userId } }
+    ) {
+        role
+    }
 }
 
 fragment OwnUser on users {
-	avatarUrl
-	displayName
-	email
+    avatarUrl
+    displayName
+    email
 }
 
 query GetUserById($userId: uuid!) {
-	users(where: { id: { _eq: $userId } }) {
-		...OwnUser
-	}
+    users(where: { id: { _eq: $userId } }) {
+        ...OwnUser
+    }
 }

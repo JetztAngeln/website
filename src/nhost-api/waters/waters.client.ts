@@ -9,12 +9,12 @@ import { getGraphQLClient } from "../graphql/graphql_provider";
  * @returns A promise that resolves to an array of ClubWater objects.
  */
 export const getWatersByClubId = async (
-	nhost: NhostClient,
-	club_id: string,
+    nhost: NhostClient,
+    club_id: string,
 ): Promise<ClubWaterFragment[]> => {
-	const result = await getGraphQLClient(nhost).GetWatersByClubId({
-		club_id,
-	});
+    const result = await getGraphQLClient(nhost).GetWatersByClubId({
+        club_id,
+    });
 
-	return result.club_waters;
+    return result.club_waters;
 };

@@ -10,9 +10,9 @@ import { createNhostClient } from "../nhost/server";
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function revalidateAfterAuthChange(path = "/") {
-	// Revalidate the specified path to refresh server components
-	revalidatePath(path);
-	return { success: true };
+    // Revalidate the specified path to refresh server components
+    revalidatePath(path);
+    return { success: true };
 }
 
 /**
@@ -20,20 +20,20 @@ export async function revalidateAfterAuthChange(path = "/") {
  * and redirects them to the homepage
  */
 export async function signOut() {
-	// Get the server Nhost client
-	const nhost = await createNhostClient();
-	const session = nhost.getUserSession();
+    // Get the server Nhost client
+    const nhost = await createNhostClient();
+    const session = nhost.getUserSession();
 
-	if (session) {
-		// Sign out with the refresh token
-		await nhost.auth.signOut({
-			refreshToken: session.refreshToken,
-		});
-	}
+    if (session) {
+        // Sign out with the refresh token
+        await nhost.auth.signOut({
+            refreshToken: session.refreshToken,
+        });
+    }
 
-	// Revalidate all paths to ensure server components re-render
-	revalidatePath("/");
+    // Revalidate all paths to ensure server components re-render
+    revalidatePath("/");
 
-	// Redirect to the homepage
-	redirect("/");
+    // Redirect to the homepage
+    redirect("/");
 }

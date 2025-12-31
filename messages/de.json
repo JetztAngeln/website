@@ -1,276 +1,276 @@
 {
-	"SignIn": {
-		"metaTitle": "Anmelden - JetztAngeln",
-		"metaDescription": "Melde dich bei deinem Vereins-Dashboard an.",
-		"title": "Vereins Dashboard",
-		"subtitle": "Melde dich als Admin bei deinem Verein an.",
-		"signInWithGoogle": "Mit Google anmelden",
-		"signInWithApple": "Mit Apple anmelden",
-		"signInWithEmail": "Anmelde-Link erhalten",
-		"signingIn": "Anmelden...",
-		"sendingLink": "Link wurde gesendet...",
-		"or": "Oder",
-		"tos_text_pre": "Durch die Anmeldung stimmst du unseren",
-		"tos": "Nutzungsbedingungen und unserer Datenschutzerklärung",
-		"tos_text_post": "zu.",
-		"layoutDescription": "Verwalte die Aktivitäten, Mitglieder und Abrechnung deines Vereins an einem Ort."
-	},
-	"Sidebar": {
-		"menu": "Menü",
-		"others": "Weitere",
-		"overview": "Übersicht",
-		"members": "Mitglieder",
-		"membersOverview": "Übersicht",
-		"membersJoin": "Beitrittsanfragen",
-		"waters": "Gewässer",
-		"watersOverview": "Übersicht",
-		"addRiver": "Fluss hinzufügen",
-		"addLake": "See hinzufügen",
-		"addZone": "Sperrzone hinzufügen",
-		"club": "Vereinsverwaltung",
-		"catches": "Fänge",
-		"billing": "Abrechnung"
-	},
-	"AppHeader": {
-		"selectClubPlaceholder": "Wähle deinen Verein..."
-	},
-	"NotFound": {
-		"message": "Die Seite, die du suchst, existiert nicht oder wurde verschoben.",
-		"backToHome": "Zurück zum Dashboard"
-	},
-	"Redirect": {
-		"metaTitle": "Weiterleitung... - JetztAngeln",
-		"metaDescription": "Du wirst weitergeleitet.",
-		"message": "Du bist nicht berechtigt, auf diese Seite zuzugreifen.",
-		"backToHome": "Zurück zur Startseite"
-	},
-	"UserDropdown": {
-		"editProfile": "Profil bearbeiten",
-		"signOut": "Abmelden",
-		"loading": "Lädt...",
-		"support": "Support",
-		"selectLanguage": "Englisch"
-	},
-	"MembersPage": {
-		"metaTitle": "Mitglieder - JetztAngeln",
-		"metaDescription": "Verwalte deine Vereinsmitglieder.",
-		"title": "Mitglieder",
-		"tableTitle": "Mitgliederliste"
-	},
-	"MembersJoinPage": {
-		"title": "Neuzugang",
-		"tableTitle": "Beitrittsanfragen",
-		"inviteQrCode": "Einladungs QR-Code herunterladen"
-	},
-	"MembersTable": {
-		"lastSeen": "Zuletzt aktiv",
-		"role": "Rolle",
-		"action": "Aktion",
-		"noUsersFound": "Keine Mitglieder gefunden.",
-		"page": "Seite",
-		"of": "von",
-		"previous": "Vorherige",
-		"next": "Nächste",
-		"never": "Niemals",
-		"viewProfile": "Mitglied ansehen",
-		"delete": "Mitglied löschen",
-		"acceptNewJoiner": "Anfrage akzeptieren",
-		"declineNewJoiner": "Anfrage ablehnen"
-	},
-	"EditUserRoleModal": {
-		"title": "Rolle bearbeiten",
-		"description": "Ändere die Rolle von <b>{name}</b>:",
-		"user": "Mitglied",
-		"save": "Speichern",
-		"cancel": "Abbrechen"
-	},
-	"DeleteUserModal": {
-		"title": "Mitglied löschen",
-		"description": "Möchtest du das Mitglied <b>{name}</b> wirklich löschen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
-		"user": "Mitglied",
-		"delete": "Löschen",
-		"cancel": "Abbrechen"
-	},
-	"AcceptNewJoinerModal": {
-		"title": "Beitrittsanfrage akzeptieren",
-		"description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich akzeptieren? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
-		"user": "Mitglied",
-		"accept": "Akzeptieren",
-		"cancel": "Abbrechen"
-	},
-	"DeclineNewJoinerModal": {
-		"title": "Beitrittsanfrage ablehnen",
-		"description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich ablehnen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
-		"user": "Mitglied",
-		"decline": "Ablehnen",
-		"cancel": "Abbrechen"
-	},
-	"WatersPage": {
-		"title": "Gewässer",
-		"tableTitle": "Gewässerliste",
-		"pageDescription": "Die Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
-		"name": "Name",
-		"description": "Beschreibung",
-		"noDescription": "Keine Beschreibung vorhanden",
-		"fishTypes": "Fischarten",
-		"draft": "Entwurf",
-		"action": "Aktion",
-		"searchPlaceholder": "Suche",
-		"status": "Status",
-		"private": "Privat",
-		"public": "Öffentlich",
-		"private_info": "Privat - Nur für Vereinsmitglieder",
-		"public_info": "Öffentlich - Zugänglich für jeden",
-		"page": "Seite",
-		"of": "von",
-		"previous": "Vorherige",
-		"next": "Nächste",
-		"noWatersFound": "Keine Gewässer gefunden.",
-		"edit": "Bearbeiten",
-		"delete": "Löschen"
-	},
-	"AddRiver": {
-		"title": "Fluss hinzufügen",
-		"description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne den Flussverlauf auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den Fluss klicken und weitere Informationen hinzufügen. Nur so kannst du den Fluss speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen.",
-		"drawRiver": "Fluss zeichnen"
-	},
-	"AddLake": {
-		"title": "See hinzufügen",
-		"description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Seenfläche auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den See klicken und weitere Informationen hinzufügen. Nur so kannst du den See speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
-	},
-	"AddZone": {
-		"title": "Angelverbotszone hinzufügen",
-		"description": "Wähle ein Gewässer aus, auf dem du eine Angelverbotszone hinzufügen willst. Wähle danach das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern.\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
-	},
-	"AddWaterModalLake": {
-		"title": "Gewässer hinzufügen",
-		"subText": "Wähle einen Namen für das Gewässer aus und speichere es als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
-		"name": "Name",
-		"namePlaceholder": "Gib den Namen des Gewässers ein",
-		"save": "Als Entwurf speichern",
-		"cancel": "Abbrechen"
-	},
-	"AddWaterModalRiver": {
-		"title": "Fluss hinzufügen",
-		"subText": "Wähle einen Namen für den Fluss aus und speichere ihn als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
-		"name": "Name",
-		"namePlaceholder": "Gib den Namen des Flusses ein",
-		"save": "Als Entwurf speichern",
-		"cancel": "Abbrechen"
-	},
-	"AddWaterModalZone": {
-		"title": "Angelverbotszone hinzufügen",
-		"subText": "Speichere den ausgewählten Bereich als Angelverbotszone, für das aktuell ausgewählte Gewässer.",
-		"save": "Speichern",
-		"cancel": "Abbrechen"
-	},
-	"EditWaterModal": {
-		"title": "Gewässer editieren",
-		"subText": "Passe hier das Gewässer an. Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
-		"name": "Name",
-		"namePlaceholder": "Gib den Namen des Gewässers ein",
-		"description": "Beschreibung",
-		"descriptionPlaceholder": "Gib die Beschreibung des Gewässers ein",
-		"image": "Bild",
-		"isDraft": "Entwurf",
-		"isMembersOnly": "Nur für Vereinsmitglieder",
-		"fishTypes": "Fischarten die gefangen werden können",
-		"save": "Speichern",
-		"cancel": "Abbrechen"
-	},
-	"Languages": {
-		"de": "🇩🇪 Deutsch",
-		"en": "🇬🇧 Englisch"
-	},
-	"FishTypes": {
-		"EEL": "Aal",
-		"GRAYLING": "Äsche",
-		"BARBEL": "Barbe",
-		"EUROPEAN_PERCH": "Flussbarsch",
-		"BREAM": "Brasse",
-		"CHUB": "Döbel",
-		"BROWN_TROUT": "Bachforelle",
-		"GIBEL_CARP": "Giebel",
-		"GRASS_CARP": "Graskarpfen",
-		"WHITE_BREAM": "Güster",
-		"COMMON_DACE": "Hasel",
-		"PIKE": "Hecht",
-		"CARP": "Karpfen",
-		"RUFFE": "Kaulbarsch",
-		"SALMON": "Lachs",
-		"ROACH": "Rotauge",
-		"RUDD": "Rotfeder",
-		"BROOK_TROUT": "Bachsaibling",
-		"TENCH": "Schleie",
-		"BLEAK": "Ukelei",
-		"EUROPEAN_WELS": "Europäischer Wels",
-		"PIKEPERCH": "Zander",
-		"ATLANTIC_COD": "Dorsch",
-		"EUROPEAN_FLOUNDER": "Flunder",
-		"ATLANTIC_HERRING": "Hering",
-		"ATLANTIC_MACKEREL": "Makrele",
-		"EUROPEAN_PLAICE": "Scholle",
-		"ATLANTIC_POLLACK": "Seelachs",
-		"DOVER_SOLE": "Seezunge",
-		"SPRAT": "Sprotte",
-		"TURBOT": "Steinbutt",
-		"RAINBOW_TROUT": "Regenbogenforelle"
-	},
-	"Landing": {
-		"metaTitle": "JetztAngeln - Die Angelplattform",
-		"metaDescription": "Dein Angelverein digital in der Hosentasche - JetztAngeln macht's möglich!"
-	},
-	"Dashboard": {
-		"metaTitle": "Dashboard - JetztAngeln",
-		"metaDescription": "Übersicht über deine Vereinsaktivitäten.",
-		"selectClub": "Bitte wähle einen Verein aus der Seitenleiste, um das Dashboard anzuzeigen.",
-		"stats": {
-			"members": "Mitglieder",
-			"totalWaters": "Gewässer Gesamt",
-			"draftWaters": "Gewässer (Entwurf)",
-			"publishedWaters": "Gewässer (Veröffentlicht)",
-			"daysActive": "Tage Aktiv"
-		},
-		"quickActions": {
-			"title": "Schnellzugriff",
-			"addMember": "Mitglied hinzufügen",
-			"addWater": "Gewässer hinzufügen",
-			"editProfile": "Profil bearbeiten"
-		},
-		"recentActivity": {
-			"title": "Letzte Aktivitäten",
-			"newMembers": "Neue Mitglieder",
-			"newWaters": "Neue Gewässer",
-			"noMembers": "Noch keine Mitglieder",
-			"noWaters": "Noch keine Gewässer"
-		}
-	},
-	"Billing": {
-		"metaTitle": "Abrechnung - JetztAngeln",
-		"metaDescription": "Verwalte die Abrechnung und das Abonnement deines Vereins."
-	},
-	"Catches": {
-		"metaTitle": "Fänge - JetztAngeln",
-		"metaDescription": "Fangmeldungen einsehen und verwalten."
-	},
-	"Club": {
-		"metaTitle": "Vereinsverwaltung - JetztAngeln",
-		"metaDescription": "Verwalte deine Vereinseinstellungen und Details."
-	},
-	"Waters": {
-		"metaTitle": "Gewässer - JetztAngeln",
-		"metaDescription": "Verwalte die Gewässer deines Vereins."
-	},
-	"AddWater": {
-		"metaTitle": "Gewässer hinzufügen - JetztAngeln",
-		"metaDescription": "Füge deinem Verein ein neues Gewässer hinzu."
-	},
-	"Profile": {
-		"metaTitle": "Benutzerprofil - JetztAngeln",
-		"metaDescription": "Verwalte dein Benutzerprofil."
-	},
-	"VerifyError": {
-		"metaTitle": "Verifizierungsfehler - JetztAngeln",
-		"metaDescription": "Es gab einen Fehler bei der Verifizierung deines Kontos."
-	}
+    "SignIn": {
+        "metaTitle": "Anmelden - JetztAngeln",
+        "metaDescription": "Melde dich bei deinem Vereins-Dashboard an.",
+        "title": "Vereins Dashboard",
+        "subtitle": "Melde dich als Admin bei deinem Verein an.",
+        "signInWithGoogle": "Mit Google anmelden",
+        "signInWithApple": "Mit Apple anmelden",
+        "signInWithEmail": "Anmelde-Link erhalten",
+        "signingIn": "Anmelden...",
+        "sendingLink": "Link wurde gesendet...",
+        "or": "Oder",
+        "tos_text_pre": "Durch die Anmeldung stimmst du unseren",
+        "tos": "Nutzungsbedingungen und unserer Datenschutzerklärung",
+        "tos_text_post": "zu.",
+        "layoutDescription": "Verwalte die Aktivitäten, Mitglieder und Abrechnung deines Vereins an einem Ort."
+    },
+    "Sidebar": {
+        "menu": "Menü",
+        "others": "Weitere",
+        "overview": "Übersicht",
+        "members": "Mitglieder",
+        "membersOverview": "Übersicht",
+        "membersJoin": "Beitrittsanfragen",
+        "waters": "Gewässer",
+        "watersOverview": "Übersicht",
+        "addRiver": "Fluss hinzufügen",
+        "addLake": "See hinzufügen",
+        "addZone": "Sperrzone hinzufügen",
+        "club": "Vereinsverwaltung",
+        "catches": "Fänge",
+        "billing": "Abrechnung"
+    },
+    "AppHeader": {
+        "selectClubPlaceholder": "Wähle deinen Verein..."
+    },
+    "NotFound": {
+        "message": "Die Seite, die du suchst, existiert nicht oder wurde verschoben.",
+        "backToHome": "Zurück zum Dashboard"
+    },
+    "Redirect": {
+        "metaTitle": "Weiterleitung... - JetztAngeln",
+        "metaDescription": "Du wirst weitergeleitet.",
+        "message": "Du bist nicht berechtigt, auf diese Seite zuzugreifen.",
+        "backToHome": "Zurück zur Startseite"
+    },
+    "UserDropdown": {
+        "editProfile": "Profil bearbeiten",
+        "signOut": "Abmelden",
+        "loading": "Lädt...",
+        "support": "Support",
+        "selectLanguage": "Englisch"
+    },
+    "MembersPage": {
+        "metaTitle": "Mitglieder - JetztAngeln",
+        "metaDescription": "Verwalte deine Vereinsmitglieder.",
+        "title": "Mitglieder",
+        "tableTitle": "Mitgliederliste"
+    },
+    "MembersJoinPage": {
+        "title": "Neuzugang",
+        "tableTitle": "Beitrittsanfragen",
+        "inviteQrCode": "Einladungs QR-Code herunterladen"
+    },
+    "MembersTable": {
+        "lastSeen": "Zuletzt aktiv",
+        "role": "Rolle",
+        "action": "Aktion",
+        "noUsersFound": "Keine Mitglieder gefunden.",
+        "page": "Seite",
+        "of": "von",
+        "previous": "Vorherige",
+        "next": "Nächste",
+        "never": "Niemals",
+        "viewProfile": "Mitglied ansehen",
+        "delete": "Mitglied löschen",
+        "acceptNewJoiner": "Anfrage akzeptieren",
+        "declineNewJoiner": "Anfrage ablehnen"
+    },
+    "EditUserRoleModal": {
+        "title": "Rolle bearbeiten",
+        "description": "Ändere die Rolle von <b>{name}</b>:",
+        "user": "Mitglied",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
+    },
+    "DeleteUserModal": {
+        "title": "Mitglied löschen",
+        "description": "Möchtest du das Mitglied <b>{name}</b> wirklich löschen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+        "user": "Mitglied",
+        "delete": "Löschen",
+        "cancel": "Abbrechen"
+    },
+    "AcceptNewJoinerModal": {
+        "title": "Beitrittsanfrage akzeptieren",
+        "description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich akzeptieren? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+        "user": "Mitglied",
+        "accept": "Akzeptieren",
+        "cancel": "Abbrechen"
+    },
+    "DeclineNewJoinerModal": {
+        "title": "Beitrittsanfrage ablehnen",
+        "description": "Möchtest du die Beitrittsanfrage von <b>{name}</b> wirklich ablehnen? Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.",
+        "user": "Mitglied",
+        "decline": "Ablehnen",
+        "cancel": "Abbrechen"
+    },
+    "WatersPage": {
+        "title": "Gewässer",
+        "tableTitle": "Gewässerliste",
+        "pageDescription": "Die Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
+        "name": "Name",
+        "description": "Beschreibung",
+        "noDescription": "Keine Beschreibung vorhanden",
+        "fishTypes": "Fischarten",
+        "draft": "Entwurf",
+        "action": "Aktion",
+        "searchPlaceholder": "Suche",
+        "status": "Status",
+        "private": "Privat",
+        "public": "Öffentlich",
+        "private_info": "Privat - Nur für Vereinsmitglieder",
+        "public_info": "Öffentlich - Zugänglich für jeden",
+        "page": "Seite",
+        "of": "von",
+        "previous": "Vorherige",
+        "next": "Nächste",
+        "noWatersFound": "Keine Gewässer gefunden.",
+        "edit": "Bearbeiten",
+        "delete": "Löschen"
+    },
+    "AddRiver": {
+        "title": "Fluss hinzufügen",
+        "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne den Flussverlauf auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den Fluss klicken und weitere Informationen hinzufügen. Nur so kannst du den Fluss speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen.",
+        "drawRiver": "Fluss zeichnen"
+    },
+    "AddLake": {
+        "title": "See hinzufügen",
+        "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Seenfläche auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den See klicken und weitere Informationen hinzufügen. Nur so kannst du den See speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
+    },
+    "AddZone": {
+        "title": "Angelverbotszone hinzufügen",
+        "description": "Wähle ein Gewässer aus, auf dem du eine Angelverbotszone hinzufügen willst. Wähle danach das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern.\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
+    },
+    "AddWaterModalLake": {
+        "title": "Gewässer hinzufügen",
+        "subText": "Wähle einen Namen für das Gewässer aus und speichere es als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
+        "name": "Name",
+        "namePlaceholder": "Gib den Namen des Gewässers ein",
+        "save": "Als Entwurf speichern",
+        "cancel": "Abbrechen"
+    },
+    "AddWaterModalRiver": {
+        "title": "Fluss hinzufügen",
+        "subText": "Wähle einen Namen für den Fluss aus und speichere ihn als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",
+        "name": "Name",
+        "namePlaceholder": "Gib den Namen des Flusses ein",
+        "save": "Als Entwurf speichern",
+        "cancel": "Abbrechen"
+    },
+    "AddWaterModalZone": {
+        "title": "Angelverbotszone hinzufügen",
+        "subText": "Speichere den ausgewählten Bereich als Angelverbotszone, für das aktuell ausgewählte Gewässer.",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
+    },
+    "EditWaterModal": {
+        "title": "Gewässer editieren",
+        "subText": "Passe hier das Gewässer an. Änderungen können bis zu einer Stunde benötigen, bis sie in der App sichtbar sind.",
+        "name": "Name",
+        "namePlaceholder": "Gib den Namen des Gewässers ein",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Gib die Beschreibung des Gewässers ein",
+        "image": "Bild",
+        "isDraft": "Entwurf",
+        "isMembersOnly": "Nur für Vereinsmitglieder",
+        "fishTypes": "Fischarten die gefangen werden können",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
+    },
+    "Languages": {
+        "de": "🇩🇪 Deutsch",
+        "en": "🇬🇧 Englisch"
+    },
+    "FishTypes": {
+        "EEL": "Aal",
+        "GRAYLING": "Äsche",
+        "BARBEL": "Barbe",
+        "EUROPEAN_PERCH": "Flussbarsch",
+        "BREAM": "Brasse",
+        "CHUB": "Döbel",
+        "BROWN_TROUT": "Bachforelle",
+        "GIBEL_CARP": "Giebel",
+        "GRASS_CARP": "Graskarpfen",
+        "WHITE_BREAM": "Güster",
+        "COMMON_DACE": "Hasel",
+        "PIKE": "Hecht",
+        "CARP": "Karpfen",
+        "RUFFE": "Kaulbarsch",
+        "SALMON": "Lachs",
+        "ROACH": "Rotauge",
+        "RUDD": "Rotfeder",
+        "BROOK_TROUT": "Bachsaibling",
+        "TENCH": "Schleie",
+        "BLEAK": "Ukelei",
+        "EUROPEAN_WELS": "Europäischer Wels",
+        "PIKEPERCH": "Zander",
+        "ATLANTIC_COD": "Dorsch",
+        "EUROPEAN_FLOUNDER": "Flunder",
+        "ATLANTIC_HERRING": "Hering",
+        "ATLANTIC_MACKEREL": "Makrele",
+        "EUROPEAN_PLAICE": "Scholle",
+        "ATLANTIC_POLLACK": "Seelachs",
+        "DOVER_SOLE": "Seezunge",
+        "SPRAT": "Sprotte",
+        "TURBOT": "Steinbutt",
+        "RAINBOW_TROUT": "Regenbogenforelle"
+    },
+    "Landing": {
+        "metaTitle": "JetztAngeln - Die Angelplattform",
+        "metaDescription": "Dein Angelverein digital in der Hosentasche - JetztAngeln macht's möglich!"
+    },
+    "Dashboard": {
+        "metaTitle": "Dashboard - JetztAngeln",
+        "metaDescription": "Übersicht über deine Vereinsaktivitäten.",
+        "selectClub": "Bitte wähle einen Verein aus der Seitenleiste, um das Dashboard anzuzeigen.",
+        "stats": {
+            "members": "Mitglieder",
+            "totalWaters": "Gewässer Gesamt",
+            "draftWaters": "Gewässer (Entwurf)",
+            "publishedWaters": "Gewässer (Veröffentlicht)",
+            "daysActive": "Tage Aktiv"
+        },
+        "quickActions": {
+            "title": "Schnellzugriff",
+            "addMember": "Mitglied hinzufügen",
+            "addWater": "Gewässer hinzufügen",
+            "editProfile": "Profil bearbeiten"
+        },
+        "recentActivity": {
+            "title": "Letzte Aktivitäten",
+            "newMembers": "Neue Mitglieder",
+            "newWaters": "Neue Gewässer",
+            "noMembers": "Noch keine Mitglieder",
+            "noWaters": "Noch keine Gewässer"
+        }
+    },
+    "Billing": {
+        "metaTitle": "Abrechnung - JetztAngeln",
+        "metaDescription": "Verwalte die Abrechnung und das Abonnement deines Vereins."
+    },
+    "Catches": {
+        "metaTitle": "Fänge - JetztAngeln",
+        "metaDescription": "Fangmeldungen einsehen und verwalten."
+    },
+    "Club": {
+        "metaTitle": "Vereinsverwaltung - JetztAngeln",
+        "metaDescription": "Verwalte deine Vereinseinstellungen und Details."
+    },
+    "Waters": {
+        "metaTitle": "Gewässer - JetztAngeln",
+        "metaDescription": "Verwalte die Gewässer deines Vereins."
+    },
+    "AddWater": {
+        "metaTitle": "Gewässer hinzufügen - JetztAngeln",
+        "metaDescription": "Füge deinem Verein ein neues Gewässer hinzu."
+    },
+    "Profile": {
+        "metaTitle": "Benutzerprofil - JetztAngeln",
+        "metaDescription": "Verwalte dein Benutzerprofil."
+    },
+    "VerifyError": {
+        "metaTitle": "Verifizierungsfehler - JetztAngeln",
+        "metaDescription": "Es gab einen Fehler bei der Verifizierung deines Kontos."
+    }
 }

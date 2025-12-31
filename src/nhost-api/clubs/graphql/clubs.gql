@@ -1,14 +1,14 @@
 query GetClubDashboardStats($clubId: uuid!) {
-	clubs_by_pk(id: $clubId) {
-		id
-		name
-	}
-	waters: club_waters(
-		where: { club_id: { _eq: $clubId } }
-		order_by: { id: desc }
-	) {
-		id
-		name
-		draft
-	}
+    clubs_by_pk(id: $clubId) {
+        id
+        name
+    }
+    waters: club_waters(
+        where: { club_id: { _eq: $clubId } }
+        order_by: { id: desc }
+    ) {
+        id
+        name
+        draft
+    }
 }

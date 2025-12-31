@@ -5,13 +5,13 @@ import type { Session } from "@nhost/nhost-js/auth";
 import { CookieStorage } from "@nhost/nhost-js/session";
 import { useRouter } from "next/navigation";
 import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
+    createContext,
+    type ReactNode,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
 } from "react";
 
 /**
@@ -19,22 +19,22 @@ import {
  * Used throughout the application to access authentication-related data and operations.
  */
 interface AuthContextType {
-	/** Current authenticated user object, null if not authenticated */
-	user: Session["user"] | null;
-	/** Current session object containing tokens and user data, null if no active session */
-	session: Session | null;
-	/** Boolean indicating if user is currently authenticated */
-	isAuthenticated: boolean;
-	/** Boolean indicating if authentication state is still loading */
-	isLoading: boolean;
-	/** Nhost client instance for making authenticated requests */
-	nhost: NhostClient;
+    /** Current authenticated user object, null if not authenticated */
+    user: Session["user"] | null;
+    /** Current session object containing tokens and user data, null if no active session */
+    session: Session | null;
+    /** Boolean indicating if user is currently authenticated */
+    isAuthenticated: boolean;
+    /** Boolean indicating if authentication state is still loading */
+    isLoading: boolean;
+    /** Nhost client instance for making authenticated requests */
+    nhost: NhostClient;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 interface AuthProviderProps {
-	children: ReactNode;
+    children: ReactNode;
 }
 
 /**
@@ -55,108 +55,113 @@ interface AuthProviderProps {
  * - Provides reactive authentication state for client components
  */
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [user, setUser] = useState<Session["user"] | null>(null);
-	const [session, setSession] = useState<Session | null>(null);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-	const lastRefreshTokenIdRef = useRef<string | null>(null);
-	const router = useRouter();
+    const [user, setUser] = useState<Session["user"] | null>(null);
+    const [session, setSession] = useState<Session | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const lastRefreshTokenIdRef = useRef<string | null>(null);
+    const router = useRouter();
 
-	// Initialize Nhost client with cookie-based storage for server/client session sharing
-	const nhost = createClient({
-		region: process.env.NEXT_PUBLIC_NHOST_REGION || "local",
-		subdomain: process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN || "local",
-		authUrl: process.env.NEXT_PUBLIC_NHOST_URL_AUTH,
-		functionsUrl: process.env.NEXT_PUBLIC_NHOST_URL_FUNCTIONS,
-		graphqlUrl: process.env.NEXT_PUBLIC_NHOST_URL_GRAPHQL,
-		storageUrl: process.env.NEXT_PUBLIC_NHOST_URL_STORAGE,
-		storage: new CookieStorage({
-			secure: process.env.NODE_ENV === "production",
-			sameSite: "lax",
-		}),
-	});
+    // Initialize Nhost client with cookie-based storage for server/client session sharing
+    const nhost = createClient({
+        region: process.env.NEXT_PUBLIC_NHOST_REGION || "local",
+        subdomain: process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN || "local",
+        authUrl: process.env.NEXT_PUBLIC_NHOST_URL_AUTH,
+        functionsUrl: process.env.NEXT_PUBLIC_NHOST_URL_FUNCTIONS,
+        graphqlUrl: process.env.NEXT_PUBLIC_NHOST_URL_GRAPHQL,
+        storageUrl: process.env.NEXT_PUBLIC_NHOST_URL_STORAGE,
+        storage: new CookieStorage({
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+        }),
+    });
 
-	/**
-	 * Handles session reload when refresh token changes.
-	 * This detects when the session has been updated by middleware or other tabs.
-	 *
-	 * @param currentRefreshTokenId - The current refresh token ID to compare against stored value
-	 */
-	const reloadSession = useCallback(
-		(currentRefreshTokenId: string | null) => {
-			if (currentRefreshTokenId !== lastRefreshTokenIdRef.current) {
-				lastRefreshTokenIdRef.current = currentRefreshTokenId;
+    /**
+     * Handles session reload when refresh token changes.
+     * This detects when the session has been updated by middleware or other tabs.
+     *
+     * @param currentRefreshTokenId - The current refresh token ID to compare against stored value
+     */
+    const reloadSession = useCallback(
+        (currentRefreshTokenId: string | null) => {
+            if (currentRefreshTokenId !== lastRefreshTokenIdRef.current) {
+                lastRefreshTokenIdRef.current = currentRefreshTokenId;
 
-				// Update local authentication state to match current session
-				const currentSession = nhost.getUserSession();
-				setUser(currentSession?.user || null);
-				setSession(currentSession);
-				setIsAuthenticated(!!currentSession);
+                // Update local authentication state to match current session
+                const currentSession = nhost.getUserSession();
+                setUser(currentSession?.user || null);
+                setSession(currentSession);
+                setIsAuthenticated(!!currentSession);
 
-				// Trigger Next.js page refresh to sync server-side state with client changes
-				router.refresh();
-			}
-		},
-		[nhost, router],
-	);
+                // Trigger Next.js page refresh to sync server-side state with client changes
+                router.refresh();
+            }
+        },
+        [nhost, router],
+    );
 
-	// Initialize authentication state and set up cross-tab session synchronization
-	useEffect(() => {
-		setIsLoading(true);
+    // Initialize authentication state and set up cross-tab session synchronization
+    useEffect(() => {
+        setIsLoading(true);
 
-		// Load initial session state from Nhost client
-		const currentSession = nhost.getUserSession();
-		setUser(currentSession?.user || null);
-		setSession(currentSession);
-		setIsAuthenticated(!!currentSession);
-		lastRefreshTokenIdRef.current = currentSession?.refreshTokenId ?? null;
-		setIsLoading(false);
+        // Load initial session state from Nhost client
+        const currentSession = nhost.getUserSession();
+        setUser(currentSession?.user || null);
+        setSession(currentSession);
+        setIsAuthenticated(!!currentSession);
+        lastRefreshTokenIdRef.current = currentSession?.refreshTokenId ?? null;
+        setIsLoading(false);
 
-		// Subscribe to session changes from other browser tabs
-		// This enables real-time synchronization when user signs in/out in another tab
-		const unsubscribe = nhost.sessionStorage.onChange((session) => {
-			reloadSession(session?.refreshTokenId ?? null);
-		});
+        // Subscribe to session changes from other browser tabs
+        // This enables real-time synchronization when user signs in/out in another tab
+        const unsubscribe = nhost.sessionStorage.onChange((session) => {
+            reloadSession(session?.refreshTokenId ?? null);
+        });
 
-		return unsubscribe;
-	}, [nhost, reloadSession]);
+        return unsubscribe;
+    }, [nhost, reloadSession]);
 
-	// Handle session changes from server-side middleware and page focus events
-	useEffect(() => {
-		/**
-		 * Checks for session changes when page becomes visible or focused.
-		 * This catches middleware-driven session updates that occur server-side.
-		 */
-		const checkSessionOnFocus = () => {
-			reloadSession(nhost.getUserSession()?.refreshTokenId ?? null);
-		};
+    // Handle session changes from server-side middleware and page focus events
+    useEffect(() => {
+        /**
+         * Checks for session changes when page becomes visible or focused.
+         * This catches middleware-driven session updates that occur server-side.
+         */
+        const checkSessionOnFocus = () => {
+            reloadSession(nhost.getUserSession()?.refreshTokenId ?? null);
+        };
 
-		// Monitor page visibility changes (tab switching, window minimizing)
-		document.addEventListener("visibilitychange", () => {
-			if (!document.hidden) {
-				checkSessionOnFocus();
-			}
-		});
+        // Monitor page visibility changes (tab switching, window minimizing)
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) {
+                checkSessionOnFocus();
+            }
+        });
 
-		// Monitor window focus events (clicking back into the browser window)
-		window.addEventListener("focus", checkSessionOnFocus);
+        // Monitor window focus events (clicking back into the browser window)
+        window.addEventListener("focus", checkSessionOnFocus);
 
-		// Cleanup event listeners on component unmount
-		return () => {
-			document.removeEventListener("visibilitychange", checkSessionOnFocus);
-			window.removeEventListener("focus", checkSessionOnFocus);
-		};
-	}, [nhost, reloadSession]);
+        // Cleanup event listeners on component unmount
+        return () => {
+            document.removeEventListener(
+                "visibilitychange",
+                checkSessionOnFocus,
+            );
+            window.removeEventListener("focus", checkSessionOnFocus);
+        };
+    }, [nhost, reloadSession]);
 
-	const value: AuthContextType = {
-		user,
-		session,
-		isAuthenticated,
-		isLoading,
-		nhost,
-	};
+    const value: AuthContextType = {
+        user,
+        session,
+        isAuthenticated,
+        isLoading,
+        nhost,
+    };
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    );
 };
 
 /**
@@ -182,9 +187,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
  * ```
  */
 export const useAuth = (): AuthContextType => {
-	const context = useContext(AuthContext);
-	if (!context) {
-		throw new Error("useAuth must be used within an AuthProvider");
-	}
-	return context;
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
 };

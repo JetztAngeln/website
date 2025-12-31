@@ -1,276 +1,276 @@
 {
-	"SignIn": {
-		"metaTitle": "Sign In - JetztAngeln",
-		"metaDescription": "Sign in to your club dashboard.",
-		"title": "Club Dashboard",
-		"subtitle": "Sign in as an admin to your club.",
-		"signInWithGoogle": "Sign in with Google",
-		"signInWithApple": "Sign in with Apple",
-		"signInWithEmail": "Get sign-in link",
-		"signingIn": "Signing in...",
-		"sendingLink": "Link was sent...",
-		"or": "Or",
-		"tos_text_pre": "By signing in, you agree to our",
-		"tos": "Terms of Service and Privacy Policy",
-		"tos_text_post": "",
-		"layoutDescription": "Manage your club's activities, members, and billing all in one place."
-	},
-	"Sidebar": {
-		"menu": "Menu",
-		"others": "Others",
-		"overview": "Overview",
-		"members": "Members",
-		"membersOverview": "All Members",
-		"membersJoin": "Join Requests",
-		"waters": "Waters",
-		"watersOverview": "All Waters",
-		"addRiver": "Add River",
-		"addLake": "Add Lake",
-		"addZone": "Add Exclusion",
-		"club": "Club Management",
-		"catches": "Catches",
-		"billing": "Billing"
-	},
-	"AppHeader": {
-		"selectClubPlaceholder": "Select your club to manage..."
-	},
-	"NotFound": {
-		"message": "The page you are looking for does not exist or has been moved.",
-		"backToHome": "Go Back to Dashboard"
-	},
-	"Redirect": {
-		"metaTitle": "Redirecting... - JetztAngeln",
-		"metaDescription": "You are being redirected.",
-		"message": "You are not allowed to access this page.",
-		"backToHome": "Go Back to Homepage"
-	},
-	"UserDropdown": {
-		"editProfile": "Edit profile",
-		"signOut": "Sign out",
-		"loading": "Loading...",
-		"support": "Support",
-		"selectLanguage": "German"
-	},
-	"MembersPage": {
-		"metaTitle": "Members - JetztAngeln",
-		"metaDescription": "Manage your club members.",
-		"title": "Members",
-		"tableTitle": "Members List"
-	},
-	"MembersJoinPage": {
-		"title": "New Joiner",
-		"tableTitle": "Join Requests",
-		"inviteQrCode": "Download Invite QR-Code"
-	},
-	"MembersTable": {
-		"lastSeen": "Last Seen",
-		"role": "Role",
-		"action": "Action",
-		"noUsersFound": "No members found.",
-		"page": "Page",
-		"of": "of",
-		"previous": "Previous",
-		"next": "Next",
-		"never": "Never",
-		"viewProfile": "View Member",
-		"delete": "Delete Member",
-		"acceptNewJoiner": "Accept Request",
-		"declineNewJoiner": "Decline Request"
-	},
-	"EditUserRoleModal": {
-		"title": "Edit Role",
-		"description": "Change the role of <b>{name}</b>:",
-		"user": "user",
-		"save": "Save Changes",
-		"cancel": "Cancel"
-	},
-	"DeleteUserModal": {
-		"title": "Delete Member",
-		"description": "Are you sure you want to delete the member <b>{name}</b>? This action <b>cannot</b> be undone.",
-		"user": "user",
-		"delete": "Delete Member",
-		"cancel": "Cancel"
-	},
-	"AcceptNewJoinerModal": {
-		"title": "Accept Join Request",
-		"description": "Are you sure you want to accept the join request of <b>{name}</b>? This action <b>cannot</b> be undone.",
-		"user": "Member",
-		"accept": "Accept",
-		"cancel": "Cancel"
-	},
-	"DeclineNewJoinerModal": {
-		"title": "Decline Join Request",
-		"description": "Are you sure you want to decline the join request of <b>{name}</b>? This action <b>cannot</b> be undone.",
-		"user": "Member",
-		"decline": "Decline",
-		"cancel": "Cancel"
-	},
-	"WatersPage": {
-		"title": "Waters",
-		"tableTitle": "Waters List",
-		"pageDescription": "The changes may take up to an hour to appear in the app.",
-		"name": "Name",
-		"description": "Description",
-		"noDescription": "No description found",
-		"fishTypes": "Fish Types",
-		"draft": "Draft",
-		"action": "Action",
-		"searchPlaceholder": "Search",
-		"status": "Status",
-		"private": "Private",
-		"public": "Public",
-		"private_info": "Private - Only for club members",
-		"public_info": "Public - Open for everybody",
-		"page": "Page",
-		"of": "of",
-		"previous": "Previous",
-		"next": "Next",
-		"noWatersFound": "No waters found.",
-		"edit": "Edit",
-		"delete": "Delete"
-	},
-	"AddRiver": {
-		"title": "Add a River to your Club",
-		"description": "Select the <drawTool>drawing tool</drawTool> and draw the river path on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the river and provide additional information. Only so, you can save the river!\nTip: With right-click you can delete points.",
-		"drawRiver": "Draw River"
-	},
-	"AddLake": {
-		"title": "Add a Lake to your Club",
-		"description": "Select the <drawTool>drawing tool</drawTool> and draw the lake area on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the lake and provide additional information. Only so, you can save the lake!\nTip: With right-click you can delete points."
-	},
-	"AddZone": {
-		"title": "Add an additional no-fishing Zone to your Club",
-		"description": "Select the waterbody where you want to draw a no-fishing zone onto. Afterwards select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone.\nTip: With right-click you can delete points."
-	},
-	"AddWaterModalLake": {
-		"title": "Add new Waterbody",
-		"subText": "Set a name for the new waterbody and save it as a draft for your club. You can add further details in the water overview tab.",
-		"name": "Name",
-		"namePlaceholder": "Enter the name of the waterbody",
-		"cancel": "Cancel",
-		"save": "Save as draft"
-	},
-	"AddWaterModalRiver": {
-		"title": "Add new river",
-		"subText": "Set a name for the new river and save it as a draft for your club. You can add further details in the water overview tab.",
-		"name": "Name",
-		"namePlaceholder": "Enter the name of the river",
-		"cancel": "Cancel",
-		"save": "Save as draft"
-	},
-	"AddWaterModalZone": {
-		"title": "Add new no-fishing zone",
-		"subText": "Save the currently selected area as a no-fishing zone, for the currently selected waterbody.",
-		"cancel": "Cancel",
-		"save": "Save"
-	},
-	"EditWaterModal": {
-		"title": "Edit waterbody",
-		"subText": "Adjust the body of water here. Changes may take up to an hour to appear in the app.",
-		"name": "Name",
-		"namePlaceholder": "Enter the name of the body of water",
-		"description": "Description",
-		"descriptionPlaceholder": "Enter a description of the body of water",
-		"image": "Image",
-		"isDraft": "Draft",
-		"isMembersOnly": "Only for club members",
-		"fishTypes": "Fish Types that can be catched",
-		"save": "Save",
-		"cancel": "Cancel"
-	},
-	"Languages": {
-		"de": "🇩🇪 German",
-		"en": "🇬🇧 English"
-	},
-	"FishTypes": {
-		"EEL": "Eel",
-		"GRAYLING": "Grayling",
-		"BARBEL": "Barbel",
-		"EUROPEAN_PERCH": "European Perch",
-		"BREAM": "Bream",
-		"CHUB": "Chub",
-		"BROWN_TROUT": "Brown Trout",
-		"GIBEL_CARP": "Gibel Carp",
-		"GRASS_CARP": "Grass Carp",
-		"WHITE_BREAM": "White Bream",
-		"COMMON_DACE": "Common Dace",
-		"PIKE": "Pike",
-		"CARP": "Carp",
-		"RUFFE": "Ruffe",
-		"SALMON": "Salmon",
-		"ROACH": "Roach",
-		"RUDD": "Rudo",
-		"BROOK_TROUT": "Brook Trout",
-		"TENCH": "Tench",
-		"BLEAK": "Bleak",
-		"EUROPEAN_WELS": "European Wels",
-		"PIKEPERCH": "Pikeperch",
-		"ATLANTIC_COD": "Atlantic Cod",
-		"EUROPEAN_FLOUNDER": "European Flounder",
-		"ATLANTIC_HERRING": "Atlantic Herring",
-		"ATLANTIC_MACKEREL": "Atlantic Mackerel",
-		"EUROPEAN_PLAICE": "European Plaice",
-		"ATLANTIC_POLLACK": "Atlantic Pollack",
-		"DOVER_SOLE": "Dover Sole",
-		"SPRAT": "Sprat",
-		"TURBOT": "Turbot",
-		"RAINBOW_TROUT": "Rainbow Trout"
-	},
-	"Landing": {
-		"metaTitle": "JetztAngeln - The Fishing Platform",
-		"metaDescription": "Your fishing club digitally in your pocket - JetztAngeln makes it possible!"
-	},
-	"Dashboard": {
-		"metaTitle": "Dashboard - JetztAngeln",
-		"metaDescription": "Overview of your fishing club activities.",
-		"selectClub": "Please select a club from the sidebar to view the dashboard.",
-		"stats": {
-			"members": "Members",
-			"totalWaters": "Total Waters",
-			"draftWaters": "Draft Waters",
-			"publishedWaters": "Published Waters",
-			"daysActive": "Days Active"
-		},
-		"quickActions": {
-			"title": "Quick Actions",
-			"addMember": "Add Member",
-			"addWater": "Add Water",
-			"editProfile": "Edit Profile"
-		},
-		"recentActivity": {
-			"title": "Recent Activity",
-			"newMembers": "New Members",
-			"newWaters": "New Waters",
-			"noMembers": "No members yet",
-			"noWaters": "No waters yet"
-		}
-	},
-	"Billing": {
-		"metaTitle": "Billing - JetztAngeln",
-		"metaDescription": "Manage your club's billing and subscription."
-	},
-	"Catches": {
-		"metaTitle": "Catches - JetztAngeln",
-		"metaDescription": "View and manage catch reports."
-	},
-	"Club": {
-		"metaTitle": "Club Management - JetztAngeln",
-		"metaDescription": "Manage your club settings and details."
-	},
-	"Waters": {
-		"metaTitle": "Waters - JetztAngeln",
-		"metaDescription": "Manage your club's waters."
-	},
-	"AddWater": {
-		"metaTitle": "Add Water - JetztAngeln",
-		"metaDescription": "Add a new water to your club."
-	},
-	"Profile": {
-		"metaTitle": "User Profile - JetztAngeln",
-		"metaDescription": "Manage your user profile."
-	},
-	"VerifyError": {
-		"metaTitle": "Verification Error - JetztAngeln",
-		"metaDescription": "There was an error verifying your account."
-	}
+    "SignIn": {
+        "metaTitle": "Sign In - JetztAngeln",
+        "metaDescription": "Sign in to your club dashboard.",
+        "title": "Club Dashboard",
+        "subtitle": "Sign in as an admin to your club.",
+        "signInWithGoogle": "Sign in with Google",
+        "signInWithApple": "Sign in with Apple",
+        "signInWithEmail": "Get sign-in link",
+        "signingIn": "Signing in...",
+        "sendingLink": "Link was sent...",
+        "or": "Or",
+        "tos_text_pre": "By signing in, you agree to our",
+        "tos": "Terms of Service and Privacy Policy",
+        "tos_text_post": "",
+        "layoutDescription": "Manage your club's activities, members, and billing all in one place."
+    },
+    "Sidebar": {
+        "menu": "Menu",
+        "others": "Others",
+        "overview": "Overview",
+        "members": "Members",
+        "membersOverview": "All Members",
+        "membersJoin": "Join Requests",
+        "waters": "Waters",
+        "watersOverview": "All Waters",
+        "addRiver": "Add River",
+        "addLake": "Add Lake",
+        "addZone": "Add Exclusion",
+        "club": "Club Management",
+        "catches": "Catches",
+        "billing": "Billing"
+    },
+    "AppHeader": {
+        "selectClubPlaceholder": "Select your club to manage..."
+    },
+    "NotFound": {
+        "message": "The page you are looking for does not exist or has been moved.",
+        "backToHome": "Go Back to Dashboard"
+    },
+    "Redirect": {
+        "metaTitle": "Redirecting... - JetztAngeln",
+        "metaDescription": "You are being redirected.",
+        "message": "You are not allowed to access this page.",
+        "backToHome": "Go Back to Homepage"
+    },
+    "UserDropdown": {
+        "editProfile": "Edit profile",
+        "signOut": "Sign out",
+        "loading": "Loading...",
+        "support": "Support",
+        "selectLanguage": "German"
+    },
+    "MembersPage": {
+        "metaTitle": "Members - JetztAngeln",
+        "metaDescription": "Manage your club members.",
+        "title": "Members",
+        "tableTitle": "Members List"
+    },
+    "MembersJoinPage": {
+        "title": "New Joiner",
+        "tableTitle": "Join Requests",
+        "inviteQrCode": "Download Invite QR-Code"
+    },
+    "MembersTable": {
+        "lastSeen": "Last Seen",
+        "role": "Role",
+        "action": "Action",
+        "noUsersFound": "No members found.",
+        "page": "Page",
+        "of": "of",
+        "previous": "Previous",
+        "next": "Next",
+        "never": "Never",
+        "viewProfile": "View Member",
+        "delete": "Delete Member",
+        "acceptNewJoiner": "Accept Request",
+        "declineNewJoiner": "Decline Request"
+    },
+    "EditUserRoleModal": {
+        "title": "Edit Role",
+        "description": "Change the role of <b>{name}</b>:",
+        "user": "user",
+        "save": "Save Changes",
+        "cancel": "Cancel"
+    },
+    "DeleteUserModal": {
+        "title": "Delete Member",
+        "description": "Are you sure you want to delete the member <b>{name}</b>? This action <b>cannot</b> be undone.",
+        "user": "user",
+        "delete": "Delete Member",
+        "cancel": "Cancel"
+    },
+    "AcceptNewJoinerModal": {
+        "title": "Accept Join Request",
+        "description": "Are you sure you want to accept the join request of <b>{name}</b>? This action <b>cannot</b> be undone.",
+        "user": "Member",
+        "accept": "Accept",
+        "cancel": "Cancel"
+    },
+    "DeclineNewJoinerModal": {
+        "title": "Decline Join Request",
+        "description": "Are you sure you want to decline the join request of <b>{name}</b>? This action <b>cannot</b> be undone.",
+        "user": "Member",
+        "decline": "Decline",
+        "cancel": "Cancel"
+    },
+    "WatersPage": {
+        "title": "Waters",
+        "tableTitle": "Waters List",
+        "pageDescription": "The changes may take up to an hour to appear in the app.",
+        "name": "Name",
+        "description": "Description",
+        "noDescription": "No description found",
+        "fishTypes": "Fish Types",
+        "draft": "Draft",
+        "action": "Action",
+        "searchPlaceholder": "Search",
+        "status": "Status",
+        "private": "Private",
+        "public": "Public",
+        "private_info": "Private - Only for club members",
+        "public_info": "Public - Open for everybody",
+        "page": "Page",
+        "of": "of",
+        "previous": "Previous",
+        "next": "Next",
+        "noWatersFound": "No waters found.",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "AddRiver": {
+        "title": "Add a River to your Club",
+        "description": "Select the <drawTool>drawing tool</drawTool> and draw the river path on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the river and provide additional information. Only so, you can save the river!\nTip: With right-click you can delete points.",
+        "drawRiver": "Draw River"
+    },
+    "AddLake": {
+        "title": "Add a Lake to your Club",
+        "description": "Select the <drawTool>drawing tool</drawTool> and draw the lake area on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the lake and provide additional information. Only so, you can save the lake!\nTip: With right-click you can delete points."
+    },
+    "AddZone": {
+        "title": "Add an additional no-fishing Zone to your Club",
+        "description": "Select the waterbody where you want to draw a no-fishing zone onto. Afterwards select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone.\nTip: With right-click you can delete points."
+    },
+    "AddWaterModalLake": {
+        "title": "Add new Waterbody",
+        "subText": "Set a name for the new waterbody and save it as a draft for your club. You can add further details in the water overview tab.",
+        "name": "Name",
+        "namePlaceholder": "Enter the name of the waterbody",
+        "cancel": "Cancel",
+        "save": "Save as draft"
+    },
+    "AddWaterModalRiver": {
+        "title": "Add new river",
+        "subText": "Set a name for the new river and save it as a draft for your club. You can add further details in the water overview tab.",
+        "name": "Name",
+        "namePlaceholder": "Enter the name of the river",
+        "cancel": "Cancel",
+        "save": "Save as draft"
+    },
+    "AddWaterModalZone": {
+        "title": "Add new no-fishing zone",
+        "subText": "Save the currently selected area as a no-fishing zone, for the currently selected waterbody.",
+        "cancel": "Cancel",
+        "save": "Save"
+    },
+    "EditWaterModal": {
+        "title": "Edit waterbody",
+        "subText": "Adjust the body of water here. Changes may take up to an hour to appear in the app.",
+        "name": "Name",
+        "namePlaceholder": "Enter the name of the body of water",
+        "description": "Description",
+        "descriptionPlaceholder": "Enter a description of the body of water",
+        "image": "Image",
+        "isDraft": "Draft",
+        "isMembersOnly": "Only for club members",
+        "fishTypes": "Fish Types that can be catched",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "Languages": {
+        "de": "🇩🇪 German",
+        "en": "🇬🇧 English"
+    },
+    "FishTypes": {
+        "EEL": "Eel",
+        "GRAYLING": "Grayling",
+        "BARBEL": "Barbel",
+        "EUROPEAN_PERCH": "European Perch",
+        "BREAM": "Bream",
+        "CHUB": "Chub",
+        "BROWN_TROUT": "Brown Trout",
+        "GIBEL_CARP": "Gibel Carp",
+        "GRASS_CARP": "Grass Carp",
+        "WHITE_BREAM": "White Bream",
+        "COMMON_DACE": "Common Dace",
+        "PIKE": "Pike",
+        "CARP": "Carp",
+        "RUFFE": "Ruffe",
+        "SALMON": "Salmon",
+        "ROACH": "Roach",
+        "RUDD": "Rudo",
+        "BROOK_TROUT": "Brook Trout",
+        "TENCH": "Tench",
+        "BLEAK": "Bleak",
+        "EUROPEAN_WELS": "European Wels",
+        "PIKEPERCH": "Pikeperch",
+        "ATLANTIC_COD": "Atlantic Cod",
+        "EUROPEAN_FLOUNDER": "European Flounder",
+        "ATLANTIC_HERRING": "Atlantic Herring",
+        "ATLANTIC_MACKEREL": "Atlantic Mackerel",
+        "EUROPEAN_PLAICE": "European Plaice",
+        "ATLANTIC_POLLACK": "Atlantic Pollack",
+        "DOVER_SOLE": "Dover Sole",
+        "SPRAT": "Sprat",
+        "TURBOT": "Turbot",
+        "RAINBOW_TROUT": "Rainbow Trout"
+    },
+    "Landing": {
+        "metaTitle": "JetztAngeln - The Fishing Platform",
+        "metaDescription": "Your fishing club digitally in your pocket - JetztAngeln makes it possible!"
+    },
+    "Dashboard": {
+        "metaTitle": "Dashboard - JetztAngeln",
+        "metaDescription": "Overview of your fishing club activities.",
+        "selectClub": "Please select a club from the sidebar to view the dashboard.",
+        "stats": {
+            "members": "Members",
+            "totalWaters": "Total Waters",
+            "draftWaters": "Draft Waters",
+            "publishedWaters": "Published Waters",
+            "daysActive": "Days Active"
+        },
+        "quickActions": {
+            "title": "Quick Actions",
+            "addMember": "Add Member",
+            "addWater": "Add Water",
+            "editProfile": "Edit Profile"
+        },
+        "recentActivity": {
+            "title": "Recent Activity",
+            "newMembers": "New Members",
+            "newWaters": "New Waters",
+            "noMembers": "No members yet",
+            "noWaters": "No waters yet"
+        }
+    },
+    "Billing": {
+        "metaTitle": "Billing - JetztAngeln",
+        "metaDescription": "Manage your club's billing and subscription."
+    },
+    "Catches": {
+        "metaTitle": "Catches - JetztAngeln",
+        "metaDescription": "View and manage catch reports."
+    },
+    "Club": {
+        "metaTitle": "Club Management - JetztAngeln",
+        "metaDescription": "Manage your club settings and details."
+    },
+    "Waters": {
+        "metaTitle": "Waters - JetztAngeln",
+        "metaDescription": "Manage your club's waters."
+    },
+    "AddWater": {
+        "metaTitle": "Add Water - JetztAngeln",
+        "metaDescription": "Add a new water to your club."
+    },
+    "Profile": {
+        "metaTitle": "User Profile - JetztAngeln",
+        "metaDescription": "Manage your user profile."
+    },
+    "VerifyError": {
+        "metaTitle": "Verification Error - JetztAngeln",
+        "metaDescription": "There was an error verifying your account."
+    }
 }
