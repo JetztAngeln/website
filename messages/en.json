@@ -48,7 +48,8 @@
 		"editProfile": "Edit profile",
 		"signOut": "Sign out",
 		"loading": "Loading...",
-		"support": "Support"
+		"support": "Support",
+		"selectLanguage": "German"
 	},
 	"MembersPage": {
 		"metaTitle": "Members - JetztAngeln",
