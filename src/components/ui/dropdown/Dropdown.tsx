@@ -113,7 +113,7 @@ export function DropdownTrigger({
             ref={refs.setReference}
             {...getReferenceProps()}
             type="button"
-            className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 w-full"
             data-state={open ? "open" : "closed"}
         >
             {children}
@@ -140,7 +140,7 @@ export function DropdownContent({
                 <div
                     ref={refs.setFloating}
                     {...getFloatingProps(props)}
-                    className="z-40 right-0 rounded-xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark w-40 p-2"
+                    className={`z-[200] right-0 rounded-xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark w-40 p-2 ${props.className || ""}`}
                     style={floatingStyles}
                 >
                     {children}

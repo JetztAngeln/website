@@ -1,13 +1,8 @@
 import type { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import maplibregl, { type GeoJSONFeature } from "maplibre-gl";
 import { useParams } from "next/navigation";
-import {
-    type RefObject,
-    type SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
+import useSWR from "swr";
 import { mapStyles, updateZonePatternLayer } from "@/lib/mapUtils";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import type { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
@@ -29,30 +24,35 @@ export function useSelectedWater({
 }: UseSelectedWaterType) {
     const { nhost } = useAuth();
     const { type } = useParams<{ type: string; locale: string }>();
-    const [waters, setWaters] = useState<ClubWaterFragment[]>([]);
     const [selectedWater, setSelectedWater] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+    const watersRef = useRef<ClubWaterFragment[]>([]);
 
-    const fetchWaters = useCallback(async () => {
-        if (!clubId) return;
-        setLoading(true);
-        setError(null);
-
-        try {
-            const data = await getWatersByClubId(nhost, clubId);
-
-            setWaters(data);
-        } catch (err: unknown) {
-            setError(err as SetStateAction<Error | null>);
-        } finally {
-            setLoading(false);
-        }
-    }, [nhost, clubId]);
-
-    useEffect(() => {
-        fetchWaters();
-    }, [fetchWaters]);
+    // Use SWR for caching and deduplication
+    const {
+        data: waters = [],
+        error,
+        isLoading: loading,
+    } = useSWR(
+        clubId ? `waters-${clubId}` : null,
+        async () => {
+            if (!clubId) return [];
+            return await getWatersByClubId(nhost, clubId);
+        },
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            dedupingInterval: 300000, // 5 minutes deduplication
+            keepPreviousData: true,
+            onSuccess: (data) => {
+                // Only update ref if data actually changed
+                if (
+                    JSON.stringify(data) !== JSON.stringify(watersRef.current)
+                ) {
+                    watersRef.current = data;
+                }
+            },
+        },
+    );
 
     useEffect(() => {
         if (waters.length === 0) {

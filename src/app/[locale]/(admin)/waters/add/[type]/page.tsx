@@ -11,12 +11,15 @@ import "@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import SelectWaterModal from "@/components/ui/modal/SelectWaterModal";
 import { useFeatureCleanup } from "@/hooks/waters/useFeatureCleanup";
 import { mapStyles } from "../../../../../../lib/mapUtils";
 
 export default function AddWaterInMap() {
     const { type } = useParams<{ type: string; locale: string }>();
+    const [showWaterModal, setShowWaterModal] = useState(false);
+    const [hasSelectedWater, setHasSelectedWater] = useState(false);
 
     const {
         mapRef,
@@ -32,6 +35,41 @@ export default function AddWaterInMap() {
         t,
         theme,
     } = useMapInit();
+
+    /**
+     * Check if user has selected a water for zone type
+     */
+    useEffect(() => {
+        if (type === "zone" && clubId) {
+            const storageKey = `selected-water-${clubId}`;
+            const savedWaterId = localStorage.getItem(storageKey);
+
+            if (savedWaterId) {
+                setHasSelectedWater(true);
+                setSelectedWater(savedWaterId);
+            } else {
+                setShowWaterModal(true);
+            }
+        } else if (type !== "zone") {
+            setHasSelectedWater(true);
+        }
+    }, [type, clubId]);
+
+    /**
+     * Disable terra-draw for zones when no water is selected
+     */
+    useEffect(() => {
+        if (type === "zone" && drawControlRef.current) {
+            const draw = drawControlRef.current.getTerraDrawInstance();
+            if (draw) {
+                if (hasSelectedWater && !draw.enabled) {
+                    draw.start();
+                } else if (!hasSelectedWater && draw.enabled) {
+                    draw.stop();
+                }
+            }
+        }
+    }, [hasSelectedWater, type, drawControlRef.current]);
 
     /**
      * Reset draw, when map style changes and add back already drawn features to map
@@ -68,10 +106,29 @@ export default function AddWaterInMap() {
             savedFeature,
         });
 
-    const currentSelectedWater = waters.find((e) => e.id === selectedWater);
+    const currentSelectedWater = useMemo(
+        () => waters.find((e) => e.id === selectedWater),
+        [waters, selectedWater]
+    );
+
+    const handleWaterSelect = useCallback((waterId: string) => {
+        if (clubId) {
+            const storageKey = `selected-water-${clubId}`;
+            localStorage.setItem(storageKey, waterId);
+        }
+        setSelectedWater(waterId);
+        setHasSelectedWater(true);
+        setShowWaterModal(false);
+    }, [clubId, setSelectedWater]);
 
     return (
         <div>
+            <SelectWaterModal
+                isOpen={showWaterModal}
+                waters={waters}
+                onSelect={handleWaterSelect}
+                loading={loading}
+            />
             <AddWaterModal
                 isOpen={isOpen}
                 closeModal={closeModal}
@@ -83,7 +140,7 @@ export default function AddWaterInMap() {
                 selectedWater={currentSelectedWater}
             />
             <PageBreadcrumb pageTitle={t("title")} />
-            {type === "zone" && (
+            {type === "zone" && hasSelectedWater && (
                 <div className="flex gap-4 items-center">
                     <p className="text-gray-600 dark:text-gray-400 ">
                         Gewässer auswählen:
@@ -102,16 +159,18 @@ export default function AddWaterInMap() {
                 </div>
             )}
             {/* Description */}
-            <div className="my-4">
-                <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">
-                    {<AddWaterDescription t={t} />}
-                </p>
-            </div>
+            {hasSelectedWater && (
+                <div className="my-4">
+                    <p className="text-gray-600 dark:text-gray-400 whitespace-pre-line">
+                        {<AddWaterDescription t={t} />}
+                    </p>
+                </div>
+            )}
 
             {/* Map */}
             <div
                 id="map"
-                className="min-h-[calc(100vh-28vh)] rounded-2xl overflow-clip border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/30 relative"
+                className={`min-h-[calc(100vh-28vh)] rounded-2xl overflow-clip border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/30 relative ${!hasSelectedWater ? "hidden" : ""}`}
             >
                 <div className="flex gap-2 mb-2 absolute bottom-2 left-2 z-10">
                     {/* Map Styles */}

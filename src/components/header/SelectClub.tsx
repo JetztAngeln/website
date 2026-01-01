@@ -1,6 +1,8 @@
-import { ChevronsUpDownIcon } from "lucide-react";
-import { useEffect } from "react";
+import { Check, ChevronsUpDownIcon } from "lucide-react";
+import { memo, useEffect } from "react";
 import type { ClubForUserFragment } from "@/nhost-api/graphql/generated/sdks";
+import { Dropdown, DropdownContent, DropdownTrigger } from "../ui/dropdown/Dropdown";
+import { DropdownItem } from "../ui/dropdown/DropdownItem";
 
 interface ClubSelectProps {
     clubs: ClubForUserFragment[] | null;
@@ -32,60 +34,33 @@ const ClubSelect: React.FC<ClubSelectProps> = ({
     if (error) return <p className="text-red-500">Failed to load clubs</p>;
     if (isLoading)
         return (
-            <ClubSelect
-                placeholder="Loading clubs..."
-                clubs={[]}
-                selectedClub={null}
-                setSelectedClub={(_: ClubForUserFragment): void => {
-                    throw new Error("Function not implemented.");
-                }}
-            />
+            <div className="w-full max-w-sm h-11 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
         );
 
     return (
-        <div className="w-full max-w-sm relative">
-            <select
-                className={`h-11 w-full appearance-none rounded-lg border border-gray-300  px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 ${
-                    selectedClub
-                        ? "text-gray-800 dark:text-white/90"
-                        : "text-gray-400 dark:text-gray-400"
-                }`}
-                value={selectedClub?.id ?? ""}
-                onChange={(e) => {
-                    const club = clubs.find((c) => c.id === e.target.value);
-                    if (club) setSelectedClub(club);
-                }}
-            >
-                {/* Placeholder only shown if nothing is selected */}
-                {!selectedClub && (
-                    <option
-                        value=""
-                        disabled
-                        className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+        <Dropdown>
+            <DropdownTrigger>
+                <div className="flex items-center justify-between w-full h-11 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-brand-300 dark:hover:border-brand-800 transition-colors">
+                    <span className={`text-sm ${selectedClub ? "text-gray-800 dark:text-white/90" : "text-gray-400"}`}>
+                        {selectedClub ? selectedClub.name : placeholder}
+                    </span>
+                    <ChevronsUpDownIcon size={16} className="text-gray-500 dark:text-gray-400" />
+                </div>
+            </DropdownTrigger>
+            <DropdownContent className="w-[240px] max-h-[300px] overflow-y-auto">
+                {clubs.map((club) => (
+                    <DropdownItem
+                        key={club.id}
+                        onClick={() => setSelectedClub(club)}
+                        className="flex items-center justify-between w-full px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
                     >
-                        {placeholder}
-                    </option>
-                )}
-
-                {Array.isArray(clubs) ? (
-                    clubs.map((club) => (
-                        <option
-                            key={club.id}
-                            value={club.id}
-                            className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-                        >
-                            {club.name}
-                        </option>
-                    ))
-                ) : (
-                    <option>{placeholder}</option>
-                )}
-            </select>
-            <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
-                <ChevronsUpDownIcon size={16} />
-            </span>
-        </div>
+                        <span className="text-gray-700 dark:text-gray-200">{club.name}</span>
+                        {selectedClub?.id === club.id && <Check size={16} className="text-brand-500" />}
+                    </DropdownItem>
+                ))}
+            </DropdownContent>
+        </Dropdown>
     );
 };
 
-export default ClubSelect;
+export default memo(ClubSelect);

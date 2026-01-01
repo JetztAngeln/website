@@ -142,6 +142,15 @@
         "title": "Angelverbotszone hinzufügen",
         "description": "Wähle ein Gewässer aus, auf dem du eine Angelverbotszone hinzufügen willst. Wähle danach das <drawTool>Zeichenwerkzeug</drawTool> und zeichne die Angelverbotszone auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf die Zone klicken und weitere Informationen hinzufügen. Nur so kannst du die Angelverbotszone speichern.\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen."
     },
+    "SelectWaterModal": {
+        "title": "Gewässer auswählen",
+        "description": "Bitte wählen Sie ein Gewässer aus, bevor Sie Schutzgebiete zeichnen können.",
+        "selectLabel": "Gewässer",
+        "selectPlaceholder": "-- Gewässer wählen --",
+        "confirm": "Bestätigen",
+        "loading": "Lädt...",
+        "noWaters": "Keine Gewässer verfügbar. Bitte erstellen Sie zuerst ein Gewässer."
+    },
     "AddWaterModalLake": {
         "title": "Gewässer hinzufügen",
         "subText": "Wähle einen Namen für das Gewässer aus und speichere es als Entwurf. Du kannst die restlichen Details in der Gewässerübersicht hinzufügen.",

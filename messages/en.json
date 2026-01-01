@@ -138,6 +138,15 @@
         "title": "Add a Lake to your Club",
         "description": "Select the <drawTool>drawing tool</drawTool> and draw the lake area on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the lake and provide additional information. Only so, you can save the lake!\nTip: With right-click you can delete points."
     },
+    "SelectWaterModal": {
+        "title": "Select Water",
+        "description": "Please select a water body before you can draw restricted areas.",
+        "selectLabel": "Water Body",
+        "selectPlaceholder": "-- Select water --",
+        "confirm": "Confirm",
+        "loading": "Loading...",
+        "noWaters": "No waters available. Please create a water body first."
+    },
     "AddZone": {
         "title": "Add an additional no-fishing Zone to your Club",
         "description": "Select the waterbody where you want to draw a no-fishing zone onto. Afterwards select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone.\nTip: With right-click you can delete points."

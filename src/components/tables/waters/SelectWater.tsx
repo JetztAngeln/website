@@ -1,6 +1,8 @@
-import { ChevronsUpDownIcon } from "lucide-react";
-import { useEffect } from "react";
+import { Check, ChevronsUpDownIcon } from "lucide-react";
+import { memo, useEffect } from "react";
 import type { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
+import { Dropdown, DropdownContent, DropdownTrigger } from "../../ui/dropdown/Dropdown";
+import { DropdownItem } from "../../ui/dropdown/DropdownItem";
 
 interface WaterSelectProps {
     waters: ClubWaterFragment[] | null;
@@ -17,72 +19,43 @@ const WaterSelect: React.FC<WaterSelectProps> = ({
     placeholder = "Loading waters...",
     isLoading,
 }) => {
-    // Default to the first club when clubs are available
     useEffect(() => {
         if (waters && waters.length > 0 && !selectedWater) {
             setSelectedWater(waters[0].id);
         }
     }, [waters, selectedWater, setSelectedWater]);
 
-    // Hide component if no clubs available
     if (!waters || waters.length === 0) return null;
 
     if (isLoading)
         return (
-            <WaterSelect
-                placeholder="Loading waters..."
-                waters={[]}
-                selectedWater={null}
-                setSelectedWater={(_: string): void => {
-                    throw new Error("Function not implemented.");
-                }}
-            />
+            <div className="w-full max-w-sm h-11 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
         );
 
     return (
-        <div className="w-full max-w-sm relative">
-            <select
-                className={`h-11 w-full appearance-none rounded-lg border border-gray-300  px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 ${
-                    selectedWater
-                        ? "text-gray-800 dark:text-white/90"
-                        : "text-gray-400 dark:text-gray-400"
-                }`}
-                value={selectedWater ?? ""}
-                onChange={(e) => {
-                    const club = waters.find((c) => c.id === e.target.value);
-                    if (club) setSelectedWater(club.id);
-                }}
-            >
-                {/* Placeholder only shown if nothing is selected */}
-                {!selectedWater && (
-                    <option
-                        value=""
-                        disabled
-                        className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+        <Dropdown>
+            <DropdownTrigger>
+                <div className="flex items-center justify-between w-full h-11 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-brand-300 dark:hover:border-brand-800 transition-colors">
+                    <span className={`text-sm ${selectedWater ? "text-gray-800 dark:text-white/90" : "text-gray-400"}`}>
+                        {waters.find(w => w.id === selectedWater)?.name || placeholder}
+                    </span>
+                    <ChevronsUpDownIcon size={16} className="text-gray-500 dark:text-gray-400" />
+                </div>
+            </DropdownTrigger>
+            <DropdownContent className="w-[240px] max-h-[300px] overflow-y-auto">
+                {waters.map((water) => (
+                    <DropdownItem
+                        key={water.id}
+                        onClick={() => setSelectedWater(water.id)}
+                        className="flex items-center justify-between w-full px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
                     >
-                        {placeholder}
-                    </option>
-                )}
-
-                {Array.isArray(waters) ? (
-                    waters.map((water) => (
-                        <option
-                            key={water.id}
-                            value={water.id}
-                            className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-                        >
-                            {water.name}
-                        </option>
-                    ))
-                ) : (
-                    <option>{placeholder}</option>
-                )}
-            </select>
-            <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
-                <ChevronsUpDownIcon size={16} />
-            </span>
-        </div>
+                        <span className="text-gray-700 dark:text-gray-200">{water.name}</span>
+                        {selectedWater === water.id && <Check size={16} className="text-brand-500" />}
+                    </DropdownItem>
+                ))}
+            </DropdownContent>
+        </Dropdown>
     );
 };
 
-export default WaterSelect;
+export default memo(WaterSelect);
