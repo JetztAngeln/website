@@ -8,7 +8,7 @@ import {
     useEffect,
     useState,
 } from "react";
-import { mapStyles } from "@/lib/mapUtils";
+import { mapStyles, updateZonePatternLayer } from "@/lib/mapUtils";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import type { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { getWatersByClubId } from "@/nhost-api/waters/waters.client";
@@ -98,6 +98,17 @@ export function useSelectedWater({
                     }
 
                     addToMap(mapRef, water, darkMode);
+                }
+                
+                // Update pattern layer with all loaded zone features
+                const allZoneFeatures = watersToIterate.flatMap(
+                    (water) =>
+                        (water.geo_json as GeoJSONFeature[])?.filter(
+                            (f) => f.properties.waterType === "zone"
+                        ) || []
+                );
+                if (allZoneFeatures.length > 0 && mapRef.current) {
+                    updateZonePatternLayer(mapRef.current, allZoneFeatures);
                 }
             }, 0);
         };

@@ -6,6 +6,7 @@ import type {
 } from "maplibre-gl";
 import type { RefObject } from "react";
 import { TerraDrawPolygonMode, TerraDrawSelectMode } from "terra-draw";
+import barrierPattern from "../../public/map/barrier_pattern.png";
 import mapStyleDark from "../../public/map/style_dark.json";
 
 export const GERMANY_BOUNDS: LngLatBoundsLike = [
@@ -102,8 +103,10 @@ const drawUtilities = (type: keyof typeof utilities) => {
                 // validation: undefined, // Disable self-intersection validation
                 //editable: true,
                 styles: {
-                    fillColor: type === "zone" ? "#E47066" : undefined,
+                    fillColor: type === "zone" ? "#E4706660" : undefined, // Semi-transparent red for zones
+                    fillOpacity: type === "zone" ? 0.4 : undefined,
                     outlineColor: type === "zone" ? "#EB4335" : undefined,
+                    outlineWidth: type === "zone" ? 3 : undefined, // Thicker outline for emphasis
                     closingPointColor: type === "zone" ? "#EB4335" : undefined,
                     coordinatePointColor:
                         type === "zone" ? "#EB4335" : undefined,
@@ -119,9 +122,11 @@ const drawUtilities = (type: keyof typeof utilities) => {
                 },
                 styles: {
                     selectedPolygonColor:
-                        type === "zone" ? "#E47066" : undefined,
+                        type === "zone" ? "#E4706660" : undefined, // Semi-transparent red for zones
                     selectedPolygonOutlineColor:
                         type === "zone" ? "#EB4335" : undefined,
+                    selectedPolygonOutlineWidth:
+                        type === "zone" ? 3 : undefined, // Thicker outline
                     midPointColor: type === "zone" ? "#EB4335" : undefined,
                     selectionPointColor:
                         type === "zone" ? "#EB4335" : undefined,
@@ -137,7 +142,75 @@ export const initializeMap = (
     locale: string,
 ) => {
     changeLocale(mapRef, locale);
+
+    // Add stripe pattern for zones
+    if (type === "zone" && mapRef.current) {
+        const map = mapRef.current;
+
+        const addPatternLayer = async () => {
+            if (!map.isStyleLoaded()) {
+                setTimeout(addPatternLayer, 100);
+                return;
+            }
+
+            // Load the uploaded pattern image
+            await map.loadImage(barrierPattern.src).then((img) => {
+                // Add pattern image to the map
+                if (!map.hasImage("zone-stripe-pattern")) {
+                    map.addImage("zone-stripe-pattern", img.data);
+                }
+
+                // Add a source and layer for the pattern
+                if (!map.getSource("zone-pattern-source")) {
+                    map.addSource("zone-pattern-source", {
+                        type: "geojson",
+                        data: {
+                            type: "FeatureCollection",
+                            features: [],
+                        },
+                    });
+
+                    map.addLayer({
+                        id: "zone-pattern-layer",
+                        type: "fill",
+                        source: "zone-pattern-source",
+                        paint: {
+                            "fill-pattern": "zone-stripe-pattern",
+                            "fill-opacity": 1,
+                        },
+                    });
+                }
+            });
+        };
+
+        addPatternLayer();
+    }
+
     const draw = drawUtilities(type);
     mapRef.current?.addControl(draw, "top-left");
     return draw;
+};
+
+// Helper function to update zone pattern layer with current features
+export const updateZonePatternLayer = (
+    map: maplibreMap | null,
+    features: any[],
+) => {
+    if (!map || !map.getSource("zone-pattern-source")) return;
+
+    // Filter for polygon features (zones are always polygons)
+    const zoneFeatures = features
+        .filter((f) => f.geometry.type === "Polygon")
+        .map((f) => ({
+            ...f,
+            properties: {
+                ...f.properties,
+                waterType: "zone",
+            },
+        }));
+
+    (map.getSource("zone-pattern-source") as any).setData({
+        type: "FeatureCollection",
+        features: zoneFeatures,
+    });
 };

@@ -6,7 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import { useSidebar } from "@/context/SidebarContext";
 import { useTheme } from "@/context/ThemeContext";
 import { getMapLocaleByLocale } from "@/i18n/map_locales/map_locale";
-import { GERMANY_BOUNDS, initializeMap, mapStyles } from "@/lib/mapUtils";
+import {
+    GERMANY_BOUNDS,
+    initializeMap,
+    mapStyles,
+    updateZonePatternLayer,
+} from "@/lib/mapUtils";
 import { useModal } from "../useModal";
 
 export function useMapInit() {
@@ -67,10 +72,17 @@ export function useMapInit() {
 
                 if (!savedFeature.includes(stringified)) {
                     setSelectedFeature(stringified);
-                    console.log("Feature selected:", selectedFeature);
                     openModal();
                 }
             });
+
+            // Update pattern layer when features change (for zones)
+            if (type === "zone") {
+                drawInstance.on("change", () => {
+                    const snapshot = drawInstance.getSnapshot();
+                    updateZonePatternLayer(mapRef.current, snapshot);
+                });
+            }
         }
     };
 

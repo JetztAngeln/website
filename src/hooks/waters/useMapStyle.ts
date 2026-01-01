@@ -1,5 +1,6 @@
 import type { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import { type RefObject, useEffect, useRef } from "react";
+import { updateZonePatternLayer } from "@/lib/mapUtils";
 
 type UseMapStyleType = {
     mapRef: RefObject<maplibregl.Map | null>;
@@ -42,7 +43,10 @@ export function useMapStyle({
             }
 
             draw.start();
-            if (features.length) draw.addFeatures(features);
+            if (features.length) {
+                draw.addFeatures(features);
+                updateZonePatternLayer(map, features);
+            }
         };
 
         wait();
