@@ -4,7 +4,6 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import AddWaterDescription from "@/components/richTags/waters/add/AddWaterDescription";
 import SelectWater from "@/components/tables/waters/SelectWater";
 import AddWaterModal from "@/components/ui/modal/AddWaterModal";
-import { useFeatureCleanup } from "@/hooks/waters/useFeatureCleanup";
 import { useMapInit } from "@/hooks/waters/useMapInit";
 import { useMapStyle } from "@/hooks/waters/useMapStyle";
 import { useSelectedWater } from "@/hooks/waters/useSelectedWater";
@@ -13,6 +12,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useFeatureCleanup } from "@/hooks/waters/useFeatureCleanup";
 import { mapStyles } from "../../../../../../lib/mapUtils";
 
 export default function AddWaterInMap() {

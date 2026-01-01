@@ -6,9 +6,9 @@ import { useTranslations } from "next-intl";
 import type React from "react";
 import { useState } from "react";
 import useSWR from "swr";
-import type { ClubInfo } from "@/lib/models/club_info";
 import { useAuth } from "@/lib/nhost/AuthProvider";
 import { getClubsForCurrentUser } from "@/nhost-api/clubs/user.client";
+import type { ClubForUserFragment } from "@/nhost-api/graphql/generated/sdks";
 import { ThemeToggleButton } from "../../components/common/ThemeToggleButton";
 import SelectClub from "../../components/header/SelectClub";
 import UserDropdown from "../../components/header/UserDropdown";
@@ -22,12 +22,15 @@ const AppHeader: React.FC = () => {
         error: errorClubs,
         isLoading: isLoadingClubs,
     } = useSWR<
-        ClubInfo[],
+        ClubForUserFragment[] | null,
         {
             error: string;
         },
-        any
-    >("appHeader", async () => await getClubsForCurrentUser(nhost, session));
+        string
+    >(
+        "appHeader",
+        async (_arg: string) => await getClubsForCurrentUser(nhost, session),
+    );
 
     const {
         isMobileOpen,
