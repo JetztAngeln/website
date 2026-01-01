@@ -22,5 +22,6 @@
     "[jsonc]": {
         "editor.defaultFormatter": "biomejs.biome"
     },
-    "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
+    "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+    "i18n-ally.extract.autoDetect": true
 }

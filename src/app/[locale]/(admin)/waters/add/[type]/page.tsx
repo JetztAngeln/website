@@ -11,6 +11,7 @@ import "@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import SelectWaterModal from "@/components/ui/modal/SelectWaterModal";
 import { useFeatureCleanup } from "@/hooks/waters/useFeatureCleanup";
@@ -20,6 +21,7 @@ export default function AddWaterInMap() {
     const { type } = useParams<{ type: string; locale: string }>();
     const [showWaterModal, setShowWaterModal] = useState(false);
     const [hasSelectedWater, setHasSelectedWater] = useState(false);
+    const tAddWater = useTranslations("AddWaterInMap");
 
     const {
         mapRef,
@@ -141,13 +143,13 @@ export default function AddWaterInMap() {
             />
             <PageBreadcrumb pageTitle={t("title")} />
             {type === "zone" && hasSelectedWater && (
-                <div className="flex gap-4 items-center">
-                    <p className="text-gray-600 dark:text-gray-400 ">
-                        Gewässer auswählen:
+                <div className="flex gap-2 items-center max-w-96">
+                    <p className="text-gray-600 dark:text-gray-400 text-nowrap">
+                        {tAddWater("selectWater")}
                     </p>
                     {loading ? (
                         <p className="text-gray-600 dark:text-gray-400 ">
-                            Laden...
+                            {tAddWater("loading")}
                         </p>
                     ) : (
                         <SelectWater

@@ -134,6 +134,11 @@
         "edit": "Bearbeiten",
         "delete": "Löschen"
     },
+    "AddWaterInMap": {
+        "selectWater": "Gewässer auswählen:",
+        "loading": "Laden...",
+        "title": ""
+    },
     "AddRiver": {
         "title": "Fluss hinzufügen",
         "description": "Wähle das <drawTool>Zeichenwerkzeug</drawTool> und zeichne den Flussverlauf auf der Karte. Nach dem Zeichnen kannst du mit dem <selectTool>Auswahlwerkzeug</selectTool> auf den Fluss klicken und weitere Informationen hinzufügen. Nur so kannst du den Fluss speichern!\nTipp: Mit der rechten Maustaste kannst du Punkte wieder löschen.",
