@@ -55,7 +55,16 @@ export function useSelectedWater({
     );
 
     useEffect(() => {
+        console.log("[useSelectedWater] Effect triggered", {
+            watersLength: waters.length,
+            selectedWater,
+            type,
+            mapReady: !!mapRef.current,
+            styleLoaded: mapRef.current?.isStyleLoaded(),
+        });
+
         if (waters.length === 0) {
+            console.log("[useSelectedWater] No waters to display");
             return;
         }
 
@@ -63,6 +72,7 @@ export function useSelectedWater({
 
         const wait = () => {
             if (mapRef.current == null || !mapRef.current.isStyleLoaded()) {
+                console.log("[useSelectedWater] Map not ready, waiting...");
                 setTimeout(wait, 200);
                 return;
             }
@@ -74,30 +84,105 @@ export function useSelectedWater({
 
                 if (water != null) {
                     watersToIterate = [water];
+                } else {
+                    console.log(
+                        "[useSelectedWater] Selected water not found in waters list",
+                        { selectedWater },
+                    );
                 }
             }
 
-            // We need the timeout because otherwise it won't load the layers sometimes
-            setTimeout(() => {
-                clearMapStyle(mapRef);
+            console.log("[useSelectedWater] Processing waters", {
+                count: watersToIterate.length,
+                ids: watersToIterate.map((w) => w.id),
+            });
+
+            // Function to check and add layers
+            const checkAndAddLayers = () => {
+                const map = mapRef.current;
+                if (!map) return;
+
+                // Ensure map is resized properly if it was hidden
+                map.resize();
+
+                const existingLayers = map
+                    .getStyle()
+                    .layers.filter((l) => l.id.startsWith("preloaded-"))
+                    .map((l) => l.id);
+
+                const requiredLayerIds = new Set<string>();
 
                 for (const water of watersToIterate) {
-                    if (water.geo_json === undefined) {
-                        continue;
+                    if (water.geo_json === undefined) continue;
+
+                    const waterId = water.id;
+                    requiredLayerIds.add(`preloaded-layer-${waterId}`);
+                    requiredLayerIds.add(
+                        `preloaded-layer-polygon-line-${waterId}`,
+                    );
+                    requiredLayerIds.add(`preloaded-layer-line-${waterId}`);
+
+                    // Check if this water is already fully loaded
+                    const isLoaded =
+                        map.getSource(`preloaded-${waterId}`) &&
+                        map.getLayer(`preloaded-layer-${waterId}`);
+
+                    if (!isLoaded) {
+                        console.log(
+                            `[useSelectedWater] Adding water ${waterId} to map`,
+                        );
+                        // Add missing water
+                        addToMap(mapRef, water, darkMode);
+                    } else {
+                        // console.log(`[useSelectedWater] Water ${waterId} already loaded, skipping`);
                     }
 
-                    const waterToNavigate = (
-                        water.geo_json as GeoJSONFeature[]
-                    ).find((e) => e.properties.waterType !== "zone");
-
-                    if (waterToNavigate === undefined) {
-                        continue;
-                    }
+                    // Handle navigation if needed (only once per selection change ideally)
                     if (type === "zone" && selectedWater === water.id) {
-                        navigateToLocation(waterToNavigate, mapRef);
-                    }
+                        const waterToNavigate = (
+                            water.geo_json as GeoJSONFeature[]
+                        ).find((e) => e.properties.waterType !== "zone");
 
-                    addToMap(mapRef, water, darkMode);
+                        if (waterToNavigate) {
+                            try {
+                                navigateToLocation(waterToNavigate, mapRef);
+                            } catch (e) {
+                                console.error(
+                                    "Failed to navigate to water location",
+                                    e,
+                                );
+                            }
+                        }
+                    }
+                }
+
+                // Remove layers that are no longer needed
+                for (const layerId of existingLayers) {
+                    if (!requiredLayerIds.has(layerId)) {
+                        console.log(
+                            `[useSelectedWater] Removing layer ${layerId}`,
+                        );
+                        map.removeLayer(layerId);
+                    }
+                }
+
+                // Cleanup unused sources
+                const existingSources = Object.keys(
+                    map.getStyle().sources,
+                ).filter((s) => s.startsWith("preloaded-"));
+                for (const sourceId of existingSources) {
+                    const id = sourceId
+                        .replace("preloaded-line-", "")
+                        .replace("preloaded-", "");
+                    if (!watersToIterate.find((w) => w.id === id)) {
+                        if (
+                            !map
+                                .getStyle()
+                                .layers.some((l) => l.source === sourceId)
+                        ) {
+                            map.removeSource(sourceId);
+                        }
+                    }
                 }
 
                 // Update pattern layer with all loaded zone features
@@ -110,11 +195,27 @@ export function useSelectedWater({
                 if (allZoneFeatures.length > 0 && mapRef.current) {
                     updateZonePatternLayer(mapRef.current, allZoneFeatures);
                 }
-            }, 0);
+            };
+
+            // Run initially
+            const timer = setTimeout(checkAndAddLayers, 50);
+
+            // Run when style changes or loads
+            const map = mapRef.current;
+            if (map) {
+                map.on("styledata", checkAndAddLayers);
+            }
+
+            return () => {
+                clearTimeout(timer);
+                if (map) {
+                    map.off("styledata", checkAndAddLayers);
+                }
+            };
         };
 
-        wait();
-    }, [selectedWater, currentStyle, waters, mapRef, type]);
+        return wait();
+    });
 
     useEffect(() => {
         if (type !== "zone") {
@@ -196,13 +297,19 @@ function addToMap(
 ) {
     if (!mapRef.current) return;
 
+    const polygons = (water.geo_json as GeoJSONFeature[]).filter(
+        (e) =>
+            e.geometry.type === "Polygon" || e.geometry.type === "MultiPolygon",
+    );
+    console.log(
+        `[addToMap] Adding ${polygons.length} polygons for water ${water.id}`,
+    );
+
     mapRef.current.addSource(`preloaded-${water.id}`, {
         type: "geojson",
         data: {
             type: "FeatureCollection",
-            features: (water.geo_json as GeoJSONFeature[]).filter(
-                (e) => e.geometry.type === "Polygon",
-            ),
+            features: polygons,
         },
     });
     mapRef.current.addSource(`preloaded-line-${water.id}`, {
@@ -253,6 +360,8 @@ function addToMap(
         layers.find(
             (l) => l.id.startsWith("td-") || l.id.startsWith("terra-draw"),
         )?.id ?? layers.at(-1)?.id;
+
+    console.log(`[addToMap] Moving layers before: ${terraLayer}`);
 
     mapRef.current.moveLayer(`preloaded-layer-${water.id}`, terraLayer);
     mapRef.current.moveLayer(

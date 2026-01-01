@@ -2,6 +2,7 @@ import type { MaplibreTerradrawControl } from "@watergis/maplibre-gl-terradraw";
 import { useParams } from "next/navigation";
 import { type RefObject, useEffect, useRef } from "react";
 import {
+    addZonePatternLayer,
     changeMapLocaleByLocale,
     updateZonePatternLayer,
 } from "@/lib/mapUtils";
@@ -20,7 +21,7 @@ export function useMapStyle({
     drawControlRef,
     currentStyle,
 }: UseMapStyleType) {
-    const { locale } = useParams<{ locale: string }>();
+    const { locale, type } = useParams<{ locale: string; type: string }>();
     const initial = useRef(true);
 
     useEffect(() => {
@@ -42,10 +43,14 @@ export function useMapStyle({
         map.setStyle(currentStyle);
         changeMapLocaleByLocale(mapRef, locale);
 
-        const wait = () => {
+        const wait = async () => {
             if (!map.isStyleLoaded()) {
                 setTimeout(wait, 200);
                 return;
+            }
+
+            if (type === "zone") {
+                await addZonePatternLayer(map);
             }
 
             draw.start();
@@ -56,5 +61,12 @@ export function useMapStyle({
         };
 
         wait();
-    }, [currentStyle, drawControlRef.current, mapRef.current, locale, mapRef]);
+    }, [
+        currentStyle,
+        drawControlRef.current,
+        mapRef.current,
+        locale,
+        mapRef,
+        type,
+    ]);
 }

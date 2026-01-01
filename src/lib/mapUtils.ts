@@ -137,6 +137,42 @@ const drawUtilities = (type: keyof typeof utilities) => {
     });
 };
 
+export const addZonePatternLayer = async (map: maplibreMap) => {
+    if (!map.isStyleLoaded()) {
+        setTimeout(() => addZonePatternLayer(map), 100);
+        return;
+    }
+
+    // Load the uploaded pattern image
+    await map.loadImage(barrierPattern.src).then((img) => {
+        // Add pattern image to the map
+        if (!map.hasImage("zone-stripe-pattern")) {
+            map.addImage("zone-stripe-pattern", img.data);
+        }
+
+        // Add a source and layer for the pattern
+        if (!map.getSource("zone-pattern-source")) {
+            map.addSource("zone-pattern-source", {
+                type: "geojson",
+                data: {
+                    type: "FeatureCollection",
+                    features: [],
+                },
+            });
+
+            map.addLayer({
+                id: "zone-pattern-layer",
+                type: "fill",
+                source: "zone-pattern-source",
+                paint: {
+                    "fill-pattern": "zone-stripe-pattern",
+                    "fill-opacity": 1,
+                },
+            });
+        }
+    });
+};
+
 export const initializeMap = (
     mapRef: RefObject<maplibreMap | null>,
     type: string,
@@ -146,45 +182,7 @@ export const initializeMap = (
 
     // Add stripe pattern for zones
     if (type === "zone" && mapRef.current) {
-        const map = mapRef.current;
-
-        const addPatternLayer = async () => {
-            if (!map.isStyleLoaded()) {
-                setTimeout(addPatternLayer, 100);
-                return;
-            }
-
-            // Load the uploaded pattern image
-            await map.loadImage(barrierPattern.src).then((img) => {
-                // Add pattern image to the map
-                if (!map.hasImage("zone-stripe-pattern")) {
-                    map.addImage("zone-stripe-pattern", img.data);
-                }
-
-                // Add a source and layer for the pattern
-                if (!map.getSource("zone-pattern-source")) {
-                    map.addSource("zone-pattern-source", {
-                        type: "geojson",
-                        data: {
-                            type: "FeatureCollection",
-                            features: [],
-                        },
-                    });
-
-                    map.addLayer({
-                        id: "zone-pattern-layer",
-                        type: "fill",
-                        source: "zone-pattern-source",
-                        paint: {
-                            "fill-pattern": "zone-stripe-pattern",
-                            "fill-opacity": 1,
-                        },
-                    });
-                }
-            });
-        };
-
-        addPatternLayer();
+        addZonePatternLayer(mapRef.current);
     }
 
     const draw = drawUtilities(type);
@@ -221,4 +219,18 @@ export const updateZonePatternLayer = (
         type: "FeatureCollection",
         features: zoneFeatures,
     });
+
+    // Ensure the pattern layer is visible and correctly positioned
+    if (map.getLayer("zone-pattern-layer")) {
+        const layers = map.getStyle().layers;
+        const terraLayer = layers.find(
+            (l) => l.id.startsWith("td-") || l.id.startsWith("terra-draw"),
+        )?.id;
+
+        if (terraLayer) {
+            map.moveLayer("zone-pattern-layer", terraLayer);
+        } else {
+            map.moveLayer("zone-pattern-layer");
+        }
+    }
 };
