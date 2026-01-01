@@ -1,4 +1,5 @@
 import { Check, ChevronsUpDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { memo, useEffect } from "react";
 import type { ClubWaterFragment } from "@/nhost-api/graphql/generated/sdks";
 import { Dropdown, DropdownContent, DropdownTrigger } from "../../ui/dropdown/Dropdown";
@@ -16,9 +17,12 @@ const WaterSelect: React.FC<WaterSelectProps> = ({
     waters,
     selectedWater,
     setSelectedWater,
-    placeholder = "Loading waters...",
+    placeholder,
     isLoading,
 }) => {
+    const t = useTranslations("SelectWater");
+    const defaultPlaceholder = placeholder || t("loadingWaters");
+
     useEffect(() => {
         if (waters && waters.length > 0 && !selectedWater) {
             setSelectedWater(waters[0].id);
@@ -37,7 +41,7 @@ const WaterSelect: React.FC<WaterSelectProps> = ({
             <DropdownTrigger>
                 <div className="flex items-center justify-between w-full h-11 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-brand-300 dark:hover:border-brand-800 transition-colors">
                     <span className={`text-sm ${selectedWater ? "text-gray-800 dark:text-white/90" : "text-gray-400"}`}>
-                        {waters.find(w => w.id === selectedWater)?.name || placeholder}
+                        {waters.find(w => w.id === selectedWater)?.name || defaultPlaceholder}
                     </span>
                     <ChevronsUpDownIcon size={16} className="text-gray-500 dark:text-gray-400" />
                 </div>

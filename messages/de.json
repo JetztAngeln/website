@@ -32,7 +32,12 @@
         "billing": "Abrechnung"
     },
     "AppHeader": {
-        "selectClubPlaceholder": "Wähle deinen Verein..."
+        "selectClubPlaceholder": "Wähle deinen Verein...",
+        "loadingClubs": "Lade Vereine...",
+        "failedToLoadClubs": "Fehler beim Laden der Vereine"
+    },
+    "SelectWater": {
+        "loadingWaters": "Lade Gewässer..."
     },
     "NotFound": {
         "message": "Die Seite, die du suchst, existiert nicht oder wurde verschoben.",

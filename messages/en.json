@@ -32,7 +32,12 @@
         "billing": "Billing"
     },
     "AppHeader": {
-        "selectClubPlaceholder": "Select your club to manage..."
+        "selectClubPlaceholder": "Select your club to manage...",
+        "loadingClubs": "Loading clubs...",
+        "failedToLoadClubs": "Failed to load clubs"
+    },
+    "SelectWater": {
+        "loadingWaters": "Loading waters..."
     },
     "NotFound": {
         "message": "The page you are looking for does not exist or has been moved.",
