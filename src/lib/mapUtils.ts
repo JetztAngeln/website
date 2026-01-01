@@ -6,6 +6,7 @@ import type {
 } from "maplibre-gl";
 import type { RefObject } from "react";
 import { TerraDrawPolygonMode, TerraDrawSelectMode } from "terra-draw";
+import mapStyleColor from "../../public/map/style_color.json";
 import mapStyleDark from "../../public/map/style_dark.json";
 
 export const GERMANY_BOUNDS: LngLatBoundsLike = [
@@ -15,16 +16,16 @@ export const GERMANY_BOUNDS: LngLatBoundsLike = [
 
 export const mapStyles: Record<
     string,
-    { code: string; url: StyleSpecification | string; image: string }
+    { code: string; url: StyleSpecification; image: string }
 > = {
     "carto-dark": {
         code: "carto-dark",
-        url: mapStyleDark as StyleSpecification,
+        url: mapStyleDark as StyleSpecification, // Don't use string to prevent loading issues
         image: "https://carto.com/help/images/building-maps/basemaps/dark_labels.png",
     },
     "carto-positron": {
         code: "carto-positron",
-        url: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+        url: mapStyleColor as StyleSpecification, // Don't use string to prevent loading issues
         image: "https://carto.com/help/images/building-maps/basemaps/positron_labels.png",
     },
 };
@@ -136,8 +137,15 @@ export const initializeMap = (
     type: string,
     locale: string,
 ) => {
-    changeLocale(mapRef, locale);
+    changeMapLocaleByLocale(mapRef, locale);
     const draw = drawUtilities(type);
     mapRef.current?.addControl(draw, "top-left");
     return draw;
+};
+
+export const changeMapLocaleByLocale = (
+    mapRef: RefObject<maplibreMap | null>,
+    locale: string,
+) => {
+    changeLocale(mapRef, locale);
 };
