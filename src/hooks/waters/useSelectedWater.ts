@@ -99,13 +99,13 @@ export function useSelectedWater({
 
                     addToMap(mapRef, water, darkMode);
                 }
-                
+
                 // Update pattern layer with all loaded zone features
                 const allZoneFeatures = watersToIterate.flatMap(
                     (water) =>
                         (water.geo_json as GeoJSONFeature[])?.filter(
-                            (f) => f.properties.waterType === "zone"
-                        ) || []
+                            (f) => f.properties.waterType === "zone",
+                        ) || [],
                 );
                 if (allZoneFeatures.length > 0 && mapRef.current) {
                     updateZonePatternLayer(mapRef.current, allZoneFeatures);
