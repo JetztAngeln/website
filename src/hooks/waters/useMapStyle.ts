@@ -4,7 +4,7 @@ import { type RefObject, useEffect, useRef } from "react";
 type UseMapStyleType = {
     mapRef: RefObject<maplibregl.Map | null>;
     drawControlRef: RefObject<MaplibreTerradrawControl | null>;
-    currentStyle: maplibregl.StyleSpecification;
+    currentStyle: maplibregl.StyleSpecification | string;
 };
 
 /**

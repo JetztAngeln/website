@@ -17,7 +17,7 @@ type UseSelectedWaterType = {
     clubId?: string;
     mapRef: RefObject<maplibregl.Map | null>;
     drawControlRef: RefObject<MaplibreTerradrawControl | null>;
-    currentStyle: maplibregl.StyleSpecification;
+    currentStyle: maplibregl.StyleSpecification | string;
     savedFeature: string[];
 };
 
