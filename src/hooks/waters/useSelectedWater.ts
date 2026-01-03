@@ -149,8 +149,8 @@ export function useSelectedWater({
                     if (!watersToIterate.find((w) => w.id === id)) {
                         if (
                             !map
-                                .getStyle()
-                                .layers.some((l) => l.source === sourceId)
+                                .getStyle() // Check if any layer still uses this source
+                                .layers.some((l) => l.id === sourceId)
                         ) {
                             map.removeSource(sourceId);
                         }

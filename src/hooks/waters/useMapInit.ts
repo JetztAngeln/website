@@ -98,13 +98,28 @@ export function useMapInit() {
                     }
                 });
 
-                // Update pattern layer when features change (for zones)
-                if (type === "zone") {
-                    drawInstance.on("change", () => {
+                drawInstance.on("change", (_, eventType) => {
+                    // Update pattern layer when features change (for zones)
+                    if (type === "zone") {
                         const snapshot = drawInstance.getSnapshot();
                         updateZonePatternLayer(mapRef.current, snapshot);
-                    });
-                }
+                    }
+
+                    // Fix ghost points: When a feature is deleted, ensure selection points are removed
+                    if (eventType === "delete") {
+                        const mode = drawInstance.getMode();
+                        if (mode === "select") {
+                            // Defer to avoid conflict with the delete operation
+                            setTimeout(() => {
+                                if (drawControlRef.current) {
+                                    drawInstance.stop();
+                                    drawInstance.start();
+                                    drawInstance.setMode("select");
+                                }
+                            }, 50);
+                        }
+                    }
+                });
             }
         };
 
@@ -115,8 +130,7 @@ export function useMapInit() {
             mapRef.current = null;
             drawControlRef.current = null;
         };
-        // biome-ignore lint/correctness/useExhaustiveDependencies: -
-    }, [locale, type]); // Re-init map if locale or type changes
+    }, [locale, type, currentStyle, openModal]);
 
     return {
         mapRef,

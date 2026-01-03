@@ -141,12 +141,12 @@
     },
     "AddRiver": {
         "title": "Add a River to your Club",
-        "description": "Select the <drawTool>drawing tool</drawTool> and draw the river path on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the river and provide additional information. Only so, you can save the river!\nTip: With right-click you can delete points.",
+        "description": "Select the <drawTool>drawing tool</drawTool> and draw the river path on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the river and provide additional information. Only so, you can save the river!",
         "drawRiver": "Draw River"
     },
     "AddLake": {
         "title": "Add a Lake to your Club",
-        "description": "Select the <drawTool>drawing tool</drawTool> and draw the lake area on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the lake and provide additional information. Only so, you can save the lake!\nTip: With right-click you can delete points."
+        "description": "Select the <drawTool>drawing tool</drawTool> and draw the lake area on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the lake and provide additional information. Only so, you can save the lake!"
     },
     "SelectWaterModal": {
         "title": "Select Water",
@@ -159,7 +159,7 @@
     },
     "AddZone": {
         "title": "Add a no-fishing Zone to your Club",
-        "description": "Select the waterbody where you want to draw a no-fishing zone onto. Afterwards select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone.\nTip: With right-click you can delete points."
+        "description": "Select the waterbody where you want to draw a no-fishing zone onto. Afterwards select the <drawTool>drawing tool</drawTool> and draw the no-fishing zone on the map. After drawing, use the <selectTool>select tool</selectTool> to click on the zone and provide additional information. Only so, you can save the zone."
     },
     "AddWaterModalLake": {
         "title": "Add new Waterbody",

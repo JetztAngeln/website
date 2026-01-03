@@ -88,16 +88,16 @@ const drawUtilities = (type: keyof typeof utilities) => {
             scaleable: false,
             selfIntersectable: true,
             coordinates: {
-                draggable: true,
-                midpoints: true,
-                deletable: true,
+                draggable: false,
+                midpoints: false,
+                deletable: false,
             },
         },
     };
 
     return new MaplibreTerradrawControl({
         modes: utilities[type],
-        showDeleteConfirmation: true,
+        showDeleteConfirmation: false,
         open: true,
         modeOptions: {
             polygon: new TerraDrawPolygonMode({
