@@ -36,6 +36,7 @@ export function useMapInit() {
 
     const [selectedFeature, setSelectedFeature] = useState("");
     const [savedFeature, setSavedFeature] = useState<string[]>([]);
+    const savedFeatureRef = useRef<string[]>([]);
 
     const mapRef = useRef<maplibreMap | null>(null);
     const drawControlRef = useRef<MaplibreTerradrawControl | null>(null);
@@ -46,45 +47,10 @@ export function useMapInit() {
         zoom: 5.5,
     };
 
-    /**
-     * Add select listener after map style has been loaded
-     */
-    const wait = (map: maplibregl.Map) => {
-        if (!map.isStyleLoaded()) {
-            setTimeout(() => wait(map), 150);
-            return;
-        }
-
-        drawControlRef.current = initializeMap(mapRef, type, locale);
-
-        const drawInstance = drawControlRef.current.getTerraDrawInstance();
-        if (drawInstance) {
-            drawInstance.on("select", (id) => {
-                const snapshot = drawInstance.getSnapshot();
-                const selected = snapshot.find((f) => f.id === id);
-                const stringified = JSON.stringify({
-                    ...selected,
-                    properties: {
-                        waterType: type,
-                    },
-                    id: undefined,
-                });
-
-                if (!savedFeature.includes(stringified)) {
-                    setSelectedFeature(stringified);
-                    openModal();
-                }
-            });
-
-            // Update pattern layer when features change (for zones)
-            if (type === "zone") {
-                drawInstance.on("change", () => {
-                    const snapshot = drawInstance.getSnapshot();
-                    updateZonePatternLayer(mapRef.current, snapshot);
-                });
-            }
-        }
-    };
+    // Sync savedFeature state with ref for event listeners
+    useEffect(() => {
+        savedFeatureRef.current = savedFeature;
+    }, [savedFeature]);
 
     useEffect(() => {
         if (mapRef.current) return;
@@ -103,9 +69,54 @@ export function useMapInit() {
         mapRef.current = map;
         map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-        wait(map);
+        const wait = () => {
+            if (!mapRef.current || mapRef.current !== map) return;
+
+            if (!map.isStyleLoaded()) {
+                setTimeout(wait, 150);
+                return;
+            }
+
+            drawControlRef.current = initializeMap(mapRef, type, locale);
+
+            const drawInstance = drawControlRef.current.getTerraDrawInstance();
+            if (drawInstance) {
+                drawInstance.on("select", (id) => {
+                    const snapshot = drawInstance.getSnapshot();
+                    const selected = snapshot.find((f) => f.id === id);
+                    const stringified = JSON.stringify({
+                        ...selected,
+                        properties: {
+                            waterType: type,
+                        },
+                        id: undefined,
+                    });
+
+                    if (!savedFeatureRef.current.includes(stringified)) {
+                        setSelectedFeature(stringified);
+                        openModal();
+                    }
+                });
+
+                // Update pattern layer when features change (for zones)
+                if (type === "zone") {
+                    drawInstance.on("change", () => {
+                        const snapshot = drawInstance.getSnapshot();
+                        updateZonePatternLayer(mapRef.current, snapshot);
+                    });
+                }
+            }
+        };
+
+        wait();
+
+        return () => {
+            map.remove();
+            mapRef.current = null;
+            drawControlRef.current = null;
+        };
         // biome-ignore lint/correctness/useExhaustiveDependencies: -
-    }, [currentStyle, locale, wait]);
+    }, [locale, type]); // Re-init map if locale or type changes
 
     return {
         mapRef,

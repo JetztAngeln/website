@@ -55,16 +55,7 @@ export function useSelectedWater({
     );
 
     useEffect(() => {
-        console.log("[useSelectedWater] Effect triggered", {
-            watersLength: waters.length,
-            selectedWater,
-            type,
-            mapReady: !!mapRef.current,
-            styleLoaded: mapRef.current?.isStyleLoaded(),
-        });
-
         if (waters.length === 0) {
-            console.log("[useSelectedWater] No waters to display");
             return;
         }
 
@@ -72,7 +63,6 @@ export function useSelectedWater({
 
         const wait = () => {
             if (mapRef.current == null || !mapRef.current.isStyleLoaded()) {
-                console.log("[useSelectedWater] Map not ready, waiting...");
                 setTimeout(wait, 200);
                 return;
             }
@@ -84,18 +74,8 @@ export function useSelectedWater({
 
                 if (water != null) {
                     watersToIterate = [water];
-                } else {
-                    console.log(
-                        "[useSelectedWater] Selected water not found in waters list",
-                        { selectedWater },
-                    );
                 }
             }
-
-            console.log("[useSelectedWater] Processing waters", {
-                count: watersToIterate.length,
-                ids: watersToIterate.map((w) => w.id),
-            });
 
             // Function to check and add layers
             const checkAndAddLayers = () => {
@@ -128,13 +108,8 @@ export function useSelectedWater({
                         map.getLayer(`preloaded-layer-${waterId}`);
 
                     if (!isLoaded) {
-                        console.log(
-                            `[useSelectedWater] Adding water ${waterId} to map`,
-                        );
                         // Add missing water
                         addToMap(mapRef, water, darkMode);
-                    } else {
-                        // console.log(`[useSelectedWater] Water ${waterId} already loaded, skipping`);
                     }
 
                     // Handle navigation if needed (only once per selection change ideally)
@@ -159,9 +134,6 @@ export function useSelectedWater({
                 // Remove layers that are no longer needed
                 for (const layerId of existingLayers) {
                     if (!requiredLayerIds.has(layerId)) {
-                        console.log(
-                            `[useSelectedWater] Removing layer ${layerId}`,
-                        );
                         map.removeLayer(layerId);
                     }
                 }
@@ -301,9 +273,6 @@ function addToMap(
         (e) =>
             e.geometry.type === "Polygon" || e.geometry.type === "MultiPolygon",
     );
-    console.log(
-        `[addToMap] Adding ${polygons.length} polygons for water ${water.id}`,
-    );
 
     mapRef.current.addSource(`preloaded-${water.id}`, {
         type: "geojson",
@@ -360,8 +329,6 @@ function addToMap(
         layers.find(
             (l) => l.id.startsWith("td-") || l.id.startsWith("terra-draw"),
         )?.id ?? layers.at(-1)?.id;
-
-    console.log(`[addToMap] Moving layers before: ${terraLayer}`);
 
     mapRef.current.moveLayer(`preloaded-layer-${water.id}`, terraLayer);
     mapRef.current.moveLayer(
