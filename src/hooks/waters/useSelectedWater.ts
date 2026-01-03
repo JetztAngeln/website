@@ -150,7 +150,11 @@ export function useSelectedWater({
                         if (
                             !map
                                 .getStyle() // Check if any layer still uses this source
-                                .layers.some((l) => l.id === sourceId)
+                                .layers.some(
+                                    (l) =>
+                                        "source" in l &&
+                                        (l as any).source === sourceId,
+                                )
                         ) {
                             map.removeSource(sourceId);
                         }
@@ -169,25 +173,28 @@ export function useSelectedWater({
                 }
             };
 
-            // Run initially
-            const timer = setTimeout(checkAndAddLayers, 50);
+            // Run immediately and also schedule a short delayed run to ensure
+            // any in-flight style changes or async source additions complete.
+            checkAndAddLayers();
+            const timer = setTimeout(checkAndAddLayers, 150);
 
-            // Run when style changes or loads
+            // Run when style changes or becomes idle (one-shot listeners).
+            // Using one-shot listeners avoids persistent re-entrancy caused by
+            // styledata events that are sometimes emitted after our own updates.
             const map = mapRef.current;
             if (map) {
-                map.on("styledata", checkAndAddLayers);
+                map.once("styledata", checkAndAddLayers);
+                map.once("idle", checkAndAddLayers);
             }
 
             return () => {
                 clearTimeout(timer);
-                if (map) {
-                    map.off("styledata", checkAndAddLayers);
-                }
+                // one-shot listeners don't require explicit removal
             };
         };
 
         return wait();
-    });
+    }, [selectedWater, currentStyle, waters, mapRef, type]);
 
     useEffect(() => {
         if (type !== "zone") {
