@@ -43,15 +43,7 @@ export default function AddWaterInMap() {
      */
     useEffect(() => {
         if (type === "zone" && clubId) {
-            const storageKey = `selected-water-${clubId}`;
-            const savedWaterId = localStorage.getItem(storageKey);
-
-            if (savedWaterId) {
-                setHasSelectedWater(true);
-                setSelectedWater(savedWaterId);
-            } else {
-                setShowWaterModal(true);
-            }
+            setShowWaterModal(true);
         } else if (type !== "zone") {
             setHasSelectedWater(true);
         }
@@ -114,14 +106,10 @@ export default function AddWaterInMap() {
     );
 
     const handleWaterSelect = useCallback((waterId: string) => {
-        if (clubId) {
-            const storageKey = `selected-water-${clubId}`;
-            localStorage.setItem(storageKey, waterId);
-        }
         setSelectedWater(waterId);
         setHasSelectedWater(true);
         setShowWaterModal(false);
-    }, [clubId, setSelectedWater]);
+    }, [setSelectedWater]);
 
     return (
         <div>

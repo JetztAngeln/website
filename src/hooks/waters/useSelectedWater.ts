@@ -176,7 +176,7 @@ export function useSelectedWater({
             // Run immediately and also schedule a short delayed run to ensure
             // any in-flight style changes or async source additions complete.
             checkAndAddLayers();
-            const timer = setTimeout(checkAndAddLayers, 150);
+            const timer = setTimeout(checkAndAddLayers, 250);
 
             // Run when style changes or becomes idle (one-shot listeners).
             // Using one-shot listeners avoids persistent re-entrancy caused by
@@ -245,28 +245,6 @@ function navigateToLocation(
             padding: 40,
             duration: 800,
         });
-    }
-}
-
-function clearMapStyle(mapRef: RefObject<maplibregl.Map | null>) {
-    const layers = mapRef.current
-        ?.getStyle()
-        .layers.filter((e) => e.id.startsWith("preloaded-"));
-
-    if (layers && mapRef.current) {
-        for (const layer of layers) {
-            mapRef.current.removeLayer(layer.id);
-        }
-    }
-
-    if (mapRef.current?.getStyle().sources) {
-        const sources = Object.keys(mapRef.current?.getStyle().sources).filter(
-            (e) => e.startsWith("preloaded-"),
-        );
-
-        for (const source of sources) {
-            mapRef.current.removeSource(source);
-        }
     }
 }
 function addToMap(
